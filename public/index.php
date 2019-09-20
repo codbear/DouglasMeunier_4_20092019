@@ -1,6 +1,7 @@
 <?php
 
-require_once('../app/controllers/HomeController.php');
+require_once('Autoloader.php');
+Autoloader::registerControllers();
 
 try {
 	$controller = new HomeController();
