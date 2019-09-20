@@ -12,6 +12,12 @@ class LoginController implements ControllerInterface {
 		$role = 2;
 		$login = new LoginModel();
 		$register = $login->registerUser($username, $email, $password, $role);
+		if ($register === false) {
+			throw new Exception('Erreur lors de la création de l\'utilisateur');
+		} else {
+			$_SESSION['isConnected'] = true;
+			header('Location: index.php');
+		}
 	}
 
 	public function execute($params, $datas) {
@@ -21,6 +27,11 @@ class LoginController implements ControllerInterface {
 			switch ($params['action']) {
 				case 'register':
 					$this->registerUser($datas);
+					break;
+
+				case 'logout':
+					unset($_SESSION['isConnected']);
+					header('Location: index.php');
 					break;
 
 				default:
