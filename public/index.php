@@ -17,7 +17,7 @@ try {
 	} else {
 		$controller = new HomeController();
 	}
-	$controller->execute($_GET);
+	$controller->execute($_GET, $_POST);
 } catch (\Exception $e) {
 	$errorMessage = $e->getMessage();
 }
