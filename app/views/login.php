@@ -21,7 +21,7 @@
                 </div>
             </div>
         </form>
-        <form id="registration-form" class="col s6" action="#" method="post">
+        <form id="registration-form" class="col s6" action="?view=login&action=register" method="post">
             <div class="row">
                 <h2 class="col s6 offset-s2">S'inscrire</h2>
             </div>
