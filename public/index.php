@@ -20,4 +20,5 @@ try {
 	$controller->execute($_GET, $_POST);
 } catch (\Exception $e) {
 	$errorMessage = $e->getMessage();
+	echo $errorMessage;
 }
