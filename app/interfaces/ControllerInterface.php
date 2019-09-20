@@ -2,5 +2,5 @@
 
 interface ControllerInterface
 {
-	public function execute(Array $params);
+	public function execute(Array $params, $datas);
 }
