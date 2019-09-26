@@ -12,4 +12,13 @@ class UserModel extends DatabaseModel {
 
         return $affectedLines;
 	}
+
+    public function login($username) {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT password
+                                    FROM users
+                                    WHERE username = ?');
+        $password = $req->execute(array($username));
+        return $password;
+    }
 }
