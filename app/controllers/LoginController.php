@@ -1,7 +1,7 @@
 <?php
 
 require_once('../app/interfaces/ControllerInterface.php');
-require_once('../app/models/LoginModel.php');
+require_once('../app/models/UserModel.php');
 
 class LoginController implements ControllerInterface {
 
@@ -10,8 +10,8 @@ class LoginController implements ControllerInterface {
 		$email = $datas['email'];
 		$password = password_hash($datas['password'], PASSWORD_DEFAULT);
 		$role = 2;
-		$login = new LoginModel();
-		$register = $login->registerUser($username, $email, $password, $role);
+		$login = new UserModel();
+		$register = $login->register($username, $email, $password, $role);
 		if ($register === false) {
 			throw new Exception('Erreur lors de la création de l\'utilisateur');
 		} else {

@@ -2,9 +2,9 @@
 
 require_once('../app/models/DatabaseModel.php');
 
-class LoginModel extends DatabaseModel {
+class UserModel extends DatabaseModel {
 
-	public function registerUser($username, $email, $password, $role) {
+	public function register($username, $email, $password, $role) {
 		$db = $this->dbConnect();
         $req = $db->prepare('INSERT INTO users(username, password, email, role_id)
                                         VALUES (?, ?, ?, ?)');
