@@ -1,6 +1,6 @@
 <?php
 
-class Router {
+abstract class Router {
 
     public static function init() {
         try {
