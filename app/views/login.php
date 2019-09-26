@@ -1,4 +1,5 @@
 <?php ob_start();?>
+    <div class="row">
         <form id="login-form" class="col s6" action="#" method="post">
             <div class="row">
                 <h2 class="col s6 offset-s4">Se connecter</h2>
@@ -49,6 +50,7 @@
                 </div>
             </div>
         </form>
+    </div>
 <?php $content = ob_get_clean();
 
 require_once('template.php'); ?>
