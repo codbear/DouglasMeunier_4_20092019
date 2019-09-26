@@ -36,7 +36,8 @@ class LoginController implements ControllerInterface {
     private function loginUser($datas) {
         if (isset($datas['username']) && isset($datas['password'])) {
             $user = new UserModel();
-            $password = $user->login($datas['username']);
+            $user->setUsername($datas['username']);
+            $password = $user->getPasswordFromDatabase();
             if ($password === password_hash($datas['password'], PASSWORD_DEFAULT)) {
                 $_SESSION['isConnected'] = true;
                 header('Location: index.php');

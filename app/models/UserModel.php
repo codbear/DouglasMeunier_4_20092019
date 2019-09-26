@@ -55,12 +55,12 @@ class UserModel extends DatabaseModel {
         return $affectedLines;
 	}
 
-    public function login($username) {
+    public function getPasswordFromDatabase() {
         $db = $this->dbConnect();
         $req = $db->prepare('SELECT password
                                     FROM users
                                     WHERE username = ?');
-        $password = $req->execute(array($username));
+        $password = $req->execute(array($this->_username));
         return $password;
     }
 }
