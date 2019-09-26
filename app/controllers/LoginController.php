@@ -6,12 +6,24 @@ require_once('../app/models/UserModel.php');
 class LoginController implements ControllerInterface {
 
 	private function registerUser($datas) {
+        $user = new UserModel();
 		$username = $datas['username'];
-		$email = $datas['email'];
-		$password = password_hash($datas['password'], PASSWORD_DEFAULT);
-		$role = 2;
-		$user = new UserModel();
-		$registered = $user->register($username, $email, $password, $role);
+        if (isset($datas['username'])) {
+            $user->setUsername($datas['username']);
+        } else {
+            throw new \Exception("Error username", 1);
+        }
+        if (filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) {
+            $user->setEmail($datas['email']);
+        } else {
+            throw new \Exception("Wrong Email", 1);
+        }
+        if (isset($datas['password'])) {
+            $user->setPassword(password_hash($datas['password'], PASSWORD_DEFAULT));
+        } else {
+            throw new \Exception("Error password", 1);
+        }
+		$registered = $user->register();
 		if ($registered === false) {
 			throw new \Exception("Error creating user", 1);
 
@@ -22,14 +34,17 @@ class LoginController implements ControllerInterface {
 	}
 
     private function loginUser($datas) {
-        $user = new UserModel();
-        $password = $user->login($datas['username']);
-        if ($password === password_hash($datas['password'], PASSWORD_DEFAULT)) {
-            $_SESSION['isConnected'] = true;
-			header('Location: index.php');
+        if (isset($datas['username']) && isset($datas['password'])) {
+            $user = new UserModel();
+            $password = $user->login($datas['username']);
+            if ($password === password_hash($datas['password'], PASSWORD_DEFAULT)) {
+                $_SESSION['isConnected'] = true;
+                header('Location: index.php');
+            } else {
+                throw new \Exception("Error connecting user", 1);
+            }
         } else {
-            throw new \Exception("Error connecting user", 1);
-
+            throw new \Exception("missing username or password", 1);
         }
     }
 
