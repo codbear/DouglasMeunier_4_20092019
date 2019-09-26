@@ -23,12 +23,13 @@ class LoginController implements ControllerInterface {
         } else {
             throw new \Exception("Error password", 1);
         }
+        $user->setRole($user::ROLE_DEFAULT);
 		$registered = $user->register();
 		if ($registered === false) {
 			throw new \Exception("Error creating user", 1);
 
 		} else {
-			$_SESSION['isConnected'] = true;
+			$this->setSession($user);
 			header('Location: index.php');
 		}
 	}
@@ -37,9 +38,9 @@ class LoginController implements ControllerInterface {
         if (isset($datas['username']) && isset($datas['password'])) {
             $user = new UserModel();
             $user->setUsername($datas['username']);
-            $password = $user->getPasswordFromDatabase();
-            if ($password === password_hash($datas['password'], PASSWORD_DEFAULT)) {
-                $_SESSION['isConnected'] = true;
+            $passwordHash = $user->getPasswordFromDatabase();
+            if (password_verify($datas['password'], $passwordHash)) {
+                $this->setSession($user);
                 header('Location: index.php');
             } else {
                 throw new \Exception("Error connecting user", 1);
@@ -47,6 +48,16 @@ class LoginController implements ControllerInterface {
         } else {
             throw new \Exception("missing username or password", 1);
         }
+    }
+
+    private function setSession($user) {
+        $_SESSION['username'] = $user->getUsername();
+        $_SESSION['role'] = $user->getRole();
+    }
+
+    private function destroySession() {
+        unset($_SESSION['username']);
+        $_SESSION['role'] = UserModel::ANONYMOUS;
     }
 
 	public function execute($params, $datas) {
@@ -63,7 +74,7 @@ class LoginController implements ControllerInterface {
                     break;
 
 				case 'logout':
-					unset($_SESSION['isConnected']);
+					$this->destroySession();
 					header('Location: index.php');
 					break;
 

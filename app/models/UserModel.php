@@ -7,7 +7,7 @@ class UserModel extends DatabaseModel {
     const ADMIN = 1;
     const SUBSCRIBER = 2;
     const ANONYMOUS = 3;
-    const DEFAULT_ROLE = self::SUBSCRIBER;
+    const ROLE_DEFAULT = self::SUBSCRIBER;
 
     private $_username;
     private $_email;
@@ -50,7 +50,7 @@ class UserModel extends DatabaseModel {
 		$db = $this->dbConnect();
         $req = $db->prepare('INSERT INTO users(username, password, email, role_id)
                                         VALUES (?, ?, ?, ?)');
-        $affectedLines = $req->execute(array($this->_username, $this->_password, $this->_email, self::DEFAULT_ROLE));
+        $affectedLines = $req->execute(array($this->_username, $this->_password, $this->_email, $this->_role));
 
         return $affectedLines;
 	}
@@ -60,7 +60,8 @@ class UserModel extends DatabaseModel {
         $req = $db->prepare('SELECT password
                                     FROM users
                                     WHERE username = ?');
-        $password = $req->execute(array($this->_username));
-        return $password;
+        $req->execute(array($this->_username));
+        $response = $req->fetch();
+        return $response['password'] ;
     }
 }
