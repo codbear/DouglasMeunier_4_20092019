@@ -1,18 +1,18 @@
 <?php ob_start();?>
     <div class="row">
-        <form id="login-form" class="col s6" action="#" method="post">
+        <form id="login-form" class="col s6" action="?view=login&action=login" method="post">
             <div class="row">
                 <h2 class="col s6 offset-s4">Se connecter</h2>
             </div>
             <div class="row">
                 <div class="input-field col s6 offset-s4">
-                    <input type="text" name="username">
+                    <input type="text" name="username" required>
                     <label for="username">Pseudo</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s6 offset-s4">
-                    <input type="password" name="password">
+                    <input type="password" name="password" required>
                     <label for="password">Mot de passe</label>
                 </div>
             </div>
@@ -28,19 +28,19 @@
             </div>
             <div class="row">
                 <div class="input-field col s6 offset-s2">
-                    <input type="text" name="username">
+                    <input type="text" name="username" required>
                     <label for="username">Pseudo</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s6 offset-s2">
-                    <input type="password" name="password">
+                    <input type="password" name="password" required>
                     <label for="password">Mot de passe</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s6 offset-s2">
-                    <input type="email" name="email">
+                    <input type="email" name="email" required>
                     <label for="username">E-mail</label>
                 </div>
             </div>
