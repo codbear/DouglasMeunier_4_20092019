@@ -10,15 +10,28 @@ class LoginController implements ControllerInterface {
 		$email = $datas['email'];
 		$password = password_hash($datas['password'], PASSWORD_DEFAULT);
 		$role = 2;
-		$login = new UserModel();
-		$register = $login->register($username, $email, $password, $role);
-		if ($register === false) {
-			throw new Exception('Erreur lors de la création de l\'utilisateur');
+		$user = new UserModel();
+		$registered = $user->register($username, $email, $password, $role);
+		if ($registered === false) {
+			throw new \Exception("Error creating user", 1);
+
 		} else {
 			$_SESSION['isConnected'] = true;
 			header('Location: index.php');
 		}
 	}
+
+    private function loginUser($datas) {
+        $user = new UserModel();
+        $password = $user->login($datas['username']);
+        if ($password === password_hash($datas['password'], PASSWORD_DEFAULT)) {
+            $_SESSION['isConnected'] = true;
+			header('Location: index.php');
+        } else {
+            throw new \Exception("Error connecting user", 1);
+
+        }
+    }
 
 	public function execute($params, $datas) {
 		$title = 'Un billet pour l\'Alaska - Connexion / Inscription';
@@ -28,6 +41,10 @@ class LoginController implements ControllerInterface {
 				case 'register':
 					$this->registerUser($datas);
 					break;
+
+                case 'login':
+                    $this->loginUser($datas);
+                    break;
 
 				case 'logout':
 					unset($_SESSION['isConnected']);
