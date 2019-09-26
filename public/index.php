@@ -13,7 +13,7 @@ try {
 				break;
 
 			default:
-				// code...
+				$controller = new ErrorsController();
 				break;
 		}
 	} else {
