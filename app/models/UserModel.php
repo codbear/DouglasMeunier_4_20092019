@@ -4,10 +4,10 @@ require_once('../app/models/DatabaseModel.php');
 
 class UserModel extends DatabaseModel {
 
-    const ADMIN = 1;
-    const SUBSCRIBER = 2;
-    const ANONYMOUS = 3;
-    const ROLE_DEFAULT = self::SUBSCRIBER;
+    const ROLE_ADMIN = 1;
+    const ROLE_SUBSCRIBER = 2;
+    const ROLE_ANONYMOUS = 3;
+    const ROLE_DEFAULT = self::ROLE_SUBSCRIBER;
 
     private $_username;
     private $_email;

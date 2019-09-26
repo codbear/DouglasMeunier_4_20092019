@@ -23,7 +23,7 @@ class LoginController implements ControllerInterface {
         } else {
             throw new \Exception("Error password", 1);
         }
-        $user->setRole($user::ROLE_DEFAULT);
+        $user->setRole(UserModel::ROLE_DEFAULT);
 		$registered = $user->register();
 		if ($registered === false) {
 			throw new \Exception("Error creating user", 1);
@@ -57,7 +57,7 @@ class LoginController implements ControllerInterface {
 
     private function destroySession() {
         unset($_SESSION['username']);
-        $_SESSION['role'] = UserModel::ANONYMOUS;
+        $_SESSION['role'] = UserModel::ROLE_ANONYMOUS;
     }
 
 	public function execute($params, $datas) {
