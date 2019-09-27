@@ -29,15 +29,4 @@ class Session
             'type'      => $type
         ];
     }
-
-    public static function flash() {
-        if (isset($_SESSION['flash'])) {
-            ?>
-            <div class="alert alert-<?= $_SESSION['flashbag']['type']?>">
-                <?= $_SESSION['flashbag']['message']; ?>
-            </div>
-            <?php
-            unset($_SESSION['flashbag']);
-        }
-    }
 }

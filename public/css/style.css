@@ -36,3 +36,34 @@ body {
 	padding: 15% 10% 10% 10%;
 	background-image: url('../img/404_backgrounds/404_background_2.jpg');
 }
+
+.alert {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    min-height: 40px;
+    padding-left: 20px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: #558b2f;
+}
+
+.alert-info {
+    background-color: #0277bd;
+}
+
+.alert-warning {
+    background-color: #ff8f00;
+}
+
+.alert-error {
+    background-color: #c62828;
+}
+
+.alert-icon {
+    margin-right: 20px;
+}

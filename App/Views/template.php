@@ -9,8 +9,39 @@
     </head>
 
     <body>
-        <?php include('menu.php');?>
-		<?php echo $content; ?>
+        <?php 
+        include('menu.php');
+        if (isset($_SESSION['flashbag'])) {
+            ?>
+            <div class="valign-wrapper alert alert-<?= $_SESSION['flashbag']['type']?>">
+            <i class="alert-icon material-icons">
+                <?php
+                switch ($_SESSION['flashbag']['type']) {
+                    case 'success':
+                        echo 'check';
+                        break;
+
+                    case 'warning':
+                        echo 'warning';
+                        break;
+
+                    case 'error':
+                        echo 'error_outline';
+                        break;
+                    
+                    default:
+                        echo 'info_outline';
+                        break;
+                }
+                ?>
+            </i>
+            <?= $_SESSION['flashbag']['message']; ?>
+            </div>
+            <?php
+            unset($_SESSION['flashbag']);
+        }
+        echo $content; 
+        ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </body>
 </html>
