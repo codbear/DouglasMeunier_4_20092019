@@ -43,6 +43,19 @@ class UserModel extends DatabaseModel {
     }
 
     public function setRole($role) {
+        switch ($role) {
+            case self::ROLE_ADMIN:
+                $this->_role = self::ROLE_ADMIN;
+                break;
+
+            case self::ROLE_SUBSCRIBER:
+                $this->_role = self::ROLE_SUBSCRIBER;
+                break;
+            
+            default:
+                $this->_role = self::ROLE_DEFAULT;
+                break;
+        }
         $this->_role = $role;
     }
 
@@ -53,15 +66,46 @@ class UserModel extends DatabaseModel {
         $affectedLines = $req->execute(array($this->_username, $this->_password, $this->_email, $this->_role));
 
         return $affectedLines;
-	}
+    }
+    
+    public static function checkUsernameInDatabase($username) {
+        $db = self::dbConnect();
+        $req = $db->prepare('SELECT username
+                                    FROM users
+                                    WHERE username = ?');
+        $req->execute(array($username));
+        $response = $req->fetch();
+        return $response['username'];
+    }
+
+    public static function checkEmailInDatabase($email) {
+        $db = self::dbConnect();
+        $req = $db->prepare('SELECT email
+                                    FROM users
+                                    WHERE email = ?');
+        $req->execute(array($email));
+        $response = $req->fetch();
+        return $response['email'];
+    }
 
     public function getPasswordFromDatabase() {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT password
+        $req = $db->prepare('SELECT password, email, role_id
                                     FROM users
                                     WHERE username = ?');
         $req->execute(array($this->_username));
         $response = $req->fetch();
-        return $response['password'] ;
+        return $response['password'];
+    }
+
+    public function hydrateUser() {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT email, role_id
+                                    FROM users
+                                    WHERE username = ?');
+        $req->execute(array($this->_username));
+        $response = $req->fetch();
+        $this->setEmail($response['email']);
+        $this->setRole($response['role_id']);
     }
 }
