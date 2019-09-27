@@ -13,15 +13,14 @@ class UserModel extends DatabaseModel {
 
     private $_username;
     private $_email;
-    private $_password;
     private $_role;
+
+    public function __construct() {
+        $this->setRole(self::ROLE_DEFAULT);
+    }
 
     public function getUsername() {
         return $this->_username;
-    }
-
-    public function getPassword() {
-        return $this->_password;
     }
 
     public function getEmail() {
@@ -36,37 +35,19 @@ class UserModel extends DatabaseModel {
         $this->_username = $username;
     }
 
-    public function setPassword($password) {
-        $this->_password = $password;
-    }
-
     public function setEmail($email) {
         $this->_email = $email;
     }
 
     public function setRole($role) {
-        switch ($role) {
-            case self::ROLE_ADMIN:
-                $this->_role = self::ROLE_ADMIN;
-                break;
-
-            case self::ROLE_SUBSCRIBER:
-                $this->_role = self::ROLE_SUBSCRIBER;
-                break;
-            
-            default:
-                $this->_role = self::ROLE_DEFAULT;
-                break;
-        }
         $this->_role = $role;
     }
 
-	public function register() {
+	public function register($passwordHash) {
 		$db = $this->dbConnect();
         $req = $db->prepare('INSERT INTO users(username, password, email, role_id)
                                         VALUES (?, ?, ?, ?)');
-        $affectedLines = $req->execute(array($this->_username, $this->_password, $this->_email, $this->_role));
-
+        $affectedLines = $req->execute(array($this->_username, $passwordHash, $this->_email, $this->_role));
         return $affectedLines;
     }
     

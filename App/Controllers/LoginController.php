@@ -11,39 +11,46 @@ class LoginController implements ControllerInterface {
 	private function registerUser($datas) {
         $user = new UserModel();
 
+        if  ((!isset($datas['username'])) || ($datas['username'] === '')) {
+            Session::setFlash('Veuillez saisir un pseudo.', 'error');
+            header('Location: /?view=login');
+            return;
+        }
         if ($this->usernameExistInDatabase($datas['username'])) {
             Session::setFlash('Le nom d\'utilisateur que vous avez choisi est déjà utilisé.', 'error');
             header('Location: /?view=login');
             return;
         }
+        $user->setUsername($datas['username']);
 
-        if (filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) {
-            if ($this->emailExistInDatabase($datas['email'], $user)) {
-                Session::setFlash('L\'Email que vous avez choisi est déjà utilisée.', 'error');
-                return;
-            }
-            $user->setEmail($datas['email']);
+        if ((!isset($datas['email'])) || ($datas['email'] === '')) {
+            Session::setFlash('Veuillez saisir une adresse mail.', 'error');
+            header('Location: /?view=login');
+            return;
         }
+        if (!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) {
+            Session::setFlash('L\'Email que vous avez saisie n\'est pas valide.', 'error');
+            header('Location: /?view=login');
+            return;
+        }
+        if ($this->emailExistInDatabase($datas['email'])) {
+            Session::setFlash('L\'adresse email que vous avez saisie est déjà utilisée.', 'error');
+            header('Location: /?view=login');
+            return;
+        }
+        $user->setEmail($datas['email']);
 
-        if (isset($datas['username'])) {
-            $user->setUsername($datas['username']);
-        } else {
-            throw new \Exception("Error username", 1);
+        if ((!isset($datas['password'])) || ($datas['password'] === '')) {
+            Session::setFlash('Veuillez saisir un mot de passe.', 'error');
+            header('Location: /?view=login');
+            return;
         }
+        $registration = $user->register(password_hash($datas['password'], PASSWORD_DEFAULT));
         
-        if (isset($datas['password'])) {
-            $user->setPassword(password_hash($datas['password'], PASSWORD_DEFAULT));
-        } else {
-            throw new \Exception("Error password", 1);
-        }
-
-        $user->setRole(UserModel::ROLE_DEFAULT);
-
-        $registered = $user->register();
-        
-		if ($registered === false) {
-			throw new \Exception("Error creating user", 1);
-
+		if ($registration === false) {
+			Session::setFlash('Une erreur inatendue est survenue. Merci de réessayer ultérieurement', 'error');
+            header('Location: /?view=login');
+            return;
 		} else {
             Session::setSession($user);
             Session::setFlash(('Votre compte a été créé. Bienvenue ' . $_SESSION['username'] . ' !'), 'success');
@@ -52,26 +59,36 @@ class LoginController implements ControllerInterface {
 	}
 
     private function loginUser($datas) {
-        if (isset($datas['username']) && isset($datas['password'])) {
-            $user = new UserModel();
-            if ($this->usernameExistInDatabase($datas['username'])) {
-                $user->setUsername($datas['username']);
-                if (password_verify($datas['password'], $user->getPasswordFromDatabase())) {
-                    $user->hydrateUser();
-                    Session::setSession($user);
-                    Session::setFlash(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
-                    header('Location: /');
-                } else {
-                    Session::setFlash('Le mot de passe que vous avez saisi est incorrect', 'error');
-                    header('Location: /?view=login');
-                }  
-            } else {
-                Session::setFlash('Le pseudo que vous avez saisi est incorrect', 'error');
-                header('Location: /?view=login');
-            }
-        } else {
-            throw new \Exception("missing username or password", 1);
+        $user = new UserModel();
+
+        if  ((!isset($datas['username'])) || ($datas['username'] === '')) {
+            Session::setFlash('Veuillez saisir un pseudo.', 'error');
+            header('Location: /?view=login');
+            return;
         }
+        if (!$this->usernameExistInDatabase($datas['username'])) {
+            Session::setFlash('Le pseudo que vous avez saisis n\'existe pas.', 'error');
+            header('Location: /?view=login');
+            return;
+        }
+        $user->setUsername($datas['username']);
+
+        if ((!isset($datas['password'])) || ($datas['password'] === '')) {
+            Session::setFlash('Veuillez saisir un mot de passe.', 'error');
+            header('Location: /?view=login');
+            return;
+        }
+        if (!password_verify($datas['password'], $user->getPasswordFromDatabase())) {
+            Session::setFlash('Le mot de passe que vous avez saisi est incorrect', 'error');
+            header('Location: /?view=login');
+            return;
+        }
+
+        $user->hydrateUser();
+        
+        Session::setSession($user);
+        Session::setFlash(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
+        header('Location: /');
     }
 
     private function usernameExistInDatabase($username) {
@@ -97,7 +114,7 @@ class LoginController implements ControllerInterface {
 
 		if (isset($params['action'])) {
 			switch ($params['action']) {
-				case 'register':
+                case 'register':
 					$this->registerUser($datas);
 					break;
 
