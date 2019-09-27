@@ -1,11 +1,13 @@
 <?php
 
-require_once('../app/interfaces/ControllerInterface.php');
+namespace Codbear\Alaska\Controllers;
+
+require_once('../App/Interfaces/ControllerInterface.php');
 
 class HomeController implements ControllerInterface {
 
 	public function execute($params, $datas) {
 		$title = 'Un billet pour l\'Alaska';
-		require_once('../app/views/home.php');
+		require_once('../App/Views/home.php');
 	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace Codbear\Alaska;
+
 abstract class Router {
 
     public static function init() {

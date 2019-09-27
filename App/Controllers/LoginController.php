@@ -1,14 +1,18 @@
 <?php
 
-require_once('../app/interfaces/ControllerInterface.php');
-require_once('../app/models/UserModel.php');
+namespace Codbear\Alaska\Controllers;
+
+use Codbear\Alaska\Models\UserModel;
+
+require_once('../App/Interfaces/ControllerInterface.php');
+require_once('../App/Models/UserModel.php');
 
 class LoginController implements ControllerInterface {
 
 	private function registerUser($datas) {
         $user = new UserModel();
         if ($this->usernameExistInDatabase($datas['username'])) {
-            throw new Exception("Username already exist", 1);
+            throw new \Exception("Username already exist", 1);
         }
         if (isset($datas['username'])) {
             $user->setUsername($datas['username']);
@@ -17,7 +21,7 @@ class LoginController implements ControllerInterface {
         }
         if (filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) {
             if ($this->emailExistInDatabase($datas['email'], $user)) {
-                throw new Exception("Email already exist", 1);
+                throw new \Exception("Email already exist", 1);
             }
             $user->setEmail($datas['email']);
         } else {
@@ -52,7 +56,7 @@ class LoginController implements ControllerInterface {
                     throw new \Exception("Wrong Password", 1);
                 }  
             } else {
-                throw new Exception("Username not found", 1);
+                throw new \Exception("Username not found", 1);
                 
             }
         } else {
@@ -111,7 +115,7 @@ class LoginController implements ControllerInterface {
 					break;
 			}
 		} else {
-			require_once('../app/views/login.php');
+			require_once('../App/Views/login.php');
 		}
 	}
 }

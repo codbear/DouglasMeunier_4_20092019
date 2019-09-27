@@ -7,6 +7,6 @@ class Autoloader {
 	}
 
 	private static function autoloadControllers($class_name) {
-		require_once '../app/controllers/' . $class_name . '.php';
+		require_once '../App/Controllers/' . $class_name . '.php';
 	}
 }

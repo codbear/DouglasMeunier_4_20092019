@@ -1,6 +1,8 @@
 <?php
 
-require_once('../app/models/DatabaseModel.php');
+namespace Codbear\Alaska\Models;
+
+require_once('../App/Models/DatabaseModel.php');
 
 class UserModel extends DatabaseModel {
 

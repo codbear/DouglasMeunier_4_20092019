@@ -1,5 +1,7 @@
 <?php
 
+namespace Codbear\Alaska\Models;
+
 class DatabaseModel {
 
 	protected function dbConnect() {
