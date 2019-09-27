@@ -10,35 +10,44 @@ class LoginController implements ControllerInterface {
 
 	private function registerUser($datas) {
         $user = new UserModel();
+
         if ($this->usernameExistInDatabase($datas['username'])) {
-            throw new \Exception("Username already exist", 1);
+            Session::setFlash('Le nom d\'utilisateur que vous avez choisi est déjà utilisé.', 'error');
+            header('Location: /?view=login');
+            return;
         }
+
+        if (filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) {
+            if ($this->emailExistInDatabase($datas['email'], $user)) {
+                Session::setFlash('L\'Email que vous avez choisi est déjà utilisée.', 'error');
+                return;
+            }
+            $user->setEmail($datas['email']);
+        }
+
         if (isset($datas['username'])) {
             $user->setUsername($datas['username']);
         } else {
             throw new \Exception("Error username", 1);
         }
-        if (filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) {
-            if ($this->emailExistInDatabase($datas['email'], $user)) {
-                throw new \Exception("Email already exist", 1);
-            }
-            $user->setEmail($datas['email']);
-        } else {
-            throw new \Exception("Wrong Email", 1);
-        }
+        
         if (isset($datas['password'])) {
             $user->setPassword(password_hash($datas['password'], PASSWORD_DEFAULT));
         } else {
             throw new \Exception("Error password", 1);
         }
+
         $user->setRole(UserModel::ROLE_DEFAULT);
-		$registered = $user->register();
+
+        $registered = $user->register();
+        
 		if ($registered === false) {
 			throw new \Exception("Error creating user", 1);
 
 		} else {
-			Session::setSession($user);
-			header('Location: index.php');
+            Session::setSession($user);
+            Session::setFlash(('Votre compte a été créé. Bienvenue ' . $_SESSION['username'] . ' !'), 'success');
+			header('Location: /');
 		}
 	}
 
@@ -50,13 +59,15 @@ class LoginController implements ControllerInterface {
                 if (password_verify($datas['password'], $user->getPasswordFromDatabase())) {
                     $user->hydrateUser();
                     Session::setSession($user);
-                    header('Location: index.php');
+                    Session::setFlash(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
+                    header('Location: /');
                 } else {
-                    throw new \Exception("Wrong Password", 1);
+                    Session::setFlash('Le mot de passe que vous avez saisi est incorrect', 'error');
+                    header('Location: /?view=login');
                 }  
             } else {
-                throw new \Exception("Username not found", 1);
-                
+                Session::setFlash('Le pseudo que vous avez saisi est incorrect', 'error');
+                header('Location: /?view=login');
             }
         } else {
             throw new \Exception("missing username or password", 1);
@@ -96,7 +107,7 @@ class LoginController implements ControllerInterface {
 
 				case 'logout':
 					Session::destroySession();
-					header('Location: index.php');
+					header('Location: /');
 					break;
 
 				default:
