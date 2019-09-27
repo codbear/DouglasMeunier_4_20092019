@@ -1,0 +1,16 @@
+{
+    "name": "codbear/alaska",
+    "description": "Light MVC blog for writter",
+    "authors": [
+        {
+            "name": "codbear",
+            "email": "douglas.meunier@codbear.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Codbear\\Alaska\\": "App/"
+        }
+    },
+    "require": {}
+}

@@ -2,7 +2,7 @@
 
 namespace Codbear\Alaska\Controllers;
 
-require_once('../App/Interfaces/ControllerInterface.php');
+use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class ErrorsController implements ControllerInterface {
 

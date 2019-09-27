@@ -2,6 +2,10 @@
 
 namespace Codbear\Alaska;
 
+use Codbear\Alaska\Controllers\HomeController;
+use Codbear\Alaska\Controllers\LoginController;
+use Codbear\Alaska\Controllers\ErrorsController;
+
 abstract class Router {
 
     public static function init() {

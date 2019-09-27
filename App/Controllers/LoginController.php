@@ -3,9 +3,7 @@
 namespace Codbear\Alaska\Controllers;
 
 use Codbear\Alaska\Models\UserModel;
-
-require_once('../App/Interfaces/ControllerInterface.php');
-require_once('../App/Models/UserModel.php');
+use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class LoginController implements ControllerInterface {
 

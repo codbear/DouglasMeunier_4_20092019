@@ -1,8 +1,14 @@
 <?php
 
-session_start();
+require_once('../vendor/autoload.php');
 
-require_once('Autoloader.php');
-require_once('Router.php');
-Autoloader::registerControllers();
+use Codbear\Alaska\Router;
+
+session_start();
+if (!isset($_SESSION['role'])) {
+    $_SESSION['role'] = 3;
+}
+
 Router::init();
+
+// TODO: Database::init();
