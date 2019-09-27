@@ -2,6 +2,7 @@
 
 namespace Codbear\Alaska\Controllers;
 
+use Codbear\Alaska\Session;
 use Codbear\Alaska\Models\UserModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 
@@ -36,7 +37,7 @@ class LoginController implements ControllerInterface {
 			throw new \Exception("Error creating user", 1);
 
 		} else {
-			$this->setSession($user);
+			Session::setSession($user);
 			header('Location: index.php');
 		}
 	}
@@ -48,7 +49,7 @@ class LoginController implements ControllerInterface {
                 $user->setUsername($datas['username']);
                 if (password_verify($datas['password'], $user->getPasswordFromDatabase())) {
                     $user->hydrateUser();
-                    $this->setSession($user);
+                    Session::setSession($user);
                     header('Location: index.php');
                 } else {
                     throw new \Exception("Wrong Password", 1);
@@ -80,16 +81,6 @@ class LoginController implements ControllerInterface {
         }
     }
 
-    private function setSession($user) {
-        $_SESSION['username'] = $user->getUsername();
-        $_SESSION['role'] = $user->getRole();
-    }
-
-    private function destroySession() {
-        unset($_SESSION['username']);
-        $_SESSION['role'] = UserModel::ROLE_ANONYMOUS;
-    }
-
 	public function execute($params, $datas) {
 		$title = 'Un billet pour l\'Alaska - Connexion / Inscription';
 
@@ -104,7 +95,7 @@ class LoginController implements ControllerInterface {
                     break;
 
 				case 'logout':
-					$this->destroySession();
+					Session::destroySession();
 					header('Location: index.php');
 					break;
 

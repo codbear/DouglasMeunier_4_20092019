@@ -3,12 +3,9 @@
 require_once('../vendor/autoload.php');
 
 use Codbear\Alaska\Router;
+use Codbear\Alaska\Session;
 
-session_start();
-if (!isset($_SESSION['role'])) {
-    $_SESSION['role'] = 3;
-}
-
+Session::start();
 Router::init();
 
 // TODO: Database::init();
