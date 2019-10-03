@@ -9,7 +9,7 @@ class Session
     public static function start() {
         session_start();
         if (!isset($_SESSION['role'])) {
-            $_SESSION['role'] = UserModel::ANONYMOUS;
+            $_SESSION['role'] = UserModel::ROLE_ANONYMOUS;
         }
     }
 
