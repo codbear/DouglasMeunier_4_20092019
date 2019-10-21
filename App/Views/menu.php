@@ -12,11 +12,28 @@ use Codbear\Alaska\Models\UserModel;
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Accueil</a></li>
                 <li><a href="#">Lire</a></li>
-				<?php if($_SESSION['role'] === UserModel::ROLE_ANONYMOUS) { ?>
-                    <li><a href="?view=login">Se connecter / S'inscrire</a></li>
-				<?php } else { ?>
-                    <li><a href="?view=login&action=logout">Se déconnecter</a></li>
-				<?php } ?>
+                <?php
+                switch ($_SESSION['role']) {
+                    case UserModel::ROLE_SUBSCRIBER:
+                        ?>
+                        <li><a href="?view=login&action=logout">Se déconnecter</a></li>
+                        <?php
+                        break;
+
+                    case UserModel::ROLE_ADMIN:
+                        ?>
+                        <li><a href="?view=dashboard">Dashboard</a></li>
+                        <li><a href="?view=login&action=logout">Se déconnecter</a></li>
+                        <?php
+                        break;
+                    
+                    default:
+                        ?>
+                        <li><a href="?view=login">Se connecter / S'inscrire</a></li>
+                        <?php
+                        break;
+                }
+                ?>
             </ul>
         </div>
     </nav>
