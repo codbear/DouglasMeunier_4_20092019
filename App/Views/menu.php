@@ -1,3 +1,9 @@
+<?php 
+
+use Codbear\Alaska\Models\UserModel;
+
+?>
+
 <div class="navbar-fixed">
     <nav class="teal">
         <div class="nav-wrapper">
@@ -6,7 +12,7 @@
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Accueil</a></li>
                 <li><a href="#">Lire</a></li>
-				<?php if($_SESSION['role'] === 3) { ?>
+				<?php if($_SESSION['role'] === UserModel::ROLE_ANONYMOUS) { ?>
                     <li><a href="?view=login">Se connecter / S'inscrire</a></li>
 				<?php } else { ?>
                     <li><a href="?view=login&action=logout">Se déconnecter</a></li>
