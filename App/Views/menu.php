@@ -22,7 +22,7 @@ use Codbear\Alaska\Models\UserModel;
 
                     case UserModel::ROLE_ADMIN:
                         ?>
-                        <li><a href="?view=dashboard">Dashboard</a></li>
+                        <li><a href="?view=dashboard&section=chapters">Dashboard</a></li>
                         <li><a href="?view=login&action=logout">Se déconnecter</a></li>
                         <?php
                         break;
