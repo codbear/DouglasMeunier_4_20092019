@@ -11,7 +11,7 @@ class DashboardController implements ControllerInterface {
         $book = new BookModel();
         $title = 'Dashboard - Chapitres';
         $chaptersList = $book->getTableOfContent();
-        require_once('../App/Views/chapters.php');
+        require_once('../App/Views/dashboard/chapters.php');
     }
 
     public function execute($params, $datas) {
