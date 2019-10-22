@@ -1,6 +1,7 @@
 <?php ob_start(); ?>
 
 <h2>Chapitres</h2>
+<a class="btn waves-effect waves-light indigo"><i class="material-icons left">create</i>Ecrire un nouveau chapitre</a>
 
 <?php
 while ($chapter = $chaptersList->fetch()) {
@@ -9,11 +10,12 @@ while ($chapter = $chaptersList->fetch()) {
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title"><?= htmlspecialchars($chapter['title']); ?></span>
+                    <span class="card-title">Chapitre <?= $chapter['chapter_number']; ?> - <?= $chapter['title']; ?></span>
+                    <p>Date de création : <?= $chapter['creation_date_fr']; ?></p>
                 </div>
                 <div class="card-action">
-                    <a href="#" class="indigo-text text-darken-4">Editer</a>
-                    <a href="#" class="red-text">Supprimer</a>
+                    <a class="btn-small waves-effect waves-light blue"><i class="material-icons left">edit</i>Editer</a>
+                    <a class="btn-small waves-effect waves-light red"><i class="material-icons left">delete</i>Supprimer</a>
                 </div>
             </div>
         </div>
