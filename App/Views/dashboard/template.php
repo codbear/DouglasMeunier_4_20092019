@@ -9,14 +9,33 @@
     </head>
 
     <body class="has-fixed-sidenav">
-        <aside id="sidenav-left" class="sidenav sidenav-fixed">
-        <ul>
-            <li><a href="?view=dashboard&section=chapters">Chapitres</a></li>
-            <li><a href="?view=dashboard&section=comments">Commentaires</a></li>
-            <li><a href="?view=dashboard&section=users">Utilisateurs</a></li>
-            <li><a href="?view=dashboard&section=account">Mon compte</a></li>
-        </ul>      
-    </aside>
+    <header>
+        <div class="navbar-fixed">
+            <nav class="navbar teal">
+                <div class="nav-wrapper">
+                    <a href="#!" class="brand-logo center">Un billet pour l'Alaska</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="/"><i class="material-icons left">home</i>Retourner sur le site</a></li>
+                        <li><a href="?view=login&action=logout">Se déconnecter</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <ul id="sidenav-left" class="sidenav sidenav-fixed">
+            <li>
+                <a href="?view=dashboard&section=chapters" class="logo-container"><i class="material-icons left">dashboard</i>Dashboard</a>
+            </li>
+            <li>
+                <ul>
+                    <li><a href="?view=dashboard&section=chapters">Chapitres</a></li>
+                    <li><a href="?view=dashboard&section=comments">Commentaires</a></li>
+                    <li><a href="?view=dashboard&section=users">Utilisateurs</a></li>
+                    <li><a href="?view=dashboard&section=account">Mon compte</a></li>
+                </ul> 
+            </li>
+        </ul>
+    </header>
+        
     <main>
         <?php 
         if (isset($_SESSION['flashbag'])) {
