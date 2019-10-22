@@ -8,7 +8,16 @@
         <link rel="stylesheet" href="/css/style.css">
     </head>
 
-    <body>
+    <body class="has-fixed-sidenav">
+        <aside id="sidenav-left" class="sidenav sidenav-fixed">
+        <ul>
+            <li><a href="?view=dashboard&section=chapters">Chapitres</a></li>
+            <li><a href="?view=dashboard&section=comments">Commentaires</a></li>
+            <li><a href="?view=dashboard&section=users">Utilisateurs</a></li>
+            <li><a href="?view=dashboard&section=account">Mon compte</a></li>
+        </ul>      
+    </aside>
+    <main>
         <?php 
         if (isset($_SESSION['flashbag'])) {
             ?>
@@ -39,8 +48,14 @@
             <?php
             unset($_SESSION['flashbag']);
         }
-        echo $content; 
         ?>
+        <div class="container">
+            <?php
+            echo $content; 
+            ?>
+        </div>      
+    </main>
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </body>
 </html>
