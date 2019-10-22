@@ -8,7 +8,7 @@ class DashboardController implements ControllerInterface {
 
     public function execute($params, $datas) {
 		$title = 'Dashboard';
-		require_once('../App/Views/dashboard.php');
+		require_once('../App/Views/chapters.php');
 	}
 
 }
