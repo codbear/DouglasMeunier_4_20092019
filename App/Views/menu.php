@@ -5,7 +5,7 @@ use Codbear\Alaska\Models\UserModel;
 ?>
 
 <div class="navbar-fixed">
-    <nav class="teal">
+    <nav class="blue-grey darken-1">
         <div class="nav-wrapper">
             <a href="#!" class="brand-logo">Un billet pour l'Alaska</a>
             <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>

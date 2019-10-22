@@ -11,7 +11,7 @@
     <body class="has-fixed-sidenav">
     <header>
         <div class="navbar-fixed">
-            <nav class="navbar teal">
+            <nav class="navbar blue-grey darken-1">
                 <div class="nav-wrapper">
                     <a href="#!" class="brand-logo center">Un billet pour l'Alaska</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -21,7 +21,7 @@
                 </div>
             </nav>
         </div>
-        <ul id="sidenav-left" class="sidenav sidenav-fixed">
+        <ul id="sidenav-left" class="sidenav sidenav-fixed blue-grey lighten-3">
             <li>
                 <a href="?view=dashboard&section=chapters" class="logo-container"><i class="material-icons left">dashboard</i>Dashboard</a>
             </li>
