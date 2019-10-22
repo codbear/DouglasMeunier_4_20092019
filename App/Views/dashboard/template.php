@@ -22,15 +22,15 @@
             </nav>
         </div>
         <ul id="sidenav-left" class="sidenav sidenav-fixed blue-grey lighten-3">
-            <li>
-                <a href="?view=dashboard&section=chapters" class="logo-container"><i class="material-icons left">dashboard</i>Dashboard</a>
+            <li class="waves-effect">
+                <a href="?view=dashboard&section=chapters" class="logo-container"><i class="material-icons left small">dashboard</i>Dashboard</a>
             </li>
             <li>
                 <ul>
-                    <li><a href="?view=dashboard&section=chapters">Chapitres</a></li>
-                    <li><a href="?view=dashboard&section=comments">Commentaires</a></li>
-                    <li><a href="?view=dashboard&section=users">Utilisateurs</a></li>
-                    <li><a href="?view=dashboard&section=account">Mon compte</a></li>
+                    <li class="waves-effect"><a href="?view=dashboard&section=chapters"><i class="material-icons left">book</i>Chapitres</a></li>
+                    <li class="waves-effect"><a href="?view=dashboard&section=comments"><i class="material-icons left">comment</i>Commentaires</a></li>
+                    <li class="waves-effect"><a href="?view=dashboard&section=users"><i class="material-icons left">people</i>Utilisateurs</a></li>
+                    <li class="waves-effect"><a href="?view=dashboard&section=account"><i class="material-icons left">settings</i>Mon compte</a></li>
                 </ul> 
             </li>
         </ul>

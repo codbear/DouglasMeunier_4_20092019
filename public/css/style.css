@@ -34,7 +34,7 @@ body {
 	left: 0;
 	margin: 0;
 	padding: 15% 10% 10% 10%;
-	background-image: url('../img/404_backgrounds/404_background_2.jpg');
+    background: url('../img/404_backgrounds/404_background_2.jpg') no-repeat;
 }
 
 .alert {
@@ -68,12 +68,24 @@ body {
     margin-right: 20px;
 }
 
-header, main, footer {
+body.has-fixed-sidenav {
     padding-left: 300px;
-  }
+}
 
-  @media only screen and (max-width : 992px) {
-    header, main, footer {
-      padding-left: 0;
+@media only screen and (max-width : 992px) {
+    body.has-fixed-sidenav {
+        padding-left: 0;
     }
-  }
+}
+
+.has-fixed-sidenav .navbar-fixed nav.navbar {
+    width: calc(100% - 300px);
+}
+
+.sidenav > li {
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+.sidenav li.waves-effect {
+    display: block;
+}
