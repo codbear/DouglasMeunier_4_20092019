@@ -59,6 +59,10 @@ body {
     font-weight: bold;
 }
 
+.has-fixed-sidenav .alert {
+    left: 300px;
+}
+
 .alert-success {
     background-color: #558b2f;
 }
