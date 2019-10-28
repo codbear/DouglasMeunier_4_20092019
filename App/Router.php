@@ -2,10 +2,10 @@
 
 namespace Codbear\Alaska;
 
+use Codbear\Alaska\Controllers\Dashboard\ChaptersPanelController;
 use Codbear\Alaska\Controllers\HomeController;
 use Codbear\Alaska\Controllers\LoginController;
 use Codbear\Alaska\Controllers\ErrorsController;
-use Codbear\Alaska\Controllers\DashboardController;
 
 abstract class Router {
 
@@ -17,8 +17,8 @@ abstract class Router {
         				$controller = new LoginController();
 						break;
 						
-					case 'dashboard':
-						$controller = new DashboardController();
+					case 'chaptersPanel':
+						$controller = new ChaptersPanelController();
 						break;
 
         			default:

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Codbear\Alaska\Models\UserModel;
 
@@ -12,28 +12,26 @@ use Codbear\Alaska\Models\UserModel;
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Accueil</a></li>
                 <li><a href="#">Lire</a></li>
-                <?php
-                switch ($_SESSION['role']) {
+                <?php switch ($_SESSION['role']):
                     case UserModel::ROLE_SUBSCRIBER:
                         ?>
                         <li><a href="?view=login&action=logout">Se déconnecter</a></li>
-                        <?php
+                    <?php
                         break;
 
                     case UserModel::ROLE_ADMIN:
                         ?>
-                        <li><a href="?view=dashboard&section=chapters">Dashboard</a></li>
+                        <li><a href="?view=chaptersPanel">Dashboard</a></li>
                         <li><a href="?view=login&action=logout">Se déconnecter</a></li>
-                        <?php
+                    <?php
                         break;
-                    
+
                     default:
                         ?>
                         <li><a href="?view=login">Se connecter / S'inscrire</a></li>
-                        <?php
+                    <?php
                         break;
-                }
-                ?>
+                endswitch; ?>
             </ul>
         </div>
     </nav>
