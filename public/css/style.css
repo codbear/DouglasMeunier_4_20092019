@@ -26,15 +26,26 @@ body {
     min-height: 100vh;
 }
 
-#container-404 {
-	position: absolute;
+#container-403, #container-404 {
+    position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
 	margin: 0;
 	padding: 15% 10% 10% 10%;
-    background: url('../img/404_backgrounds/404_background_2.jpg') no-repeat;
+}
+
+.error-message {
+    background-color: rgba(0,0,0,0.7);
+}
+
+#container-403 {
+    background: url('../img/403_background.jpg') no-repeat;
+}
+
+#container-404 {
+    background: url('../img/404_background.jpg') no-repeat;
 }
 
 .alert {
