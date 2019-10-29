@@ -26,7 +26,7 @@
                             </div>
                             <div class="card-action">
                                 <a class="btn-small waves-effect waves-light blue darken-4"><i class="material-icons left">edit</i>Editer</a>
-                                <a href="?view=chaptersPanel&action=moveToTrash&chapterId=<?= $chapter['id'] ?> "class="btn-small waves-effect waves-light red darken-4"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
+                                <a href="?view=chaptersPanel&action=moveToTrash&chapterId=<?= $chapter['id'] ?>"class="btn-small waves-effect waves-light red darken-4"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                             </div>
                             <div class="card-action">
                                 <a class="btn-small waves-effect waves-light blue darken-4"><i class="material-icons left">edit</i>Editer</a>
-                                <a href="?view=chaptersPanel&action=moveToTrash&chapterId=<?= $chapter['id'] ?> "class="btn-small waves-effect waves-light red darken-4"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
+                                <a href="?view=chaptersPanel&action=moveToTrash&chapterId=<?= $chapter['id'] ?>"class="btn-small waves-effect waves-light red darken-4"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="card-action">
                                 <a class="btn-small waves-effect waves-light blue darken-4"><i class="material-icons left">restore</i>Restaurer</a>
-                                <a class="btn-small waves-effect waves-light red darken-4"><i class="material-icons left">delete_forever</i>Supprimer définitivement</a>
+                                <a href="/?view=chaptersPanel&action=deleteChapterPermanently&chapterId=<?= $chapter['id'] ?>" class="btn-small waves-effect waves-light red darken-4"><i class="material-icons left">delete_forever</i>Supprimer définitivement</a>
                             </div>
                         </div>
                     </div>

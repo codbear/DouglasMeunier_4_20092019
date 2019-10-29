@@ -18,14 +18,35 @@ class ChaptersPanelController extends DashboardController implements ControllerI
             if (isset($params['chapterId'])) {
                 $movedToTrash = $book->moveChapterToTrash((int) $params['chapterId']);
             } else {
-                throw new Exception("Le chapitre que vous essayez de déplacer vers la corbeille n'existe pas", 1);
+                throw new Exception("L'identifiant du chapitre que vous essayer de déplacer vers la corbeille n'est pas définit. Merci de réessayer ultérieurement.", 1);
             }
 
             if ($movedToTrash) {
                 Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
                 header('Location: /?view=chaptersPanel');
             } else {
-                throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement", 1);
+                throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
+            }
+        } catch (Exception $e) {
+            Session::setFlash($e->getMessage(), 'error');
+            header('Location: /?view=chaptersPanel');
+        }
+    }
+
+    private function deleteChapterPermanently($params, $book)
+    {
+        try {
+            if (isset($params['chapterId'])) {
+                $deletedPermanently = $book->deleteChapterPermanently((int) $params['chapterId']);
+            } else {
+                throw new Exception("L'identifiant du chapitre que vous essayer de supprimer n'est pas définit. Merci de réessayer ultérieurement.", 1);
+            }
+
+            if ($deletedPermanently) {
+                Session::setFlash('Le chapitre a été supprimé définitivement', 'success');
+                header('Location: /?view=chaptersPanel');
+            } else {
+                throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
             }
         } catch (Exception $e) {
             Session::setFlash($e->getMessage(), 'error');
@@ -42,6 +63,10 @@ class ChaptersPanelController extends DashboardController implements ControllerI
             switch ($params['action']) {
                 case 'moveToTrash':
                     $this->moveChapterToTrash($params, $book);
+                    break;
+
+                case 'deleteChapterPermanently':
+                    $this->deleteChapterPermanently($params, $book);
                     break;
 
                 default:
