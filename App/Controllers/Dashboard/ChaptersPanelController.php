@@ -23,17 +23,18 @@ class ChaptersPanelController extends DashboardController implements ControllerI
 
             if ($movedToTrash) {
                 Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
+                header('Location: /?view=chaptersPanel');
             } else {
                 throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement", 1);
             }
         } catch (Exception $e) {
             Session::setFlash($e->getMessage(), 'error');
+            header('Location: /?view=chaptersPanel');
         }
     }
 
     public function execute($params, $datas)
     {
-
         $title = 'Dashboard - Chapitres';
         $book = new BookModel();
 
@@ -47,25 +48,25 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     ErrorsController::error404();
                     break;
             }
-        }
+        } else {
+            $chaptersList = $book->getTableOfContent();
+            while ($chapter = $chaptersList->fetch()) {
+                switch ($chapter['chapter_status']) {
+                    case BookModel::CHAPTER_STATUS_PUBLISHED:
+                        $published[] = $chapter;
+                        break;
 
-        $chaptersList = $book->getTableOfContent();
-        while ($chapter = $chaptersList->fetch()) {
-            switch ($chapter['chapter_status']) {
-                case BookModel::CHAPTER_STATUS_PUBLISHED:
-                    $published[] = $chapter;
-                    break;
+                    case BookModel::CHAPTER_STATUS_TRASH:
+                        $trash[] = $chapter;
+                        break;
 
-                case BookModel::CHAPTER_STATUS_TRASH:
-                    $trash[] = $chapter;
-                    break;
-
-                default:
-                    $drafts[] = $chapter;
-                    break;
+                    default:
+                        $drafts[] = $chapter;
+                        break;
+                }
             }
-        }
 
-        require_once('../App/Views/dashboard/chapters.php');
+            require_once('../App/Views/dashboard/chapters.php');
+        }
     }
 }
