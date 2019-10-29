@@ -6,6 +6,12 @@ use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class ErrorsController implements ControllerInterface {
 
+	public static function error401() {
+		$title = 'Erreur 401';
+        header("HTTP/1.0 401 Unauthorized");
+		require_once('../App/Views/Errors/error401.php');
+	}
+
 	public static function error403() {
 		$title = 'Erreur 403';
         header("HTTP/1.0 403 Forbidden");
