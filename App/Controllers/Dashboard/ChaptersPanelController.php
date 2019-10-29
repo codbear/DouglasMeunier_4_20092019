@@ -11,18 +11,29 @@ use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 
 class ChaptersPanelController extends DashboardController implements ControllerInterface
 {
-
-    private function moveChapterToTrash($params, $book)
+    private function changeChapterStatus($params, $book, $newStatus = BookModel::CHAPTER_STATUS_DEFAULT)
     {
         try {
             if (isset($params['chapterId'])) {
-                $movedToTrash = $book->moveChapterToTrash((int) $params['chapterId']);
+                $statusChanged = $book->changeChapterStatus((int) $params['chapterId'], $newStatus);
             } else {
-                throw new Exception("L'identifiant du chapitre que vous essayer de déplacer vers la corbeille n'est pas définit. Merci de réessayer ultérieurement.", 1);
+                throw new Exception("L'identifiant du chapitre que vous essayer de modifier n'est pas définit. Merci de réessayer ultérieurement.", 1);
             }
 
-            if ($movedToTrash) {
-                Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
+            if ($statusChanged) {
+                switch ($newStatus) {
+                    case BookModel::CHAPTER_STATUS_TRASH:
+                        Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
+                        break;
+
+                    case BookModel::CHAPTER_STATUS_DRAFT:
+                        Session::setFlash('Le chapitre a été placé dans les brouillons', 'success');
+                        break;
+
+                    default:
+                        throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
+                        break;
+                }
                 header('Location: /?view=chaptersPanel');
             } else {
                 throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
@@ -61,8 +72,12 @@ class ChaptersPanelController extends DashboardController implements ControllerI
 
         if (isset($params['action'])) {
             switch ($params['action']) {
-                case 'moveToTrash':
-                    $this->moveChapterToTrash($params, $book);
+                case 'moveChapterToTrash':
+                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_TRASH);
+                    break;
+
+                case 'restoreChapterFromTrash':
+                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_DRAFT);
                     break;
 
                 case 'deleteChapterPermanently':

@@ -21,13 +21,13 @@ class BookModel extends DatabaseModel
         return $req;
     }
 
-    public function moveChapterToTrash($chapterId)
+    public function changeChapterStatus($chapterId, $newStatus)
     {
         $db = $this->dbConnect();
         $req = $db->prepare('UPDATE posts
                                 SET chapter_status = ?
                                 WHERE id = ?');
-        return $req->execute(array(self::CHAPTER_STATUS_TRASH, $chapterId));
+        return $req->execute(array($newStatus, $chapterId));
     }
 
     public function deleteChapterPermanently($chapterId)
