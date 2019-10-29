@@ -12,14 +12,15 @@ use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 class ChaptersPanelController extends DashboardController implements ControllerInterface
 {
 
-    public function moveChapterToTrash($params, $book) {
+    private function moveChapterToTrash($params, $book)
+    {
         try {
             if (isset($params['chapterId'])) {
-                $movedToTrash = $book->moveChapterToTrash((int)$params['chapterId']);
+                $movedToTrash = $book->moveChapterToTrash((int) $params['chapterId']);
             } else {
                 throw new Exception("Le chapitre que vous essayez de déplacer vers la corbeille n'existe pas", 1);
             }
-            
+
             if ($movedToTrash) {
                 Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
             } else {
@@ -47,8 +48,24 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     break;
             }
         }
+
         $chaptersList = $book->getTableOfContent();
+        while ($chapter = $chaptersList->fetch()) {
+            switch ($chapter['chapter_status']) {
+                case BookModel::CHAPTER_STATUS_PUBLISHED:
+                    $published[] = $chapter;
+                    break;
+
+                case BookModel::CHAPTER_STATUS_TRASH:
+                    $trash[] = $chapter;
+                    break;
+
+                default:
+                    $drafts[] = $chapter;
+                    break;
+            }
+        }
+
         require_once('../App/Views/dashboard/chapters.php');
     }
 }
-

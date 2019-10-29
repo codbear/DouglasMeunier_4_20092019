@@ -104,3 +104,11 @@ body.has-fixed-sidenav {
 .sidenav li.waves-effect {
     display: block;
 }
+
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+    background-color: #eceff1;
+}
+
+.tabs .indicator {
+    background-color: #b0bec5;
+}
