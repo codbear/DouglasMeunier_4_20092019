@@ -110,12 +110,13 @@ class LoginController implements ControllerInterface
                     break;
 
                 case 'logout':
-                    Session::killUser();
+                    Session::unsetUser();
                     header('Location: /');
                     break;
 
                 default:
-                    // code...
+                    ErrorsController::error404();
+                    die;
                     break;
             }
         } else {

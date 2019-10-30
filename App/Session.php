@@ -13,12 +13,12 @@ class Session
         }
     }
 
-    public static function setSession($user) {
+    public static function setUser($user) {
         $_SESSION['username'] = $user->getUsername();
         $_SESSION['role'] = $user->getRole();
     }
 
-    public static function destroySession() {
+    public static function unsetUser() {
         unset($_SESSION['username']);
         $_SESSION['role'] = UserModel::ROLE_ANONYMOUS;
     }
