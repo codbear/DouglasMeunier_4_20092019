@@ -2,96 +2,86 @@
 
 namespace Codbear\Alaska\Controllers;
 
+use Exception;
 use Codbear\Alaska\Session;
 use Codbear\Alaska\Models\UserModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 
-class LoginController implements ControllerInterface {
+class LoginController implements ControllerInterface
+{
 
-	private function registerUser($datas) {
+    private function registerUser($datas)
+    {
         $user = new UserModel();
 
-        if  ((!isset($datas['username'])) || ($datas['username'] === '')) {
-            Session::setFlash('Veuillez saisir un pseudo.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        if ($this->usernameExistInDatabase($datas['username'])) {
-            Session::setFlash('Le nom d\'utilisateur que vous avez choisi est déjà utilisé.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        $user->setUsername($datas['username']);
+        try {
+            if (empty($datas['username'])) {
+                throw new Exception("Veuillez saisir un pseudo.", 1);
+            }
+            if ($this->usernameExistInDatabase($datas['username'])) {
+                throw new Exception("Le nom d'utilisateur que vous avez saisi n'est pas valide", 1);
+            }
+            $user->setUsername($datas['username']);
 
-        if ((!isset($datas['email'])) || ($datas['email'] === '')) {
-            Session::setFlash('Veuillez saisir une adresse mail.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        if (!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) {
-            Session::setFlash('L\'Email que vous avez saisie n\'est pas valide.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        if ($this->emailExistInDatabase($datas['email'])) {
-            Session::setFlash('L\'adresse email que vous avez saisie est déjà utilisée.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        $user->setEmail($datas['email']);
+            if (empty($datas['email'])) {
+                throw new Exception("Veuillez saisir une adresse mail.", 1);
+            }
+            if ((!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) || (UserModel::checkEmailInDatabase($datas['email']))) {
+                throw new Exception("L adresse mail que vous avez saisie n'est pas valide.", 1);
+            }
+            $user->setEmail($datas['email']);
 
-        if ((!isset($datas['password'])) || ($datas['password'] === '')) {
-            Session::setFlash('Veuillez saisir un mot de passe.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        $registration = $user->register(password_hash($datas['password'], PASSWORD_DEFAULT));
-        
-		if ($registration === false) {
-			Session::setFlash('Une erreur inatendue est survenue. Merci de réessayer ultérieurement', 'error');
-            header('Location: /?view=login');
-            return;
-		} else {
-            Session::setSession($user);
-            Session::setFlash(('Votre compte a été créé. Bienvenue ' . $_SESSION['username'] . ' !'), 'success');
-			header('Location: /');
-		}
-	}
+            if (empty($datas['password'])) {
+                throw new Exception("Veuillez saisir un mot de passe.", 1);
+            }
+            $registration = $user->register(password_hash($datas['password'], PASSWORD_DEFAULT));
 
-    private function loginUser($datas) {
-        $user = new UserModel();
-
-        if  ((!isset($datas['username'])) || ($datas['username'] === '')) {
-            Session::setFlash('Veuillez saisir un pseudo.', 'error');
+            if ($registration === false) {
+                throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement", 1);
+            } else {
+                Session::setUser($user);
+                Session::setFlash(('Votre compte a été créé. Bienvenue ' . $_SESSION['username'] . ' !'), 'success');
+                header('Location: /');
+            }
+        } catch (Exception $e) {
+            Session::setFlash($e->getMessage(), 'error');
             header('Location: /?view=login');
-            return;
         }
-        if (!$this->usernameExistInDatabase($datas['username'])) {
-            Session::setFlash('Le pseudo que vous avez saisis n\'existe pas.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        $user->setUsername($datas['username']);
-
-        if ((!isset($datas['password'])) || ($datas['password'] === '')) {
-            Session::setFlash('Veuillez saisir un mot de passe.', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-        if (!password_verify($datas['password'], $user->getPasswordFromDatabase())) {
-            Session::setFlash('Le mot de passe que vous avez saisi est incorrect', 'error');
-            header('Location: /?view=login');
-            return;
-        }
-
-        $user->hydrateUser();
-        
-        Session::setSession($user);
-        Session::setFlash(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
-        header('Location: /');
     }
 
-    private function usernameExistInDatabase($username) {
+    private function loginUser($datas)
+    {
+        $user = new UserModel();
+
+        try {
+            if (empty($datas['username'])) {
+                throw new Exception("Veuillez saisir un pseudo.", 1);
+            }
+            if (!$this->usernameExistInDatabase($datas['username'])) {
+                throw new Exception("Le nom d'utilisateur que vous avez saisi n'est pas valide", 1);
+            }
+            $user->setUsername($datas['username']);
+
+            if (empty($datas['password'])) {
+                throw new Exception("Veuillez saisir un mot de passe.", 1);
+            }
+            if (!password_verify($datas['password'], $user->getPasswordFromDatabase())) {
+                throw new Exception("Le mot de passe que vous avez saisi est incorrect", 1);
+            }
+
+            $user->hydrateUser();
+
+            Session::setUser($user);
+            Session::setFlash(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
+            header('Location: /');
+        } catch (Exception $e) {
+            Session::setFlash($e->getMessage(), 'error');
+            header('Location: /?view=login');
+        }
+    }
+
+    private function usernameExistInDatabase($username)
+    {
         $usernameExist = UserModel::checkUsernameInDatabase($username);
         if ($usernameExist) {
             return true;
@@ -100,39 +90,36 @@ class LoginController implements ControllerInterface {
         }
     }
 
-    private function emailExistInDatabase($email) {
-        $emailExist = UserModel::checkEmailInDatabase($email);
-        if ($emailExist) {
-            return true;
-        } else {
-            return false;
-        }
+    private function emailExistInDatabase($email)
+    {
+        return UserModel::checkEmailInDatabase($email);
     }
 
-	public function execute($params, $datas) {
-		$title = 'Un billet pour l\'Alaska - Connexion / Inscription';
+    public function execute($params, $datas)
+    {
+        $title = 'Un billet pour l\'Alaska - Connexion / Inscription';
 
-		if (isset($params['action'])) {
-			switch ($params['action']) {
+        if (isset($params['action'])) {
+            switch ($params['action']) {
                 case 'register':
-					$this->registerUser($datas);
-					break;
+                    $this->registerUser($datas);
+                    break;
 
                 case 'login':
                     $this->loginUser($datas);
                     break;
 
-				case 'logout':
-					Session::destroySession();
-					header('Location: /');
-					break;
+                case 'logout':
+                    Session::killUser();
+                    header('Location: /');
+                    break;
 
-				default:
-					// code...
-					break;
-			}
-		} else {
-			require_once('../App/Views/login.php');
-		}
-	}
+                default:
+                    // code...
+                    break;
+            }
+        } else {
+            require_once('../App/Views/login.php');
+        }
+    }
 }
