@@ -41,11 +41,11 @@ body {
 }
 
 #container-401, #container-403 {
-    background: url('../img/401_403_background.jpg') no-repeat;
+    background: url('/img/401_403_background.jpg') no-repeat;
 }
 
 #container-404 {
-    background: url('../img/404_background.jpg') no-repeat;
+    background: url('/img/404_background.jpg') no-repeat;
 }
 
 .alert {
