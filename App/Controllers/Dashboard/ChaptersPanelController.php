@@ -3,8 +3,8 @@
 namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Exception;
-use Codbear\Alaska\Session;
 use Codbear\Alaska\Models\BookModel;
+use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Controllers\ErrorsController;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Controllers\Dashboard\DashboardController;
@@ -89,9 +89,8 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     break;
             }
         } else {
-            $chaptersList = $book->getTableOfContent();
-            while ($chapter = $chaptersList->fetch()) {
-                switch ($chapter['chapter_status']) {
+            foreach ($book->getTableOfContent() as $chapter) {
+                switch ($chapter->chapter_status) {
                     case BookModel::CHAPTER_STATUS_PUBLISHED:
                         $published[] = $chapter;
                         break;

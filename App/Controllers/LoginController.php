@@ -3,8 +3,8 @@
 namespace Codbear\Alaska\Controllers;
 
 use Exception;
-use Codbear\Alaska\Session;
 use Codbear\Alaska\Models\UserModel;
+use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class LoginController implements ControllerInterface
@@ -26,7 +26,7 @@ class LoginController implements ControllerInterface
             if (empty($datas['email'])) {
                 throw new Exception("Veuillez saisir une adresse mail.", 1);
             }
-            if ((!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) || (UserModel::checkEmailInDatabase($datas['email']))) {
+            if ((!filter_var($datas['email'], FILTER_VALIDATE_EMAIL)) || ($user->checkEmailInDatabase($datas['email']))) {
                 throw new Exception("L adresse mail que vous avez saisie n'est pas valide.", 1);
             }
             $user->setEmail($datas['email']);
@@ -82,7 +82,8 @@ class LoginController implements ControllerInterface
 
     private function usernameExistInDatabase($username)
     {
-        $usernameExist = UserModel::checkUsernameInDatabase($username);
+        $user = new UserModel();
+        $usernameExist = $user->checkUsernameInDatabase($username);
         if ($usernameExist) {
             return true;
         } else {
@@ -92,7 +93,8 @@ class LoginController implements ControllerInterface
 
     private function emailExistInDatabase($email)
     {
-        return UserModel::checkEmailInDatabase($email);
+        $user = new UserModel();
+        return $user->checkEmailInDatabase($email);
     }
 
     public function execute($params, $datas)
