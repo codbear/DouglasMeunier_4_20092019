@@ -22,12 +22,20 @@ class ChaptersPanelController extends DashboardController implements ControllerI
 
             if ($statusChanged) {
                 switch ($newStatus) {
+                    case BookModel::CHAPTER_STATUS_PUBLISHED:
+                        Session::setFlash('Le chapitre a été publié', 'success');
+                        break;
+
                     case BookModel::CHAPTER_STATUS_TRASH:
                         Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
                         break;
 
                     case BookModel::CHAPTER_STATUS_DRAFT:
                         Session::setFlash('Le chapitre a été placé dans les brouillons', 'success');
+                        break;
+
+                    case BookModel::CHAPTER_STATUS_DELETED:
+                        Session::setFlash('Le chapitre a été supprimé', 'success');
                         break;
 
                     default:
@@ -72,6 +80,10 @@ class ChaptersPanelController extends DashboardController implements ControllerI
 
         if (isset($params['action'])) {
             switch ($params['action']) {
+                case 'publishChapter':
+                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_PUBLISHED);
+                    break;
+
                 case 'moveChapterToTrash':
                     $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_TRASH);
                     break;
@@ -81,7 +93,7 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     break;
 
                 case 'deleteChapterPermanently':
-                    $this->deleteChapterPermanently($params, $book);
+                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_DELETED);
                     break;
 
                 default:
@@ -99,12 +111,14 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                         $trash[] = $chapter;
                         break;
 
-                    default:
+                    case BookModel::CHAPTER_STATUS_DRAFT:
                         $drafts[] = $chapter;
+                        break;
+
+                    default:
                         break;
                 }
             }
-
             require_once('../App/Views/dashboard/chapters.php');
         }
     }

@@ -17,13 +17,12 @@ abstract class DashboardController
 
 			case UserModel::ROLE_SUBSCRIBER:
 				ErrorsController::error403();
-				die;
 				break;
 
 			default:
 				ErrorsController::error401();
-				die;
 				break;
 		}
+		exit();
 	}
 }

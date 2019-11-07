@@ -2,7 +2,9 @@
 
 namespace Codbear\Alaska\Models;
 
-class UserModel extends Model
+use Codbear\Alaska\Services\Database;
+
+class UserModel
 {
 
     const ROLE_ADMIN = 1;
@@ -16,7 +18,6 @@ class UserModel extends Model
 
     public function __construct()
     {
-        parent::__construct();
         $this->setRole(self::ROLE_DEFAULT);
     }
 
@@ -52,7 +53,7 @@ class UserModel extends Model
 
     public function register($passwordHash)
     {
-        return $this->_db->prepare('INSERT INTO users(username, password, email, role_id) VALUES (?, ?, ?, ?)', [
+        return Database::prepare('INSERT INTO users(username, password, email, role_id) VALUES (?, ?, ?, ?)', [
             $this->_username,
             $passwordHash,
             $this->_email,
@@ -62,25 +63,25 @@ class UserModel extends Model
 
     public function checkUsernameInDatabase($username)
     {
-        $response = $this->_db->prepare('SELECT username FROM users WHERE username = ?', [$username]);
+        $response = Database::prepare('SELECT username FROM users WHERE username = ?', [$username]);
         return $response->username;
     }
 
     public function checkEmailInDatabase($email)
     {
-        $response = $this->_db->prepare('SELECT email FROM users WHERE email = ?', [$email]);
+        $response = Database::prepare('SELECT email FROM users WHERE email = ?', [$email]);
         return $response->email;
     }
 
     public function getPasswordFromDatabase()
     {
-        $response = $this->_db->prepare('SELECT password, email, role_id FROM users WHERE username = ?', [$this->_username]);
+        $response = Database::prepare('SELECT password, email, role_id FROM users WHERE username = ?', [$this->_username]);
         return $response->password;
     }
 
     public function hydrateUser()
     {
-        $response = $this->_db->prepare('SELECT email, role_id FROM users WHERE username = ?', [$this->_username]);
+        $response = Database::prepare('SELECT email, role_id FROM users WHERE username = ?', [$this->_username]);
         $this->setEmail($response->email);
         $this->setRole($response->role_id);
     }
