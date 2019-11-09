@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title><?= $title ?></title>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <link rel="stylesheet" href="public/css/style.css">
-    </head>
 
-    <body class="has-fixed-sidenav">
+<head>
+    <meta charset="utf-8" />
+    <title><?= $title ?></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="public/css/style.css">
+
+</head>
+
+<body class="has-fixed-sidenav">
     <header>
         <div class="navbar-fixed">
             <nav class="navbar blue-grey darken-1">
@@ -31,51 +33,50 @@
                     <li class="waves-effect"><a href="?view=commentsPanel"><i class="material-icons left">comment</i>Commentaires</a></li>
                     <li class="waves-effect"><a href="?view=usersPanel"><i class="material-icons left">people</i>Utilisateurs</a></li>
                     <li class="waves-effect"><a href="?view=accountPanel"><i class="material-icons left">settings</i>Mon compte</a></li>
-                </ul> 
+                </ul>
             </li>
         </ul>
     </header>
-        
+
     <main>
-        <?php 
+        <?php
         if (isset($_SESSION['flashbag'])) {
             ?>
-            <div class="valign-wrapper alert alert-<?= $_SESSION['flashbag']['type']?>">
-            <i class="alert-icon material-icons">
-                <?php
-                switch ($_SESSION['flashbag']['type']) {
-                    case 'success':
-                        echo 'check';
-                        break;
+            <div class="valign-wrapper alert alert-<?= $_SESSION['flashbag']['type'] ?>">
+                <i class="alert-icon material-icons">
+                    <?php
+                        switch ($_SESSION['flashbag']['type']) {
+                            case 'success':
+                                echo 'check';
+                                break;
 
-                    case 'warning':
-                        echo 'warning';
-                        break;
+                            case 'warning':
+                                echo 'warning';
+                                break;
 
-                    case 'error':
-                        echo 'error_outline';
-                        break;
-                    
-                    default:
-                        echo 'info_outline';
-                        break;
-                }
-                ?>
-            </i>
-            <?= $_SESSION['flashbag']['message']; ?>
+                            case 'error':
+                                echo 'error_outline';
+                                break;
+
+                            default:
+                                echo 'info_outline';
+                                break;
+                        }
+                        ?>
+                </i>
+                <?= $_SESSION['flashbag']['message']; ?>
             </div>
-            <?php
+        <?php
             unset($_SESSION['flashbag']);
         }
         ?>
-        <div class="container">
-            <?php
-            echo $content; 
-            ?>
-        </div>      
+        <?php
+        echo $content;
+        ?>
     </main>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script src="public/scripts/materializeInit.js"></script>
-    </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="public/scripts/backOffice.js"></script>
+</body>
+
 </html>

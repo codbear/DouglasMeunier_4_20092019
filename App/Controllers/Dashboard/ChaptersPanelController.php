@@ -11,21 +11,77 @@ use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 
 class ChaptersPanelController extends DashboardController implements ControllerInterface
 {
-    private function changeChapterStatus($params, $book, $newStatus = BookModel::CHAPTER_STATUS_DEFAULT)
+    private $_book = null;
+
+    public function __construct()
+    {
+        $this->_book = new BookModel();
+    }
+
+    public function execute($params, $datas)
+    {
+        $title = 'Dashboard - Chapitres';
+        $book = new BookModel();
+
+        if (isset($params['action'])) {
+            switch ($params['action']) {
+                case 'publishChapter':
+                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_PUBLISHED, $datas);
+                    break;
+
+                case 'moveChapterToTrash':
+                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_TRASH);
+                    break;
+
+                case 'restoreChapterFromTrash':
+                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_DRAFT);
+                    break;
+
+                case 'deleteChapterPermanently':
+                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_DELETED);
+                    break;
+
+                case 'createNewChapter':
+                    $this->createNewChapter();
+                    break;
+
+                default:
+                    ErrorsController::error404();
+                    break;
+            }
+        } else {
+            foreach ($this->_book->getTableOfContent() as $chapter) {
+                switch ($chapter->chapter_status) {
+                    case BookModel::CHAPTER_STATUS_PUBLISHED:
+                        $published[] = $chapter;
+                        break;
+
+                    case BookModel::CHAPTER_STATUS_TRASH:
+                        $trash[] = $chapter;
+                        break;
+
+                    case BookModel::CHAPTER_STATUS_DRAFT:
+                        $drafts[] = $chapter;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            require_once('../App/Views/dashboard/chaptersPanel.php');
+        }
+    }
+
+    private function changeChapterStatus(array $params, $newStatus = BookModel::CHAPTER_STATUS_DEFAULT, array $datas = [])
     {
         try {
             if (isset($params['chapterId'])) {
-                $statusChanged = $book->changeChapterStatus((int) $params['chapterId'], $newStatus);
+                $statusChanged = $this->_book->changeChapterStatus((int) $params['chapterId'], $newStatus);
             } else {
                 throw new Exception("L'identifiant du chapitre que vous essayer de modifier n'est pas définit. Merci de réessayer ultérieurement.", 1);
             }
-
             if ($statusChanged) {
                 switch ($newStatus) {
-                    case BookModel::CHAPTER_STATUS_PUBLISHED:
-                        Session::setFlash('Le chapitre a été publié', 'success');
-                        break;
-
                     case BookModel::CHAPTER_STATUS_TRASH:
                         Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
                         break;
@@ -52,74 +108,13 @@ class ChaptersPanelController extends DashboardController implements ControllerI
         }
     }
 
-    private function deleteChapterPermanently($params, $book)
+    private function createNewChapter()
     {
-        try {
-            if (isset($params['chapterId'])) {
-                $deletedPermanently = $book->deleteChapterPermanently((int) $params['chapterId']);
-            } else {
-                throw new Exception("L'identifiant du chapitre que vous essayer de supprimer n'est pas définit. Merci de réessayer ultérieurement.", 1);
-            }
-
-            if ($deletedPermanently) {
-                Session::setFlash('Le chapitre a été supprimé définitivement', 'success');
-                header('Location: /?view=chaptersPanel');
-            } else {
-                throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
-            }
-        } catch (Exception $e) {
-            Session::setFlash($e->getMessage(), 'error');
-            header('Location: /?view=chaptersPanel');
-        }
-    }
-
-    public function execute($params, $datas)
-    {
-        $title = 'Dashboard - Chapitres';
-        $book = new BookModel();
-
-        if (isset($params['action'])) {
-            switch ($params['action']) {
-                case 'publishChapter':
-                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_PUBLISHED);
-                    break;
-
-                case 'moveChapterToTrash':
-                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_TRASH);
-                    break;
-
-                case 'restoreChapterFromTrash':
-                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_DRAFT);
-                    break;
-
-                case 'deleteChapterPermanently':
-                    $this->changeChapterStatus($params, $book, BookModel::CHAPTER_STATUS_DELETED);
-                    break;
-
-                default:
-                    ErrorsController::error404();
-                    break;
-            }
+        if ($this->_book->createNewChapter()) {
+            header('Location: /?view=chapterEditor&chapterId=' . $this->_book->getLastChapterId() . '');
         } else {
-            foreach ($book->getTableOfContent() as $chapter) {
-                switch ($chapter->chapter_status) {
-                    case BookModel::CHAPTER_STATUS_PUBLISHED:
-                        $published[] = $chapter;
-                        break;
-
-                    case BookModel::CHAPTER_STATUS_TRASH:
-                        $trash[] = $chapter;
-                        break;
-
-                    case BookModel::CHAPTER_STATUS_DRAFT:
-                        $drafts[] = $chapter;
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            require_once('../App/Views/dashboard/chapters.php');
+            Session::setFlash('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.', 'error');
+            header('Location: /?view=chaptersPanel');
         }
     }
 }
