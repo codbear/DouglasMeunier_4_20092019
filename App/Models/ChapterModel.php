@@ -87,4 +87,20 @@ class ChapterModel
     {
         return '/?view=chapterEditor&chapterId=' . $this->id;
     }
+
+    public function getPreviousChapterUrl()
+    {
+        $previousChapterId = BookModel::getChapterIdWithChapterNumber($this->number - 1);
+        if ($previousChapterId) {
+            return "?view=book&chapterId=" . $previousChapterId . "";
+        }
+    }
+
+    public function getNextChapterUrl()
+    {
+        $nextChapterId = BookModel::getChapterIdWithChapterNumber($this->number + 1);
+        if ($nextChapterId) {
+            return "?view=book&chapterId=" . $nextChapterId . "";
+        }
+    }
 }

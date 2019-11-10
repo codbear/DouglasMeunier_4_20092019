@@ -14,8 +14,19 @@ abstract class BookModel
         $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
                         DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
                         FROM chapters 
-                        ORDER BY creation_date';
+                        ORDER BY number';
         return Database::query($statement, Database::FETCH_ALL, 'Codbear\Alaska\Models\ChapterModel');
+    }
+
+    public static function getAllChaptersFromStatus(int $chapterStatus): array
+    {
+        $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
+                        DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
+                        FROM chapters 
+                        WHERE status = :status
+                        ORDER BY number';
+        $datas = ['status' => $chapterStatus];
+        return Database::prepare($statement, $datas, Database::FETCH_ALL, 'Codbear\Alaska\Models\ChapterModel');
     }
 
     public static function createNewChapter(): ChapterModel
@@ -50,9 +61,11 @@ abstract class BookModel
         return $req->max_number;
     }
 
-    private static function getChapterIdWithChapterNumber(int $chapterNumber): int
+    public static function getChapterIdWithChapterNumber(int $chapterNumber)
     {
         $req = Database::prepare('SELECT id FROM chapters WHERE number = :number', ['number' => (int) $chapterNumber], Database::FETCH_SINGLE);
-        return $req->id;
+        if ($req) {
+            return $req->id;
+        }
     }
 }

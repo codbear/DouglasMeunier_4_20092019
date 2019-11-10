@@ -2,6 +2,7 @@
 
 namespace Codbear\Alaska\Services;
 
+use Codbear\Alaska\Controllers\BookController;
 use Codbear\Alaska\Controllers\HomeController;
 use Codbear\Alaska\Controllers\LoginController;
 use Codbear\Alaska\Controllers\ErrorsController;
@@ -16,6 +17,10 @@ abstract class Router
 		try {
 			if (isset($_GET['view'])) {
 				switch ($_GET['view']) {
+					case 'book':
+						$controller = new BookController();
+						break;
+
 					case 'login':
 						$controller = new LoginController();
 						break;

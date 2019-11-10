@@ -11,7 +11,7 @@ use Codbear\Alaska\Models\UserModel;
             <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Accueil</a></li>
-                <li><a href="#">Lire</a></li>
+                <li><a href="/?view=book&chapterId=1">Lire</a></li>
                 <?php switch ($_SESSION['role']):
                     case UserModel::ROLE_SUBSCRIBER:
                         ?>
