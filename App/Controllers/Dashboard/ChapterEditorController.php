@@ -13,7 +13,6 @@ class ChapterEditorController extends DashboardController implements ControllerI
     public function execute(array $params, array $datas)
     {
         $this->_chapter = ChapterModel::getChapter((int) $params['chapterId']);
-        $title = 'Editeur';
         if (isset($params['action'])) {
             switch ($params['action']) {
                 case 'saveChapter':
@@ -32,8 +31,7 @@ class ChapterEditorController extends DashboardController implements ControllerI
             }
             header('Location: ' . $this->_chapter->editorUrl . '');
         } else {
-            $chapter = $this->_chapter;
-            $this->render('chapterEditor');
+            $this->render('chapterEditor', 'Editeur', ['chapter' => $this->_chapter]);
         }
     }
 

@@ -26,8 +26,20 @@ abstract class DashboardController
 		exit();
 	}
 
-	public function render(string $view)
+	public function render(string $view, string $title, array $datas = [])
 	{
+		$title = $title;
+		switch ($view) {
+			case 'chaptersPanel':
+				$published = $datas['published'];
+				$trash = $datas['trash'];
+				$drafts = $datas['drafts'];
+				break;
+
+			case 'chapterEditor':
+				$chapter = $datas['chapter'];
+				break;
+		}
 		require_once('../App/Views/dashboard/' . $view . '.php');
 	}
 }
