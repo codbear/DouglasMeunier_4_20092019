@@ -5,40 +5,31 @@ namespace Codbear\Alaska\Controllers\Dashboard;
 use Exception;
 use Codbear\Alaska\Models\BookModel;
 use Codbear\Alaska\Services\Session;
+use Codbear\Alaska\Models\ChapterModel;
 use Codbear\Alaska\Controllers\ErrorsController;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 
 class ChaptersPanelController extends DashboardController implements ControllerInterface
 {
-    private $_book = null;
 
-    public function __construct()
-    {
-        $this->_book = new BookModel();
-    }
-
-    public function execute($params, $datas)
+    public function execute(array $params, array $datas)
     {
         $title = 'Dashboard - Chapitres';
-        $book = new BookModel();
 
         if (isset($params['action'])) {
             switch ($params['action']) {
-                case 'publishChapter':
-                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_PUBLISHED, $datas);
-                    break;
 
                 case 'moveChapterToTrash':
-                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_TRASH);
+                    $this->changeChapterStatus($params['chapterId'], ChapterModel::STATUS_TRASH);
                     break;
 
                 case 'restoreChapterFromTrash':
-                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_DRAFT);
+                    $this->changeChapterStatus($params['chapterId'], ChapterModel::STATUS_DRAFT);
                     break;
 
                 case 'deleteChapterPermanently':
-                    $this->changeChapterStatus($params, BookModel::CHAPTER_STATUS_DELETED);
+                    $this->changeChapterStatus($params['chapterId'], ChapterModel::STATUS_DELETED);
                     break;
 
                 case 'createNewChapter':
@@ -50,17 +41,17 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     break;
             }
         } else {
-            foreach ($this->_book->getTableOfContent() as $chapter) {
-                switch ($chapter->chapter_status) {
-                    case BookModel::CHAPTER_STATUS_PUBLISHED:
+            foreach (BookModel::getAllChapters() as $chapter) {
+                switch ($chapter->status) {
+                    case ChapterModel::STATUS_PUBLISHED:
                         $published[] = $chapter;
                         break;
 
-                    case BookModel::CHAPTER_STATUS_TRASH:
+                    case ChapterModel::STATUS_TRASH:
                         $trash[] = $chapter;
                         break;
 
-                    case BookModel::CHAPTER_STATUS_DRAFT:
+                    case ChapterModel::STATUS_DRAFT:
                         $drafts[] = $chapter;
                         break;
 
@@ -68,29 +59,24 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                         break;
                 }
             }
-            require_once('../App/Views/dashboard/chaptersPanel.php');
+            $this->render('chaptersPanel');
         }
     }
 
-    private function changeChapterStatus(array $params, $newStatus = BookModel::CHAPTER_STATUS_DEFAULT, array $datas = [])
+    private function changeChapterStatus(int $chapterId, int $newStatus = ChapterModel::STATUS_DEFAULT)
     {
         try {
-            if (isset($params['chapterId'])) {
-                $statusChanged = $this->_book->changeChapterStatus((int) $params['chapterId'], $newStatus);
-            } else {
-                throw new Exception("L'identifiant du chapitre que vous essayer de modifier n'est pas définit. Merci de réessayer ultérieurement.", 1);
-            }
-            if ($statusChanged) {
+            if (ChapterModel::setStatus((int) $chapterId, (int) $newStatus)) {
                 switch ($newStatus) {
-                    case BookModel::CHAPTER_STATUS_TRASH:
+                    case ChapterModel::STATUS_TRASH:
                         Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
                         break;
 
-                    case BookModel::CHAPTER_STATUS_DRAFT:
+                    case ChapterModel::STATUS_DRAFT:
                         Session::setFlash('Le chapitre a été placé dans les brouillons', 'success');
                         break;
 
-                    case BookModel::CHAPTER_STATUS_DELETED:
+                    case ChapterModel::STATUS_DELETED:
                         Session::setFlash('Le chapitre a été supprimé', 'success');
                         break;
 
@@ -110,11 +96,7 @@ class ChaptersPanelController extends DashboardController implements ControllerI
 
     private function createNewChapter()
     {
-        if ($this->_book->createNewChapter()) {
-            header('Location: /?view=chapterEditor&chapterId=' . $this->_book->getLastChapterId() . '');
-        } else {
-            Session::setFlash('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.', 'error');
-            header('Location: /?view=chaptersPanel');
-        }
+        $newChapter = BookModel::createNewChapter();
+        header('Location: ' . $newChapter->editorUrl . '');
     }
 }

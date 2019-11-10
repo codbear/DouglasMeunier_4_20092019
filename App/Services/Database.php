@@ -26,29 +26,17 @@ class Database
         self::$db_host = $config['dbhost'];
     }
 
-    public static function query(string $statement, $fetchOption)
+    public static function query(string $statement, $fetcher, $className = null)
     {
         $req = self::getPDO()->query($statement);
-        switch ($fetchOption) {
-            case self::FETCH_SINGLE:
-                $datas = $req->fetch();
-                break;
-
-            case self::FETCH_ALL:
-                $datas = $req->fetchAll();
-                break;
-        }
-        return $datas;
+        return self::fetchRequest($req, $fetcher, $className);
     }
 
-    public static function prepare(string $statement, array $datas, bool $mustFetch = true)
+    public static function prepare(string $statement, array $datas, $fetcher, string $className = null)
     {
         $req = self::getPDO()->prepare($statement);
         $req->execute($datas);
-        if ($mustFetch) {
-            return $req->fetch();
-        }
-        return $req;
+        return self::fetchRequest($req, $fetcher, $className);
     }
 
     private static function getPDO()
@@ -59,5 +47,25 @@ class Database
             self::$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
         }
         return self::$pdo;
+    }
+
+    private static function fetchRequest($request, $fetcher, $className)
+    {
+        if (!is_null($className)) {
+            $request->setFetchMode(PDO::FETCH_CLASS, $className);
+        }
+        switch ($fetcher) {
+            case self::FETCH_ALL:
+                return $request->fetchAll();
+                break;
+
+            case self::FETCH_SINGLE:
+                return $request->fetch();
+                break;
+
+            default:
+                return $request;
+                break;
+        }
     }
 }

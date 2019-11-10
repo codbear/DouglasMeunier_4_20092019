@@ -1,6 +1,6 @@
 <?php
 
-use Codbear\Alaska\Models\BookModel;
+use Codbear\Alaska\Models\ChapterModel;
 
 ob_start() ?>
 
@@ -26,7 +26,7 @@ ob_start() ?>
                             </div>
                         </div>
                     </div>
-                    <?php if ($chapter->chapter_status != BookModel::CHAPTER_STATUS_PUBLISHED) : ?>
+                    <?php if ($chapter->status != ChapterModel::STATUS_PUBLISHED) : ?>
                         <div class="col s12 l3 offset-l2 offset-xl3">
                             <button type="submit" formaction="/?view=chapterEditor&action=publishChapter&chapterId=<?= $chapter->id ?>" class="btn waves-effect waves-light blue darken-4"><i class="material-icons left">publish</i>Publier</button>
                         </div>
@@ -49,7 +49,7 @@ ob_start() ?>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m2 offset-m2">
-                            <input type="number" name="chapter-number" id="chapter-number" class="validate" value="<?= $chapter->chapter_number ?>" required>
+                            <input type="number" name="chapter-number" id="chapter-number" class="validate" value="<?= $chapter->number ?>" required>
                             <label for="chapter-number">Chapitre n°</label>
                         </div>
                     </div>

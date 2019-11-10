@@ -25,4 +25,9 @@ abstract class DashboardController
 		}
 		exit();
 	}
+
+	public function render(string $view)
+	{
+		require_once('../App/Views/dashboard/' . $view . '.php');
+	}
 }

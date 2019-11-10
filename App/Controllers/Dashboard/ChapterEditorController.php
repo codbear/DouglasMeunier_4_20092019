@@ -2,33 +2,26 @@
 
 namespace Codbear\Alaska\Controllers\Dashboard;
 
-use Codbear\Alaska\Models\BookModel;
 use Codbear\Alaska\Services\Session;
+use Codbear\Alaska\Models\ChapterModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class ChapterEditorController extends DashboardController implements ControllerInterface
 {
-    private $_book = null;
-
-    public function __construct()
-    {
-        $this->_book = new BookModel();
-    }
+    private $_chapter = null;
 
     public function execute(array $params, array $datas)
     {
+        $this->_chapter = ChapterModel::getChapter((int) $params['chapterId']);
         $title = 'Editeur';
-        $chapterId = $params['chapterId'];
         if (isset($params['action'])) {
             switch ($params['action']) {
                 case 'saveChapter':
-                    $chapterStatus = $this->_book->getChapterStatus($chapterId);
-                    $this->saveChapter($chapterId, $datas, $chapterStatus);
+                    $this->saveChapter($datas, $this->_chapter->status);
                     break;
 
                 case 'publishChapter':
-                    $chapterStatus = BookModel::CHAPTER_STATUS_PUBLISHED;
-                    $this->saveChapter($chapterId, $datas, $chapterStatus);
+                    $this->saveChapter($datas, ChapterModel::STATUS_PUBLISHED);
                     header('Location: /?view=chaptersPanel');
                     exit();
                     break;
@@ -37,30 +30,32 @@ class ChapterEditorController extends DashboardController implements ControllerI
                     ErrorsController::error404();
                     break;
             }
-            header('Location: /?view=chapterEditor&chapterId=' . $params['chapterId'] . '');
+            header('Location: ' . $this->_chapter->editorUrl . '');
         } else {
-            $chapter = $this->getChapter($params['chapterId']);
-            require_once('../App/Views/dashboard/chapterEditor.php');
+            $chapter = $this->_chapter;
+            $this->render('chapterEditor');
         }
     }
 
-    private function getChapter(int $chapterId)
+    private function saveChapter(array $datas, $chapterStatus)
     {
-        return $this->_book->getChapter((int) $chapterId);
-    }
-
-    private function saveChapter(int $chapterId, array $datas, $chapterStatus)
-    {
-        $chapterTitle = $datas['chapter-title'];
-        $chapterNumber = $datas['chapter-number'];
-        $chapterContent = $datas['chapter-content'];
+        $this->_chapter->title = $datas['chapter-title'];
+        $this->_chapter->number = $datas['chapter-number'];
+        $this->_chapter->content = $datas['chapter-content'];
         if (empty($datas['chapter-excerpt'])) {
-            $chapterExcerpt = substr($chapterContent, 0, 252) . '...';
+            $this->_chapter->excerpt = substr($this->_chapter->content, 0, 252) . '...';
         } else {
-            $chapterExcerpt = $datas['chapter-excerpt'];
+            $this->_chapter->excerpt = $datas['chapter-excerpt'];
         }
-        if ($this->_book->saveChapter($chapterId, $chapterTitle, $chapterNumber, $chapterContent, $chapterExcerpt, $chapterStatus)) {
-            if ($chapterStatus === BookModel::CHAPTER_STATUS_PUBLISHED) {
+        if (ChapterModel::save(
+            $this->_chapter->id,
+            $this->_chapter->title,
+            $this->_chapter->number,
+            $this->_chapter->content,
+            $this->_chapter->excerpt,
+            $chapterStatus
+        )) {
+            if ($chapterStatus === ChapterModel::STATUS_PUBLISHED) {
                 Session::setFlash('Le chapitre a bien été publié', 'success');
             } else {
                 Session::setFlash('Le chapitre a bien été enregistré', 'success');

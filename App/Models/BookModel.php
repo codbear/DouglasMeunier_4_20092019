@@ -3,133 +3,56 @@
 namespace Codbear\Alaska\Models;
 
 use Codbear\Alaska\Services\Database;
+use Codbear\Alaska\Services\Session;
+use PDOStatement;
 
-class BookModel
+abstract class BookModel
 {
-    const CHAPTER_STATUS_DRAFT = 1;
-    const CHAPTER_STATUS_PUBLISHED = 2;
-    const CHAPTER_STATUS_TRASH = 3;
-    const CHAPTER_STATUS_DELETED = 4;
-    const CHAPTER_STATUS_DEFAULT = self::CHAPTER_STATUS_DRAFT;
 
-    public function getTableOfContent()
+    public static function getAllChapters(): array
     {
-        return Database::query('SELECT id, chapter_number, prev_chapter_number, title, excerpt, chapter_status, 
-                                DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
-                                FROM posts 
-                                ORDER BY creation_date', Database::FETCH_ALL);
+        $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
+                        DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
+                        FROM chapters 
+                        ORDER BY creation_date';
+        return Database::query($statement, Database::FETCH_ALL, 'Codbear\Alaska\Models\ChapterModel');
     }
 
-    public function getChapter(int $chapterId)
+    public static function createNewChapter(): ChapterModel
     {
-        return Database::prepare('SELECT id, chapter_number, prev_chapter_number, title, content, excerpt, chapter_status, 
-                                    DATE_FORMAT(creation_date, \'%d/%m/%Y %H:%i:%s\') AS creation_date_fr
-                                    FROM posts 
-                                    WHERE id = ?', [$chapterId]);
-    }
-
-    public function getLastChapterId()
-    {
-        $req = Database::query('SELECT MAX(id) AS last_chapter_id 
-                                FROM posts', Database::FETCH_SINGLE);
-        return $req->last_chapter_id;
-    }
-
-    public function getChapterStatus(int $chapterId)
-    {
-        $req = Database::prepare('SELECT chapter_status
-                                FROM posts
-                                WHERE id = :id', [
-            'id' => $chapterId
-        ]);
-        return $req->chapter_status;
-    }
-
-    public function createNewChapter()
-    {
-        return Database::prepare('INSERT INTO posts(chapter_number, title, content) 
-                                    VALUES (?, ?, ?)', [
-            $this->getMaxChapterNumber() + 1,
-            "",
-            "",
-        ], false);
-    }
-
-    public function saveChapter(int $chapterId, string $chapterTitle, int $chapterNumber, string $chapterContent, string $chapterExcerpt, int $chapterStatus)
-    {
-        return Database::prepare('UPDATE posts 
-                                    SET chapter_number = :new_chapter_number, 
-                                        title = :new_title, 
-                                        content = :new_content, 
-                                        excerpt = :new_excerpt, 
-                                        chapter_status = :new_chapter_status
-                                    WHERE id = :id', [
-            'new_chapter_number' => $chapterNumber,
-            'new_title' => $chapterTitle,
-            'new_content' => $chapterContent,
-            'new_excerpt' => $chapterExcerpt,
-            'new_chapter_status' => $chapterStatus,
-            'id' => $chapterId
-        ], false);
-    }
-
-    public function changeChapterStatus(int $chapterId, int $newStatus)
-    {
-        if ($newStatus === self::CHAPTER_STATUS_TRASH || $newStatus === self::CHAPTER_STATUS_DELETED) {
-            if ($newStatus === self::CHAPTER_STATUS_TRASH) {
-                $this->setPrevChapterNumber($chapterId);
-            }
-            if (!$this->setNegativeChapterNumber($chapterId)) {
-                return false;
-            }
+        $chapterNumber = self::getMaxChapterNumber() + 1;
+        $statement = 'INSERT INTO chapters(number, title, content) 
+                        VALUES (:number, :title, :content)';
+        $datas = [
+            'number' => $chapterNumber,
+            'title' => "",
+            'content' => ""
+        ];
+        if (Database::prepare($statement, $datas, false)) {
+            return ChapterModel::getChapter(self::getChapterIdWithChapterNumber($chapterNumber));
         }
-        return Database::prepare('UPDATE posts 
-                                    SET chapter_status = ? 
-                                    WHERE id = ?', [
-            $newStatus,
-            $chapterId
-        ], false);
     }
 
-    private function setNegativeChapterNumber(int $chapterId)
+    public static function getMinChapterNumber(): int
     {
-        return Database::prepare('UPDATE posts 
-                                    SET chapter_number = :new_chapter_number 
-                                    WHERE id = :id', [
-            'new_chapter_number' => $this->getMinChapterNumber() - 1,
-            'id' => $chapterId
-        ], false);
+        $req = Database::query('SELECT MIN(number) AS min_number 
+                                FROM chapters', Database::FETCH_SINGLE);
+        return $req->min_number;
     }
 
-    private function getMaxChapterNumber()
+    private static function getMaxChapterNumber(): int
     {
-        $req = Database::query('SELECT MAX(chapter_number) AS max_chapter_number 
-                                FROM posts', Database::FETCH_SINGLE);
-        return $req->max_chapter_number;
+        $req = Database::query('SELECT MAX(number) AS max_number 
+                                FROM chapters', Database::FETCH_SINGLE);
+        if ($req->max_number <= 0) {
+            return 0;
+        }
+        return $req->max_number;
     }
 
-    private function getMinChapterNumber()
+    private static function getChapterIdWithChapterNumber(int $chapterNumber): int
     {
-        $req = Database::query('SELECT MIN(chapter_number) AS min_chapter_number 
-                                FROM posts', Database::FETCH_SINGLE);
-        return $req->min_chapter_number;
-    }
-
-    private function setPrevChapterNumber(int $chapterId)
-    {
-        return Database::prepare('UPDATE posts 
-                                    SET prev_chapter_number = :chapter_number 
-                                    WHERE id = :id', [
-            'chapter_number' => $this->getChapterNumber($chapterId),
-            'id' => $chapterId
-        ], false);
-    }
-
-    private function getChapterNumber(int $chapterId): int
-    {
-        $req = Database::query('SELECT chapter_number 
-                                FROM posts 
-                                WHERE id = ' . $chapterId . '', Database::FETCH_SINGLE);
-        return $req->chapter_number;
+        $req = Database::prepare('SELECT id FROM chapters WHERE number = :number', ['number' => (int) $chapterNumber], Database::FETCH_SINGLE);
+        return $req->id;
     }
 }

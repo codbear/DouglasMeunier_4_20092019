@@ -63,25 +63,25 @@ class UserModel
 
     public function checkUsernameInDatabase($username)
     {
-        $response = Database::prepare('SELECT username FROM users WHERE username = ?', [$username]);
+        $response = Database::prepare('SELECT username FROM users WHERE username = ?', [$username], Database::FETCH_SINGLE);
         return $response->username;
     }
 
     public function checkEmailInDatabase($email)
     {
-        $response = Database::prepare('SELECT email FROM users WHERE email = ?', [$email]);
+        $response = Database::prepare('SELECT email FROM users WHERE email = ?', [$email], Database::FETCH_SINGLE);
         return $response->email;
     }
 
     public function getPasswordFromDatabase()
     {
-        $response = Database::prepare('SELECT password, email, role_id FROM users WHERE username = ?', [$this->_username]);
+        $response = Database::prepare('SELECT password FROM users WHERE username = ?', [$this->_username], Database::FETCH_SINGLE);
         return $response->password;
     }
 
     public function hydrateUser()
     {
-        $response = Database::prepare('SELECT email, role_id FROM users WHERE username = ?', [$this->_username]);
+        $response = Database::prepare('SELECT email, role_id FROM users WHERE username = ?', [$this->_username], Database::FETCH_SINGLE);
         $this->setEmail($response->email);
         $this->setRole($response->role_id);
     }

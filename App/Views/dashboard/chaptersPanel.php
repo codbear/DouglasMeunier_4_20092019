@@ -22,7 +22,7 @@
                         <div class="col s12 m6">
                             <div class="card">
                                 <div class="card-content">
-                                    <span class="card-title">Chapitre <?= $chapter->chapter_number ?> - <?= $chapter->title ?></span>
+                                    <span class="card-title">Chapitre <?= $chapter->number ?> - <?= $chapter->title ?></span>
                                     <p>Date de création : <?= $chapter->creation_date_fr ?></p>
                                     <br>
                                     <p><?= $chapter->excerpt ?></p>
@@ -46,13 +46,13 @@
                         <div class="col s12 m6">
                             <div class="card">
                                 <div class="card-content">
-                                    <span class="card-title">Chapitre <?= $chapter->chapter_number ?> - <?= $chapter->title ?></span>
+                                    <span class="card-title">Chapitre <?= $chapter->number ?> - <?= $chapter->title ?></span>
                                     <p>Date de création : <?= $chapter->creation_date_fr ?></p>
                                     <br>
                                     <p><?= $chapter->excerpt ?></p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="?view=chapterEditor&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light blue darken-4"><i class="material-icons left">edit</i>Editer</a>
+                                    <a href="<?= $chapter->editorUrl ?>" class="btn-small waves-effect waves-light blue darken-4"><i class="material-icons left">edit</i>Editer</a>
                                     <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light red darken-4"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                         <div class="col s12 m6">
                             <div class="card">
                                 <div class="card-content">
-                                    <span class="card-title">Chapitre <?= $chapter->prev_chapter_number ?> - <?= $chapter->title ?></span>
+                                    <span class="card-title">Chapitre <?= $chapter->number_save ?> - <?= $chapter->title ?></span>
                                     <p>Date de création : <?= $chapter->creation_date_fr ?></p>
                                     <br>
                                     <p><?= $chapter->excerpt ?></p>
