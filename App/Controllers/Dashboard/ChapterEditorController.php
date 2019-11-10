@@ -8,15 +8,15 @@ use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class ChapterEditorController extends DashboardController implements ControllerInterface
 {
-    private $_chapter = null;
+    private $chapter = null;
 
     public function execute(array $params, array $datas)
     {
-        $this->_chapter = ChapterModel::getChapter((int) $params['chapterId']);
+        $this->chapter = ChapterModel::getChapter((int) $params['chapterId']);
         if (isset($params['action'])) {
             switch ($params['action']) {
                 case 'saveChapter':
-                    $this->saveChapter($datas, $this->_chapter->status);
+                    $this->saveChapter($datas, $this->chapter->status);
                     break;
 
                 case 'publishChapter':
@@ -29,28 +29,28 @@ class ChapterEditorController extends DashboardController implements ControllerI
                     ErrorsController::error404();
                     break;
             }
-            header('Location: ' . $this->_chapter->editorUrl . '');
+            header('Location: ' . $this->chapter->editorUrl . '');
         } else {
-            $this->render('chapterEditor', 'Editeur', ['chapter' => $this->_chapter]);
+            $this->render('chapterEditor', 'Editeur', ['chapter' => $this->chapter]);
         }
     }
 
     private function saveChapter(array $datas, $chapterStatus)
     {
-        $this->_chapter->title = $datas['chapter-title'];
-        $this->_chapter->number = $datas['chapter-number'];
-        $this->_chapter->content = $datas['chapter-content'];
+        $this->chapter->title = $datas['chapter-title'];
+        $this->chapter->number = $datas['chapter-number'];
+        $this->chapter->content = $datas['chapter-content'];
         if (empty($datas['chapter-excerpt'])) {
-            $this->_chapter->excerpt = substr($this->_chapter->content, 0, 252) . '...';
+            $this->chapter->excerpt = substr($this->chapter->content, 0, 252) . '...';
         } else {
-            $this->_chapter->excerpt = $datas['chapter-excerpt'];
+            $this->chapter->excerpt = $datas['chapter-excerpt'];
         }
         if (ChapterModel::save(
-            $this->_chapter->id,
-            $this->_chapter->title,
-            $this->_chapter->number,
-            $this->_chapter->content,
-            $this->_chapter->excerpt,
+            $this->chapter->id,
+            $this->chapter->title,
+            $this->chapter->number,
+            $this->chapter->content,
+            $this->chapter->excerpt,
             $chapterStatus
         )) {
             if ($chapterStatus === ChapterModel::STATUS_PUBLISHED) {

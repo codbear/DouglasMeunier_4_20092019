@@ -12,9 +12,9 @@ class UserModel
     const ROLE_ANONYMOUS = 3;
     const ROLE_DEFAULT = self::ROLE_SUBSCRIBER;
 
-    private $_username;
-    private $_email;
-    private $_role;
+    private $username;
+    private $email;
+    private $role;
 
     public function __construct()
     {
@@ -23,41 +23,41 @@ class UserModel
 
     public function getUsername()
     {
-        return $this->_username;
+        return $this->username;
     }
 
     public function getEmail()
     {
-        return $this->_email;
+        return $this->email;
     }
 
     public function getRole()
     {
-        return $this->_role;
+        return $this->role;
     }
 
     public function setUsername($username)
     {
-        $this->_username = $username;
+        $this->username = $username;
     }
 
     public function setEmail($email)
     {
-        $this->_email = $email;
+        $this->email = $email;
     }
 
     public function setRole($role)
     {
-        $this->_role = $role;
+        $this->role = $role;
     }
 
     public function register($passwordHash)
     {
         return Database::prepare('INSERT INTO users(username, password, email, role_id) VALUES (?, ?, ?, ?)', [
-            $this->_username,
+            $this->username,
             $passwordHash,
-            $this->_email,
-            $this->_role
+            $this->email,
+            $this->role
         ], false);
     }
 
@@ -75,13 +75,13 @@ class UserModel
 
     public function getPasswordFromDatabase()
     {
-        $response = Database::prepare('SELECT password FROM users WHERE username = ?', [$this->_username], Database::FETCH_SINGLE);
+        $response = Database::prepare('SELECT password FROM users WHERE username = ?', [$this->username], Database::FETCH_SINGLE);
         return $response->password;
     }
 
     public function hydrateUser()
     {
-        $response = Database::prepare('SELECT email, role_id FROM users WHERE username = ?', [$this->_username], Database::FETCH_SINGLE);
+        $response = Database::prepare('SELECT email, role_id FROM users WHERE username = ?', [$this->username], Database::FETCH_SINGLE);
         $this->setEmail($response->email);
         $this->setRole($response->role_id);
     }

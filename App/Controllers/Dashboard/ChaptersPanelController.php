@@ -12,9 +12,9 @@ use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 
 class ChaptersPanelController extends DashboardController implements ControllerInterface
 {
-    private $_published = [];
-    private $_drafts = [];
-    private $_trash = [];
+    private $published = [];
+    private $drafts = [];
+    private $trash = [];
 
     public function execute(array $params, array $datas)
     {
@@ -45,22 +45,22 @@ class ChaptersPanelController extends DashboardController implements ControllerI
             foreach (BookModel::getAllChapters() as $chapter) {
                 switch ($chapter->status) {
                     case ChapterModel::STATUS_PUBLISHED:
-                        $this->_published[] = $chapter;
+                        $this->published[] = $chapter;
                         break;
 
                     case ChapterModel::STATUS_TRASH:
-                        $this->_trash[] = $chapter;
+                        $this->trash[] = $chapter;
                         break;
 
                     case ChapterModel::STATUS_DRAFT:
-                        $this->_drafts[] = $chapter;
+                        $this->drafts[] = $chapter;
                         break;
 
                     default:
                         break;
                 }
             }
-            $this->render('chaptersPanel', 'Dashboard | Chapitres', ['published' => $this->_published, 'trash' => $this->_trash, 'drafts' => $this->_drafts]);
+            $this->render('chaptersPanel', 'Dashboard | Chapitres', ['published' => $this->published, 'trash' => $this->trash, 'drafts' => $this->drafts]);
         }
     }
 
