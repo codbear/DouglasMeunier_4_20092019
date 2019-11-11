@@ -14,23 +14,69 @@ class Session
         }
     }
 
+    public static function set(string $key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    public static function get(string $key)
+    {
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+    }
+
+    public static function unset(string $key) {
+        if (isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
+    }
+
     public static function setUser($user)
     {
-        $_SESSION['username'] = $user->getUsername();
-        $_SESSION['role'] = $user->getRole();
+        self::set('username', $user->getUsername());
+        self::set('role', $user->getRole());
     }
 
     public static function unsetUser()
     {
-        unset($_SESSION['username']);
-        $_SESSION['role'] = UserModel::ROLE_ANONYMOUS;
+        self::unset('username');
+        self::set('role', UserModel::ROLE_ANONYMOUS);
     }
 
     public static function setFlash($message, $type = 'info')
     {
-        $_SESSION['flashbag'] = [
+        self::set('flashbag', [
             'message'   => $message,
             'type'      => $type
-        ];
+        ]);
+    }
+
+    public static function flashbag()
+    {
+        if (self::get('flashbag')) {
+            $flashMessage = '<div class="valign-wrapper alert alert-' . self::get('flashbag')['type'] . '">
+                                <i class="alert-icon material-icons">';
+            switch (self::get('flashbag')['type']) {
+                case 'success':
+                    $flashMessage .= 'check';
+                    break;
+    
+                case 'warning':
+                    $flashMessage .= 'warning';
+                    break;
+    
+                case 'error':
+                    $flashMessage .= 'error_outline';
+                    break;
+    
+                default:
+                    $flashMessage .= 'info_outline';
+                    break;
+            }
+            $flashMessage .= '</i>'. self::get('flashbag')['message'] . '</div>';
+            self::unset('flashbag');
+            return $flashMessage;
+        }
     }
 }
