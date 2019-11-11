@@ -15,7 +15,7 @@ class ChapterModel
     const STATUS_DELETED = 4;
     const STATUS_DEFAULT = self::STATUS_DRAFT;
 
-    public static function getChapter(int $chapterId): ChapterModel
+    public static function getChapter(int $chapterId)
     {
         $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
                         DATE_FORMAT(creation_date, \'%d/%m/%Y %H:%i:%s\') AS creation_date_fr
@@ -90,17 +90,23 @@ class ChapterModel
 
     public function getPreviousChapterUrl()
     {
-        $previousChapterId = BookModel::getChapterIdWithChapterNumber($this->number - 1);
-        if ($previousChapterId) {
-            return "?view=book&chapterId=" . $previousChapterId . "";
+        if ($previousChapterId = BookModel::getChapterIdWithChapterNumber($this->number - 1)) {
+            if ($previousChapter = self::getChapter($previousChapterId)) {
+                if ($previousChapter->status == self::STATUS_PUBLISHED) {
+                    return $previousChapter->url;
+                }
+            }
         }
     }
 
     public function getNextChapterUrl()
     {
-        $nextChapterId = BookModel::getChapterIdWithChapterNumber($this->number + 1);
-        if ($nextChapterId) {
-            return "?view=book&chapterId=" . $nextChapterId . "";
+        if ($nextChapterId = BookModel::getChapterIdWithChapterNumber($this->number + 1)) {
+            if ($nextChapter = self::getChapter($nextChapterId)) {
+                if ($nextChapter->status == self::STATUS_PUBLISHED) {
+                    return $nextChapter->url;
+                }
+            }
         }
     }
 }

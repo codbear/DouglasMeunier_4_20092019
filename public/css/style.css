@@ -1,8 +1,21 @@
+/** Framework **/
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+body.has-fixed-sidenav {
+  padding-left: 300px;
+}
+
+@media only screen and (max-width: 992px) {
+  body.has-fixed-sidenav {
+    padding-left: 0;
+  }
+}
+
+/** Homepage **/
 
 #jumbotron {
   margin: 0;
@@ -17,6 +30,8 @@ body {
   padding: 3% 0;
 }
 
+/** Book reader **/
+
 #table-of-content {
   box-sizing: border-box;
   position: fixed;
@@ -24,7 +39,14 @@ body {
   left: 0;
   padding-top: 70px;
   min-height: 100vh;
+  border-right: 2px solid #263238;
 }
+
+#book-cover {
+  width: 100%;
+}
+
+/** Error pages **/
 
 #container-401,
 #container-403,
@@ -38,19 +60,20 @@ body {
   padding: 15% 10% 10% 10%;
 }
 
+#container-401,
+#container-403 {
+  background: url("../img/401_403_background.jpg") no-repeat;
+}
+
+#container-404 {
+  background: url("../img/404_background.jpg") no-repeat;
+}
+
 .error-message {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-#container-401,
-#container-403 {
-  background: url("/img/401_403_background.jpg") no-repeat;
-}
-
-#container-404 {
-  background: url("/img/404_background.jpg") no-repeat;
-}
-
+/** Flashbag **/
 .alert {
   z-index: 1000;
   position: fixed;
@@ -87,15 +110,7 @@ body {
   margin-right: 20px;
 }
 
-body.has-fixed-sidenav {
-  padding-left: 300px;
-}
-
-@media only screen and (max-width: 992px) {
-  body.has-fixed-sidenav {
-    padding-left: 0;
-  }
-}
+/** Dashboard **/
 
 .has-fixed-sidenav .navbar-fixed nav.navbar {
   width: calc(100% - 300px);

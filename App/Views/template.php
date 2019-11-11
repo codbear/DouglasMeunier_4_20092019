@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="public/css/style.css">
 </head>
 
-<body>
+<body class="blue-grey darken-3">
     <?php
     include('menu.php');
     if (isset($_SESSION['flashbag'])) {

@@ -9,24 +9,13 @@ use PDOStatement;
 abstract class BookModel
 {
 
-    public static function getAllChapters(): array
+    public static function getAllChapters(int $status = null): array
     {
         $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
                         DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
                         FROM chapters 
                         ORDER BY number';
         return Database::query($statement, Database::FETCH_ALL, 'Codbear\Alaska\Models\ChapterModel');
-    }
-
-    public static function getAllChaptersFromStatus(int $chapterStatus): array
-    {
-        $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
-                        DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
-                        FROM chapters 
-                        WHERE status = :status
-                        ORDER BY number';
-        $datas = ['status' => $chapterStatus];
-        return Database::prepare($statement, $datas, Database::FETCH_ALL, 'Codbear\Alaska\Models\ChapterModel');
     }
 
     public static function createNewChapter(): ChapterModel
