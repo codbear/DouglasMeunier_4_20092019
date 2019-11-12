@@ -1,4 +1,3 @@
-<?php ob_start(); ?>
 <div id="jumbotron" class="row">
     <img src="public/img/jumbotron.jpeg" alt="">
 </div>
@@ -15,10 +14,3 @@
         </p>
     </div>
 </div>
-<div id="author-presentation" class="row">
-
-</div>
-</div>
-<?php $content = ob_get_clean() ?>
-
-<?php require_once('template.php'); ?>

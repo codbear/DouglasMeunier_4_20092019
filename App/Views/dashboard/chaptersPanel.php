@@ -1,5 +1,3 @@
-<?php ob_start() ?>
-
 <div class="container">
     <div class="row">
         <h2>Chapitres</h2>
@@ -129,7 +127,3 @@
         </div>
     </div>
 </div>
-
-<?php $content = ob_get_clean() ?>
-
-<?php require_once('template.php') ?>

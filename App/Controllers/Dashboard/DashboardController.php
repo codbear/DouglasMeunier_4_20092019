@@ -4,12 +4,17 @@ namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Codbear\Alaska\Controllers\ErrorsController;
 use Codbear\Alaska\Models\UserModel;
+use Codbear\Alaska\Services\Renderer\Renderer;
 
-abstract class DashboardController
+abstract class DashboardController 
 {
 
-	public function __construct()
+	protected $renderer;
+
+	public function __construct(Renderer $renderer)
 	{
+		$this->renderer = $renderer;
+
 		switch ($_SESSION['role']) {
 			case UserModel::ROLE_ADMIN:
 				return;
@@ -24,22 +29,5 @@ abstract class DashboardController
 				break;
 		}
 		exit();
-	}
-
-	public function render(string $view, string $title, array $datas = [])
-	{
-		$title = $title;
-		switch ($view) {
-			case 'chaptersPanel':
-				$published = $datas['published'];
-				$trash = $datas['trash'];
-				$drafts = $datas['drafts'];
-				break;
-
-			case 'chapterEditor':
-				$chapter = $datas['chapter'];
-				break;
-		}
-		require_once('../App/Views/dashboard/' . $view . '.php');
 	}
 }

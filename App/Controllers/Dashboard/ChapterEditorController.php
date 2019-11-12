@@ -31,7 +31,9 @@ class ChapterEditorController extends DashboardController implements ControllerI
             }
             header('Location: ' . $this->chapter->editorUrl . '');
         } else {
-            $this->render('chapterEditor', 'Editeur', ['chapter' => $this->chapter]);
+            $this->renderer->addGlobal('title', 'Dashboard | Editeur');
+            return $this->renderer->render('@dashboard/chapterEditor', [
+                'chapter' => $this->chapter]);
         }
     }
 
@@ -54,12 +56,12 @@ class ChapterEditorController extends DashboardController implements ControllerI
             $chapterStatus
         )) {
             if ($chapterStatus === ChapterModel::STATUS_PUBLISHED) {
-                Session::setFlash('Le chapitre a bien été publié', 'success');
+                Session::setFlashbag('Le chapitre a bien été publié', 'success');
             } else {
-                Session::setFlash('Le chapitre a bien été enregistré', 'success');
+                Session::setFlashbag('Le chapitre a bien été enregistré', 'success');
             }
         } else {
-            Session::setFlash('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.', 'error');
+            Session::setFlashbag('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.', 'error');
         }
     }
 }

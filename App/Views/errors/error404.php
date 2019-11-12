@@ -1,4 +1,4 @@
-<?php ob_start() ?>
+<?= $renderer->render('header') ?>
 
 <div id="container-404">
 	<div class="error-message">
@@ -7,6 +7,4 @@
 	</div>
 </div>
 
-<?php $content = ob_get_clean() ?>
-
-<?php require_once('../App/Views/template.php') ?>
+<?= $renderer->render('footer') ?>

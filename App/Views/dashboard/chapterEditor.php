@@ -1,8 +1,6 @@
 <?php
 
-use Codbear\Alaska\Models\ChapterModel;
-
-ob_start() ?>
+use Codbear\Alaska\Models\ChapterModel; ?>
 
 <div class="row">
     <div class="col s12">
@@ -80,7 +78,3 @@ ob_start() ?>
 
 <script src="public/scripts/tinymce/js/tinymce/tinymce.min.js"></script>
 <script src="public/scripts/chapterEditor.js"></script>
-
-<?php $content = ob_get_clean() ?>
-
-<?php require_once('template.php') ?>

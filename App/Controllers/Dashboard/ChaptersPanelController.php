@@ -60,7 +60,12 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                         break;
                 }
             }
-            $this->render('chaptersPanel', 'Dashboard | Chapitres', ['published' => $this->published, 'trash' => $this->trash, 'drafts' => $this->drafts]);
+            $this->renderer->addGlobal('title', 'Dashboard | Chapitres');
+            return $this->renderer->render('@dashboard/chaptersPanel', [
+                'published' => $this->published, 
+                'trash' => $this->trash, 
+                'drafts' => $this->drafts
+                ]);
         }
     }
 
@@ -70,15 +75,15 @@ class ChaptersPanelController extends DashboardController implements ControllerI
             if (ChapterModel::setStatus((int) $chapterId, (int) $newStatus)) {
                 switch ($newStatus) {
                     case ChapterModel::STATUS_TRASH:
-                        Session::setFlash('Le chapitre a été placé dans la corbeille', 'success');
+                        Session::setFlashbag('Le chapitre a été placé dans la corbeille', 'success');
                         break;
 
                     case ChapterModel::STATUS_DRAFT:
-                        Session::setFlash('Le chapitre a été placé dans les brouillons', 'success');
+                        Session::setFlashbag('Le chapitre a été placé dans les brouillons', 'success');
                         break;
 
                     case ChapterModel::STATUS_DELETED:
-                        Session::setFlash('Le chapitre a été supprimé', 'success');
+                        Session::setFlashbag('Le chapitre a été supprimé', 'success');
                         break;
 
                     default:
@@ -90,7 +95,7 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                 throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
             }
         } catch (Exception $e) {
-            Session::setFlash($e->getMessage(), 'error');
+            Session::setFlashbag($e->getMessage(), 'error');
             header('Location: /?view=chaptersPanel');
         }
     }

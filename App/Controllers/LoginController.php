@@ -7,7 +7,7 @@ use Codbear\Alaska\Models\UserModel;
 use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 
-class LoginController implements ControllerInterface
+class LoginController extends Controller implements ControllerInterface
 {
 
     private function registerUser($datas)
@@ -40,11 +40,11 @@ class LoginController implements ControllerInterface
                 throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement", 1);
             } else {
                 Session::setUser($user);
-                Session::setFlash(('Votre compte a été créé. Bienvenue ' . $_SESSION['username'] . ' !'), 'success');
+                Session::setFlashbag(('Votre compte a été créé. Bienvenue ' . $_SESSION['username'] . ' !'), 'success');
                 header('Location: /');
             }
         } catch (Exception $e) {
-            Session::setFlash($e->getMessage(), 'error');
+            Session::setFlashbag($e->getMessage(), 'error');
             header('Location: /?view=login');
         }
     }
@@ -72,10 +72,10 @@ class LoginController implements ControllerInterface
             $user->hydrateUser();
 
             Session::setUser($user);
-            Session::setFlash(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
+            Session::setFlashbag(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
             header('Location: /');
         } catch (Exception $e) {
-            Session::setFlash($e->getMessage(), 'error');
+            Session::setFlashbag($e->getMessage(), 'error');
             header('Location: /?view=login');
         }
     }
@@ -122,7 +122,8 @@ class LoginController implements ControllerInterface
                     break;
             }
         } else {
-            require_once('../App/Views/login.php');
+            $this->renderer->addGlobal('title', 'Connexion');
+            return $this->renderer->render('login');
         }
     }
 }

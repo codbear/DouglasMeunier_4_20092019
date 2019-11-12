@@ -2,15 +2,12 @@
 
 namespace Codbear\Alaska\Services;
 
-use Codbear\Alaska\Controllers\BookController;
-use Codbear\Alaska\Controllers\HomeController;
-use Codbear\Alaska\Controllers\LoginController;
-use Codbear\Alaska\Controllers\ErrorsController;
-use Codbear\Alaska\Controllers\Dashboard\ChapterEditorController;
-use Codbear\Alaska\Controllers\Dashboard\ChaptersPanelController;
+use Codbear\Alaska\Services\Renderer\Renderer;
 
-abstract class Router
+class Router
 {
+
+	private static $_rendererInstance = null;
 
 	public static function init()
 	{
@@ -18,32 +15,49 @@ abstract class Router
 			if (isset($_GET['view'])) {
 				switch ($_GET['view']) {
 					case 'book':
-						$controller = new BookController();
+						$controller = self::getController('book');
 						break;
 
 					case 'login':
-						$controller = new LoginController();
+						$controller = self::getController('login');
 						break;
 
 					case 'chaptersPanel':
-						$controller = new ChaptersPanelController();
+						$controller = self::getController('dashboard\\ChaptersPanel');
 						break;
 
 					case 'chapterEditor':
-						$controller = new ChapterEditorController();
+						$controller = self::getController('dashboard\\ChapterEditor');
 						break;
 
 					default:
-						$controller = new ErrorsController();
+						$controller = self::getController('errors');
 						break;
 				}
 			} else {
-				$controller = new HomeController();
+				$controller = self::getController('home');
 			}
 			$controller->execute($_GET, $_POST);
 		} catch (\Exception $e) {
 			$errorMessage = $e->getMessage();
 			echo $errorMessage;
 		}
+	}
+
+	private static function getController($name)
+	{
+		$className = '\\Codbear\\Alaska\\Controllers\\' . ucfirst($name) . 'Controller';
+		return new $className(self::getRenderer());
+	}
+
+	private static function getRenderer()
+	{
+		if (is_null(self::$_rendererInstance)) {
+			self::$_rendererInstance = new Renderer(dirname(__DIR__) . '/Views');
+			self::$_rendererInstance->addPath(dirname(__DIR__) . '/Views/dashboard', 'dashboard');
+			self::$_rendererInstance->addPath(dirname(__DIR__) . '/Views/errors', 'errors');
+			self::$_rendererInstance->addGlobal('title', 'Un billet pour l\'Alaska');
+		}
+		return self::$_rendererInstance;
 	}
 }

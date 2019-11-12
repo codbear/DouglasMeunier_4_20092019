@@ -1,8 +1,7 @@
 <?php
 
-use Codbear\Alaska\Models\ChapterModel;
+use Codbear\Alaska\Models\ChapterModel; ?>
 
-ob_start(); ?>
 <div class="row blue-grey darken-3">
     <aside id="table-of-content" class="col m2 blue-grey darken-3 white-text">
         <h2>Sommaire</h2>
@@ -69,7 +68,4 @@ ob_start(); ?>
                 </div>
             <?php endif ?>
     </article>
-
 </div>
-<?php $content = ob_get_clean();
-require('template.php'); ?>

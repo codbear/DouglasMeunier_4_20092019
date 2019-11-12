@@ -1,5 +1,3 @@
-<?php ob_start() ?>
-
 <div id="container-403">
 	<div class="row">
 		<div class="col s12 m6 error-message">
@@ -8,7 +6,3 @@
 		</div>
 	</div>
 </div>
-
-<?php $content = ob_get_clean() ?>
-
-<?php require_once('../App/Views/template.php') ?>

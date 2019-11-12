@@ -14,7 +14,7 @@ class Session
         }
     }
 
-    public static function set(string $key, $value)
+    public static function set(string $key, $value): void
     {
         $_SESSION[$key] = $value;
     }
@@ -26,25 +26,31 @@ class Session
         }
     }
 
-    public static function unset(string $key) {
+    public static function isSet(string $key): bool
+    {
+        return isset($_SESSION[$key]);
+    }
+
+    public static function unset(string $key): void
+    {
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
         }
     }
 
-    public static function setUser($user)
+    public static function setUser($user): void
     {
         self::set('username', $user->getUsername());
         self::set('role', $user->getRole());
     }
 
-    public static function unsetUser()
+    public static function unsetUser(): void
     {
         self::unset('username');
         self::set('role', UserModel::ROLE_ANONYMOUS);
     }
 
-    public static function setFlash($message, $type = 'info')
+    public static function setFlashbag($message, $type = 'info'): void
     {
         self::set('flashbag', [
             'message'   => $message,
@@ -52,31 +58,28 @@ class Session
         ]);
     }
 
-    public static function flashbag()
+    public static function getFlashbag(): array
     {
-        if (self::get('flashbag')) {
-            $flashMessage = '<div class="valign-wrapper alert alert-' . self::get('flashbag')['type'] . '">
-                                <i class="alert-icon material-icons">';
-            switch (self::get('flashbag')['type']) {
-                case 'success':
-                    $flashMessage .= 'check';
-                    break;
-    
-                case 'warning':
-                    $flashMessage .= 'warning';
-                    break;
-    
-                case 'error':
-                    $flashMessage .= 'error_outline';
-                    break;
-    
-                default:
-                    $flashMessage .= 'info_outline';
-                    break;
-            }
-            $flashMessage .= '</i>'. self::get('flashbag')['message'] . '</div>';
-            self::unset('flashbag');
-            return $flashMessage;
+        $type = self::get('flashbag')['type'];
+        switch (self::get('flashbag')['type']) {
+            case 'success':
+                $icon = 'check';
+                break;
+
+            case 'warning':
+                $icon = 'warning';
+                break;
+
+            case 'error':
+                $icon = 'error_outline';
+                break;
+
+            default:
+                $icon = 'info_outline';
+                break;
         }
+        $message = self::get('flashbag')['message'];
+        self::unset('flashbag');
+        return compact('type', 'icon', 'message');
     }
 }
