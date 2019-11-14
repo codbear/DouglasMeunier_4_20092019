@@ -9,7 +9,7 @@ use PDOStatement;
 abstract class BookModel
 {
 
-    public static function getAllChapters(int $status = null): array
+    public static function getAllChapters(): array
     {
         $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
                         DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 

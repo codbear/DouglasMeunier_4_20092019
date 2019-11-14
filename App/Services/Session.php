@@ -61,7 +61,7 @@ class Session
     public static function getFlashbag(): array
     {
         $type = self::get('flashbag')['type'];
-        switch (self::get('flashbag')['type']) {
+        switch ($type) {
             case 'success':
                 $icon = 'check';
                 break;

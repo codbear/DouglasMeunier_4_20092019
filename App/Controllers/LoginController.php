@@ -40,12 +40,10 @@ class LoginController extends Controller implements ControllerInterface
                 throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement", 1);
             } else {
                 Session::setUser($user);
-                Session::setFlashbag(('Votre compte a été créé. Bienvenue ' . $_SESSION['username'] . ' !'), 'success');
-                header('Location: /');
+                Session::setFlashbag(('Votre compte a été créé. Bienvenue ' . Session::get('username') . ' !'), 'success');
             }
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');
-            header('Location: /?view=login');
         }
     }
 
@@ -72,11 +70,9 @@ class LoginController extends Controller implements ControllerInterface
             $user->hydrateUser();
 
             Session::setUser($user);
-            Session::setFlashbag(('Heureux de vous revoir ' . $_SESSION['username'] . ' !'), 'success');
-            header('Location: /');
+            Session::setFlashbag(('Heureux de vous revoir ' . Session::get('username') . ' !'), 'success');
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');
-            header('Location: /?view=login');
         }
     }
 
@@ -99,16 +95,16 @@ class LoginController extends Controller implements ControllerInterface
 
     public function execute($params, $datas)
     {
-        $title = 'Un billet pour l\'Alaska - Connexion / Inscription';
-
         if (isset($params['action'])) {
             switch ($params['action']) {
                 case 'register':
                     $this->registerUser($datas);
+                    header('Location: /');
                     break;
 
                 case 'login':
                     $this->loginUser($datas);
+                    header('Location: /');
                     break;
 
                 case 'logout':
@@ -117,13 +113,11 @@ class LoginController extends Controller implements ControllerInterface
                     break;
 
                 default:
-                    ErrorsController::error404();
-                    die;
-                    break;
+                    return $this->notFound();
             }
         } else {
-            $this->renderer->addGlobal('title', 'Connexion');
-            return $this->renderer->render('login');
+            return $this->notFound();
         }
+        return $this->renderer->render('home');
     }
 }

@@ -3,6 +3,47 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background: url("../img/hero.jpg") fixed no-repeat;
+}
+
+main {
+  background: url("../img/hero.jpg") fixed no-repeat;
+}
+
+h1, h2 {
+  font-family: 'Baloo', cursive;
+  text-transform: uppercase;
+}
+
+.sidenav {
+  text-transform: uppercase;
+}
+
+.sidenav-header {
+  padding: 5% 2%;
+}
+
+.sidenav h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+.sidenav-elem {
+  padding: 0 16px 0 16px !important;
+}
+
+#mobile-menu-trigger {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.collapsible {
+  padding: 0;
+}
+
+.btn-large {
+  width: 100%;
 }
 
 body.has-fixed-sidenav {
@@ -17,17 +58,14 @@ body.has-fixed-sidenav {
 
 /** Homepage **/
 
-#jumbotron {
-  margin: 0;
-}
-
-#jumbotron img {
-  width: 100%;
-  max-height: 90vh;
+.hero {
+  min-height: 100vh;
+  padding: 10% 10% 10% 10%;
 }
 
 #book-excerpt {
   padding: 3% 0;
+  margin: 0;
 }
 
 /** Book reader **/
@@ -39,7 +77,6 @@ body.has-fixed-sidenav {
   left: 0;
   padding-top: 70px;
   min-height: 100vh;
-  border-right: 2px solid #263238;
 }
 
 #book-cover {
@@ -47,37 +84,30 @@ body.has-fixed-sidenav {
 }
 
 /** Error pages **/
-
 #container-401,
 #container-403,
 #container-404 {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: 0;
-  padding: 15% 10% 10% 10%;
+  min-height: 100vh;
+  padding: 10% 10% 10% 10%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 #container-401,
 #container-403 {
-  background: url("../img/401_403_background.jpg") no-repeat;
+  background-image: url("../img/401_403_background.jpg");
 }
 
 #container-404 {
-  background: url("../img/404_background.jpg") no-repeat;
-}
-
-.error-message {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-image: url("../img/404_background.jpg");
 }
 
 /** Flashbag **/
 .alert {
   z-index: 1000;
   position: fixed;
-  top: 64px;
+  top: 0;
   left: 0;
   right: 0;
   min-height: 40px;
@@ -86,8 +116,10 @@ body.has-fixed-sidenav {
   font-weight: bold;
 }
 
-.has-fixed-sidenav .alert {
-  left: 300px;
+@media only screen and (min-width: 992px) {
+  .has-fixed-sidenav .alert {
+    left: 300px;
+  }
 }
 
 .alert-success {

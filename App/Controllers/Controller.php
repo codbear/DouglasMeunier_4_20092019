@@ -26,18 +26,18 @@ class Controller
     public function notFound()
     {
         header("HTTP/1.0 404 Not Found");
-        return $this->renderer->render('@errors/error404', ['title' => 'Erreur 404']);
+        return $this->renderer->render('errors/error404', ['title' => 'Erreur 404']);
     }
 
     public function forbidden()
     {
         header("HTTP/1.0 403 Forbidden");
-        return $this->renderer->render('@errors/error403', ['title' => 'Erreur 403']);
+        return $this->renderer->render('errors/error403', ['title' => 'Erreur 403']);
     }
 
     public function unauthorized()
     {
         header("HTTP/1.0 401 Unauthorized");
-        return $this->renderer->render('@errors/error401', ['title' => 'Erreur 401']);
+        return $this->renderer->render('errors/error401', ['title' => 'Erreur 401']);
     }
 }

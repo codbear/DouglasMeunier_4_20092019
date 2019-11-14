@@ -2,32 +2,26 @@
 
 namespace Codbear\Alaska\Controllers\Dashboard;
 
-use Codbear\Alaska\Controllers\ErrorsController;
+use Codbear\Alaska\Controllers\Controller;
 use Codbear\Alaska\Models\UserModel;
-use Codbear\Alaska\Services\Renderer\Renderer;
 
-abstract class DashboardController 
+abstract class DashboardController extends Controller
 {
-
-	protected $renderer;
-
-	public function __construct(Renderer $renderer)
+	public function __construct()
 	{
-		$this->renderer = $renderer;
-
+		parent::__construct();
 		switch ($_SESSION['role']) {
 			case UserModel::ROLE_ADMIN:
 				return;
 				break;
 
 			case UserModel::ROLE_SUBSCRIBER:
-				ErrorsController::error403();
+				return $this->forbidden();
 				break;
 
 			default:
-				ErrorsController::error401();
+				return $this->unauthorized();
 				break;
 		}
-		exit();
 	}
 }
