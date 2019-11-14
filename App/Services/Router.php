@@ -2,12 +2,10 @@
 
 namespace Codbear\Alaska\Services;
 
-use Codbear\Alaska\Services\Renderer\Renderer;
+use Codbear\Alaska\Controllers\Controller;
 
 class Router
 {
-
-	private static $_rendererInstance = null;
 
 	public static function init()
 	{
@@ -15,49 +13,33 @@ class Router
 			if (isset($_GET['view'])) {
 				switch ($_GET['view']) {
 					case 'book':
-						$controller = self::getController('book');
+						$controller = Controller::factory('book');
 						break;
 
 					case 'login':
-						$controller = self::getController('login');
+						$controller = Controller::factory('login');
 						break;
 
 					case 'chaptersPanel':
-						$controller = self::getController('dashboard\\ChaptersPanel');
+						$controller = Controller::factory('dashboard\\ChaptersPanel');
 						break;
 
 					case 'chapterEditor':
-						$controller = self::getController('dashboard\\ChapterEditor');
+						$controller = Controller::factory('dashboard\\ChapterEditor');
 						break;
 
 					default:
-						$controller = self::getController('errors');
+						$controller = Controller::factory();
+						return $controller->notFound();
 						break;
 				}
 			} else {
-				$controller = self::getController('home');
+				$controller = Controller::factory('home');
 			}
 			$controller->execute($_GET, $_POST);
 		} catch (\Exception $e) {
 			$errorMessage = $e->getMessage();
 			echo $errorMessage;
 		}
-	}
-
-	private static function getController($name)
-	{
-		$className = '\\Codbear\\Alaska\\Controllers\\' . ucfirst($name) . 'Controller';
-		return new $className(self::getRenderer());
-	}
-
-	private static function getRenderer()
-	{
-		if (is_null(self::$_rendererInstance)) {
-			self::$_rendererInstance = new Renderer(dirname(__DIR__) . '/Views');
-			self::$_rendererInstance->addPath(dirname(__DIR__) . '/Views/dashboard', 'dashboard');
-			self::$_rendererInstance->addPath(dirname(__DIR__) . '/Views/errors', 'errors');
-			self::$_rendererInstance->addGlobal('title', 'Un billet pour l\'Alaska');
-		}
-		return self::$_rendererInstance;
 	}
 }

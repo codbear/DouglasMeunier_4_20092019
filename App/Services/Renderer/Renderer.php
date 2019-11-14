@@ -9,8 +9,17 @@ class Renderer
     const DEFAULT_NAMESPACE = '@__MAIN';
     const DEFAULT_SITE_TITLE = "Un billet pour l'Alaska";
 
+    private static $_instance;
     private $paths = [];
     private $globals = [];
+
+    public static function getInstance(string $defaultPath): Renderer
+	{
+		if (is_null(self::$_instance)) {
+			self::$_instance = new Renderer($defaultPath);
+        }
+		return self::$_instance;
+	}
 
     public function __construct(string $defaultPath)
     {
@@ -27,7 +36,6 @@ class Renderer
 
     public function render(string $view, array $datas = [])
     {
-        $renderer = $this;
         if (Session::isSet('flashbag')) {
             $flashbag = Session::getFlashbag();
         } 
