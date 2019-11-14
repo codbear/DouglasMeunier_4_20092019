@@ -6,7 +6,6 @@ use Exception;
 use Codbear\Alaska\Models\BookModel;
 use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Models\ChapterModel;
-use Codbear\Alaska\Controllers\ErrorsController;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 
@@ -38,7 +37,7 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     break;
 
                 default:
-                    ErrorsController::error404();
+                    return $this->notFound();
                     break;
             }
         } else {
@@ -61,7 +60,7 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                 }
             }
             $this->renderer->addGlobal('title', 'Dashboard | Chapitres');
-            return $this->renderer->render('@dashboard/chaptersPanel', [
+            return $this->renderer->render('dashboard/chaptersPanel', [
                 'published' => $this->published, 
                 'trash' => $this->trash, 
                 'drafts' => $this->drafts

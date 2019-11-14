@@ -26,13 +26,13 @@ class ChapterEditorController extends DashboardController implements ControllerI
                     break;
 
                 default:
-                    ErrorsController::error404();
+                    return $this->notFound();
                     break;
             }
             header('Location: ' . $this->chapter->editorUrl . '');
         } else {
             $this->renderer->addGlobal('title', 'Dashboard | Editeur');
-            return $this->renderer->render('@dashboard/chapterEditor', [
+            return $this->renderer->render('dashboard/chapterEditor', [
                 'chapter' => $this->chapter]);
         }
     }

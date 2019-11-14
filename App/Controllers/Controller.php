@@ -19,8 +19,6 @@ class Controller
     public function __construct()
     {
         $this->renderer = Renderer::getInstance(dirname((__DIR__)) . '/Views');
-        $this->renderer->addPath(dirname(__DIR__) . '/Views/dashboard', 'dashboard');
-        $this->renderer->addPath(dirname(__DIR__) . '/Views/errors', 'errors');
         $this->renderer->addGlobal('title', 'Un billet pour l\'Alaska');
         $this->renderer->addGlobal('tableOfContent', BookModel::getAllChapters());
     }
