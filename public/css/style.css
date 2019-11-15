@@ -6,13 +6,33 @@ body {
   background: url("../img/hero.jpg") fixed no-repeat;
 }
 
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
 main {
   background: url("../img/hero.jpg") fixed no-repeat;
 }
 
-h1, h2 {
-  font-family: 'Baloo', cursive;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Baloo", cursive;
   text-transform: uppercase;
+}
+
+blockquote {
+  border-left-color: #607d8b;
 }
 
 .sidenav {
