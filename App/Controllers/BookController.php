@@ -15,7 +15,7 @@ class BookController extends Controller implements ControllerInterface
         if (isset($params['chapterId'])) {
             $chapterId = (int) $params['chapterId'];
             if (isset($params['action']) && $params['action'] === 'publishComment') {
-                $this->publishComment($chapterId, Session::get('id'), $datas['comment-content']);
+                $this->publishComment($chapterId, Session::get('user')['id'], $datas['comment-content']);
                 header('Location: /?view=book&chapterId=' . $chapterId);
             }
             $chapter = ChapterModel::getChapter($chapterId);

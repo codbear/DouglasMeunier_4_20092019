@@ -3,19 +3,20 @@
 namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Codbear\Alaska\Controllers\Controller;
-use Codbear\Alaska\Models\UserModel;
+use Codbear\Alaska\Models\Tables\UsersTable;
+use Codbear\Alaska\Services\Session;
 
 abstract class DashboardController extends Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
-		switch ($_SESSION['role']) {
-			case UserModel::ROLE_ADMIN:
+		switch (Session::get('user')['role']) {
+			case UsersTable::ROLE_ADMIN:
 				return;
 				break;
 
-			case UserModel::ROLE_SUBSCRIBER:
+			case UsersTable::ROLE_SUBSCRIBER:
 				return $this->forbidden();
 				break;
 

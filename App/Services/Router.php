@@ -17,7 +17,7 @@ class Router
 						break;
 
 					case 'login':
-						$controller = Controller::factory('login');
+						$controller = Controller::factory('auth');
 						break;
 
 					case 'chaptersPanel':

@@ -5,7 +5,7 @@ namespace Codbear\Alaska\Models\Tables;
 use Codbear\Alaska\Services\Database;
 use PDOStatement;
 
-class CommentsTable
+abstract class CommentsTable
 {
     public static function getAll(int $chapterId)
     {

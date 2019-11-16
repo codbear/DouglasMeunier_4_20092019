@@ -2,7 +2,7 @@
 
 use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Models\ChapterModel;
-use Codbear\Alaska\Models\UserModel; ?>
+use Codbear\Alaska\Models\Tables\UsersTable; ?>
 
 <header>
     <ul id="slide-out" class="sidenav sidenav-fixed blue-grey lighten-3">
@@ -13,8 +13,8 @@ use Codbear\Alaska\Models\UserModel; ?>
             <ul>
                 <li class="waves-effect"><a href="/" class="sidenav-elem">Accueil</a></li>
                 <li class="waves-effect"><a href="#" data-target="table-of-chapters" class="sidenav-trigger show-on-large sidenav-elem">Lire</a></li>
-                <?php if (Session::get('role') !== UserModel::ROLE_ANONYMOUS) : ?>
-                    <?php if (Session::get('role') == UserModel::ROLE_ADMIN) : ?>
+                <?php if (Session::get('user')['role'] !== UsersTable::ROLE_ANONYMOUS) : ?>
+                    <?php if (Session::get('user')['role'] == UsersTable::ROLE_ADMIN) : ?>
                         <li>
                             <ul class="collapsible collapsible-accordion">
                                 <li>

@@ -2,7 +2,7 @@
 
 namespace Codbear\Alaska\Services;
 
-use Codbear\Alaska\Models\UserModel;
+use Codbear\Alaska\Models\Tables\UsersTable;
 
 class Session
 {
@@ -10,7 +10,7 @@ class Session
     {
         session_start();
         if (!isset($_SESSION['role'])) {
-            $_SESSION['role'] = UserModel::ROLE_ANONYMOUS;
+            $_SESSION['role'] = UsersTable::ROLE_ANONYMOUS;
         }
     }
 
@@ -36,23 +36,6 @@ class Session
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
         }
-    }
-
-    public static function setUser($user): void
-    {
-        self::set('user', [
-            'username' => $user->username,
-            'role' => $user->role,
-            'id' => (int) $user->id
-        ]);
-    }
-
-    public static function unsetUser(): void
-    {
-        self::unset('user');
-        self::set('user', [
-            'role' => UserModel::ROLE_ANONYMOUS
-        ]);
     }
 
     public static function setFlashbag($message, $type = 'info'): void
