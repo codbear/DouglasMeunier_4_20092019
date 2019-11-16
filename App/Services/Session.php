@@ -40,22 +40,24 @@ class Session
 
     public static function setUser($user): void
     {
-        self::set('username', $user->getUsername());
-        self::set('role', $user->getRole());
+        self::set('user', [
+            'username' => $user->username,
+            'role' => $user->role,
+            'id' => (int) $user->id
+        ]);
     }
 
     public static function unsetUser(): void
     {
-        self::unset('username');
-        self::set('role', UserModel::ROLE_ANONYMOUS);
+        self::unset('user');
+        self::set('user', [
+            'role' => UserModel::ROLE_ANONYMOUS
+        ]);
     }
 
     public static function setFlashbag($message, $type = 'info'): void
     {
-        self::set('flashbag', [
-            'message'   => $message,
-            'type'      => $type
-        ]);
+        self::set('flashbag', compact('message', 'type'));
     }
 
     public static function getFlashbag(): array

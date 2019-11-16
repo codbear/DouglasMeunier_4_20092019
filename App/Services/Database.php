@@ -26,13 +26,13 @@ class Database
         self::$_db_host = $config['dbhost'];
     }
 
-    public static function query(string $statement, $fetcher, $className = null)
+    public static function query(string $statement, $fetcher = false, $className = null)
     {
         $req = self::getPDO()->query($statement);
         return self::fetchRequest($req, $fetcher, $className);
     }
 
-    public static function prepare(string $statement, array $datas, $fetcher, string $className = null)
+    public static function prepare(string $statement, array $datas, $fetcher = false, string $className = null)
     {
         $req = self::getPDO()->prepare($statement);
         $req->execute($datas);

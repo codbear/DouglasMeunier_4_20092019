@@ -36,6 +36,10 @@ class UserModel
         return $this->role;
     }
 
+    public function getId() {
+        return $this->id;
+    }
+
     public function setUsername($username)
     {
         $this->username = $username;
@@ -49,6 +53,10 @@ class UserModel
     public function setRole($role)
     {
         $this->role = $role;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
     }
 
     public function register($passwordHash)
@@ -81,8 +89,9 @@ class UserModel
 
     public function hydrateUser()
     {
-        $response = Database::prepare('SELECT email, role_id FROM users WHERE username = ?', [$this->username], Database::FETCH_SINGLE);
+        $response = Database::prepare('SELECT id, email, role_id FROM users WHERE username = ?', [$this->username], Database::FETCH_SINGLE);
         $this->setEmail($response->email);
         $this->setRole($response->role_id);
+        $this->setId($response->id);
     }
 }

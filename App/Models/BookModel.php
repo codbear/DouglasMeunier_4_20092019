@@ -3,8 +3,6 @@
 namespace Codbear\Alaska\Models;
 
 use Codbear\Alaska\Services\Database;
-use Codbear\Alaska\Services\Session;
-use PDOStatement;
 
 abstract class BookModel
 {
@@ -15,7 +13,7 @@ abstract class BookModel
                         DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
                         FROM chapters 
                         ORDER BY number';
-        return Database::query($statement, Database::FETCH_ALL, 'Codbear\Alaska\Models\ChapterModel');
+        return Database::query($statement, Database::FETCH_ALL, 'Codbear\\Alaska\\Models\\ChapterModel');
     }
 
     public static function createNewChapter(): ChapterModel
