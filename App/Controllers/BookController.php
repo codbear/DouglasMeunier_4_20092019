@@ -22,7 +22,7 @@ class BookController extends Controller implements ControllerInterface
             if (!$chapter || $chapter->status != ChapterModel::STATUS_PUBLISHED) {
                 return $this->notFound();
             }
-            $comments = CommentsTable::getAll($chapterId);
+            $comments = CommentsTable::getAllWithChapterId($chapterId);
             return $this->renderer->render('book', [
                 'title' => $chapter->title . ' | Billet simple pour l\'Alaska',
                 'chapter' => $chapter,

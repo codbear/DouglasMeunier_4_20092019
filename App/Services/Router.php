@@ -28,6 +28,10 @@ class Router
 						$controller = Controller::factory('dashboard\\ChapterEditor');
 						break;
 
+					case 'commentsPanel':
+						$controller = Controller::factory('dashboard\\CommentsPanel');
+						break;
+
 					default:
 						$controller = Controller::factory();
 						return $controller->notFound();
