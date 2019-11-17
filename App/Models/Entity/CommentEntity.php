@@ -5,6 +5,7 @@ namespace Codbear\Alaska\Models\Entity;
 class CommentEntity
 {
     public $reporting = 0;
+    public $reported = 0;
 
     public function __get($attribute)
     {
@@ -18,7 +19,15 @@ class CommentEntity
         $this->reporting = $reporting;
     }
 
+    public function setReported() {
+        $this->reported = 1;
+    }
+
     private function getDeleteUrl() {
         return "/?view=commentsPanel&action=deleteComment&commentId=" . $this->id;
+    }
+
+    private function getReportUrl() {
+        return "/?view=book&action=reportComment&commentId=" . $this->id;
     }
 }

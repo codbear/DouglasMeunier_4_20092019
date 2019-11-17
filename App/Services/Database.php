@@ -51,7 +51,7 @@ class Database
 
     private static function fetchRequest($request, $fetcher, $className)
     {
-        if (!is_null($className)) {
+        if ($className) {
             $request->setFetchMode(PDO::FETCH_CLASS, $className);
         }
         switch ($fetcher) {

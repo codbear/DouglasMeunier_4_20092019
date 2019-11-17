@@ -74,7 +74,12 @@ use Codbear\Alaska\Models\Tables\UsersTable; ?>
         <div class="col s10 offset-s1">
             <div class="card">
                 <div class="card-content">
-                    <em>Le <?= $comment->creation_date_fulltext ?>, par <?= $comment->author ?></em> - <a class="blue-grey-text">Signaler</a>
+                    <em>Le <?= $comment->creation_date_fulltext ?>, par <?= $comment->author ?></em> -
+                    <?php if ($comment->reported) : ?>
+                    <span class="blue-grey-text">Signalé</span>
+                    <?php else : ?>
+                        <a href="<?= $comment->reportUrl ?>" class="blue-grey-text">Signaler</a>
+                    <?php endif ?>
                     <blockquote><?= $comment->content ?></blockquote>
                 </div>
             </div>

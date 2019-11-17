@@ -31,7 +31,7 @@ abstract class CommentsTable
 
     public static function getAllWithChapterId(int $chapterId)
     {
-        $statement = 'SELECT c.id, c.content, u.username AS author,
+        $statement = 'SELECT c.id, c.chapter_id, c.content, u.username AS author,
                         DATE_FORMAT(c.creation_date, \'%d.%m.%Y\') AS creation_date_fulltext
                         FROM comments AS c
                         INNER JOIN users AS u
@@ -55,5 +55,19 @@ abstract class CommentsTable
                         SET deleted = 1
                         WHERE id = ?';
         return Database::prepare($statement, [$commentId]);
+    }
+
+    public static function report(int $user_id, int $comment_id) {
+        $statement = 'INSERT INTO reporting(user_id, comment_id)
+                        VALUES (:user_id, :comment_id)';
+        $datas = compact('user_id', 'comment_id');
+        return Database::prepare($statement, $datas);
+    }
+
+    public static function getReportsList(int $comment_id) {
+        $statement = 'SELECT user_id
+                        FROM reporting
+                        WHERE comment_id = ?';
+        return Database::prepare($statement, [$comment_id], Database::FETCH_ALL);
     }
 }
