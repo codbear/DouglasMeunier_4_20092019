@@ -32,6 +32,10 @@ class Router
 						$controller = Controller::factory('dashboard\\CommentsPanel');
 						break;
 
+					case 'usersPanel':
+						$controller = Controller::factory('dashboard\\UsersPanel');
+						break;
+
 					default:
 						$controller = Controller::factory();
 						return $controller->notFound();
