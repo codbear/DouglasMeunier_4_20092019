@@ -30,4 +30,8 @@ class CommentEntity
     private function getReportUrl() {
         return "/?view=book&action=reportComment&commentId=" . $this->id;
     }
+
+    private function getValidateUrl() {
+        return "/?view=commentsPanel&action=validateComment&commentId=" . $this->id;
+    }
 }

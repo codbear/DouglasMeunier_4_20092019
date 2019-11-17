@@ -57,6 +57,11 @@ abstract class CommentsTable
         return Database::prepare($statement, [$commentId]);
     }
 
+    public static function validate(int $comment_id) {
+        $statement = 'DELETE FROM reporting WHERE comment_id = ?';
+        return Database::prepare($statement, [$comment_id]);
+    }
+
     public static function report(int $user_id, int $comment_id) {
         $statement = 'INSERT INTO reporting(user_id, comment_id)
                         VALUES (:user_id, :comment_id)';

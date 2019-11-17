@@ -18,7 +18,13 @@ class CommentsPanelController extends DashboardController implements ControllerI
                         $this->deleteComment((int) $params['commentId']);
                     }
                     break;
-                
+
+                case 'validateComment':
+                    if (isset($params['commentId'])) {
+                        $this->validateComment((int) $params['commentId']);
+                    }
+                    break;
+
                 default:
                     return $this->notFound();
                     break;
@@ -35,10 +41,23 @@ class CommentsPanelController extends DashboardController implements ControllerI
         return $this->renderer->render('dashboard/commentsPanel', compact('comments', 'signaled'));
     }
 
-    private function deleteComment(int $commentId) {
+    private function deleteComment(int $commentId)
+    {
         try {
-            if(!CommentsTable::delete($commentId)) {
+            if (!CommentsTable::delete($commentId)) {
                 throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.");
+            }
+            header('Location: /?view=commentsPanel');
+        } catch (Exception $e) {
+            Session::setFlashbag($e->getMessage(), 'error');
+            header('Location: /?view=commentsPanel');
+        }
+    }
+
+    private function validateComment(int $comment_id) {
+        try {
+            if (!CommentsTable::validate($comment_id)) {
+                throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement');
             }
             header('Location: /?view=commentsPanel');
         } catch (Exception $e) {

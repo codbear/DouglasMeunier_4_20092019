@@ -20,24 +20,29 @@
                                 <table class="highlight">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Chapitre</th>
                                             <th>Auteur</th>
                                             <th>Commentaire</th>
-                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($comments as $comment) : ?>
                                             <tr>
+                                                <th>
+                                                    <?php if ($comment->reporting > 0) : ?>
+                                                        <a href="<?= $comment->validateUrl ?>"><i class="material-icons green-text">done_all</i></a>
+                                                    <?php endif ?>
+                                                    <a href="<?= $comment->deleteUrl ?>"><i class="material-icons red-text">delete_forever</i></a>
+                                                </th>
                                                 <th><?= $comment->chapter_number ?></th>
                                                 <th><?= $comment->author ?></th>
                                                 <th>
                                                     <?= $comment->content ?>
                                                     <?php if ($comment->reporting > 0) : ?>
-                                                        <span class="right new badge red" data-badge-caption="Signalé"></span>
+                                                        <span class="right new badge orange" data-badge-caption="Signalé"></span>
                                                     <?php endif ?>
                                                 </th>
-                                                <th><a href="<?= $comment->deleteUrl ?>"><i class="material-icons black-text">delete_forever</i></a></th>
                                             </tr>
                                         <?php endforeach ?>
                                     </tbody>
@@ -51,22 +56,25 @@
                                 <table class="highlight">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Chapitre</th>
                                             <th>Auteur</th>
                                             <th>Commentaire</th>
-                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($signaled as $comment) : ?>
                                             <tr>
+                                                <th>
+                                                    <a href="<?= $comment->validateUrl ?>"><i class="material-icons green-text">done_all</i></a>
+                                                    <a href="<?= $comment->deleteUrl ?>"><i class="material-icons red-text">delete_forever</i></a>
+                                                </th>
                                                 <th><?= $comment->chapter_number ?></th>
                                                 <th><?= $comment->author ?></th>
                                                 <th>
                                                     <?= $comment->content ?>
-                                                    <span class="right new badge red" data-badge-caption="<?= ($comment->reporting > 1) ? 'signalements' : 'signalement' ?>"><?= $comment->reporting ?></span>
+                                                    <span class="right new badge orange" data-badge-caption="<?= ($comment->reporting > 1) ? 'signalements' : 'signalement' ?>"><?= $comment->reporting ?></span>
                                                 </th>
-                                                <th><a href="<?= $comment->deleteUrl ?>"><i class="material-icons black-text">delete_forever</i></a></th>
                                             </tr>
                                         <?php endforeach ?>
                                     </tbody>

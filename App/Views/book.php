@@ -76,9 +76,13 @@ use Codbear\Alaska\Models\Tables\UsersTable; ?>
                 <div class="card-content">
                     <em>Le <?= $comment->creation_date_fulltext ?>, par <?= $comment->author ?></em> -
                     <?php if ($comment->reported) : ?>
-                    <span class="blue-grey-text">Signalé</span>
+                        <span class="blue-grey-text">Signalé</span>
                     <?php else : ?>
-                        <a href="<?= $comment->reportUrl ?>" class="blue-grey-text">Signaler</a>
+                        <?php if (isset(Session::get('user')['id'])) : ?>
+                            <a href="<?= $comment->reportUrl ?>" class="blue-grey-text">Signaler</a>
+                        <?php else : ?>
+                            <span class="blue-grey-text">Vous devez être connecté pour signaler un commentaire</span>
+                        <?php endif ?>
                     <?php endif ?>
                     <blockquote><?= $comment->content ?></blockquote>
                 </div>
