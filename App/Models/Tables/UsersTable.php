@@ -24,7 +24,7 @@ abstract class UsersTable
 
     public static function get($username)
     {
-        $statement = 'SELECT id, username, password, role_id 
+        $statement = 'SELECT id, username, password, email, role_id 
                         FROM users
                         WHERE username = ?';
         return Database::prepare($statement, [$username], Database::FETCH_SINGLE, self::USER_ENTITY_CLASS);
@@ -57,5 +57,19 @@ abstract class UsersTable
 
     public static function delete(int $id) {
         return Database::prepare('DELETE FROM users WHERE id = ?', [$id]);
+    }
+
+    public static function updateAccount(int $id, string $email) {
+        $statement = 'UPDATE users
+                        SET email = :email
+                        WHERE id = :id';
+        return Database::prepare($statement, compact('email', 'id'));
+    }
+
+    public static function updatePassword(int $id, string $password) {
+        $statement = 'UPDATE users
+                        SET password = :password
+                        WHERE id = :id';
+        return Database::prepare($statement, compact('password', 'id'));
     }
 }

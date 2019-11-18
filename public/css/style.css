@@ -35,6 +35,10 @@ blockquote {
   border-left-color: #607d8b;
 }
 
+strong {
+  font-weight: bold;
+}
+
 .sidenav {
   text-transform: uppercase;
 }

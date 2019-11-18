@@ -20,6 +20,10 @@ class Router
 						$controller = Controller::factory('auth');
 						break;
 
+					case 'accountSettings':
+						$controller = Controller::factory('accountSettings');
+						break;
+
 					case 'chaptersPanel':
 						$controller = Controller::factory('dashboard\\ChaptersPanel');
 						break;
