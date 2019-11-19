@@ -2,7 +2,7 @@
 
 namespace Codbear\Alaska\Controllers;
 
-use Codbear\Alaska\Models\BookModel;
+use Codbear\Alaska\Models\Tables\ChaptersTable;
 use Codbear\Alaska\Services\Renderer\Renderer;
 
 class Controller
@@ -20,7 +20,7 @@ class Controller
     {
         $this->renderer = Renderer::getInstance(dirname((__DIR__)) . '/Views');
         $this->renderer->addGlobal('title', 'Un billet pour l\'Alaska');
-        $this->renderer->addGlobal('tableOfContent', BookModel::getAllChapters());
+        $this->renderer->addGlobal('tableOfContent', ChaptersTable::getAll());
     }
 
     public function notFound()

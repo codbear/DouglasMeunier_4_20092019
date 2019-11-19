@@ -1,13 +1,15 @@
 <?php
 
-use Codbear\Alaska\Models\ChapterModel; ?>
+use Codbear\Alaska\Models\Tables\ChaptersTable;
+
+?>
 
 <div class="row">
     <div class="col s10 offset-s1">
         <div class="row">
             <h2>Editeur de chapitre</h2>
         </div>
-        <form action="?view=chapterEditor&action=saveChapter&chapterId=<?= $chapter->id ?>" method="post">
+        <form action="?view=chapterEditor&action=saveChapter<?= isset($chapter->id) ? "&chapterId=$chapter->id" : "" ?>" method="post">
             <div class="card">
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -19,25 +21,20 @@ use Codbear\Alaska\Models\ChapterModel; ?>
                     <div id="chapter-metadatas">
                         <div class="row">
                             <div class="input-field col s12 xl8 offset-xl2">
-                                <input type="text" name="chapter-title" id="chapter-title" class="validate" value="<?= $chapter->title ?>" required>
+                                <input type="text" name="chapter-title" id="chapter-title" class="validate" <?= isset($chapter->title) ? "value='$chapter->title'" : "" ?> required>
                                 <label for="chapter-title">Titre</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12 xl2 offset-xl2">
-                                <input type="number" name="chapter-number" id="chapter-number" class="validate" value="<?= $chapter->number ?>" required>
+                                <input type="number" name="chapter-number" id="chapter-number" class="validate" <?= isset($chapter->number) ? "value='$chapter->number'" : "" ?> required>
                                 <label for="chapter-number">Chapitre n°</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12 xl8 offset-xl2">
-                                <textarea class="tiny-editor" name="chapter-excerpt" id="chapterExcerpt"><?= $chapter->excerpt ?></textarea>
+                                <textarea class="tiny-editor" name="chapter-excerpt" id="chapterExcerpt"><?= isset($chapter->excerpt) ? "$chapter->excerpt" : "" ?></textarea>
                                 <label for="chapter-excerpt">Extrait</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s12 m4 offset-m2">
-                                <p>Date de création : <?= $chapter->creation_date_fr ?></p>
                             </div>
                         </div>
                     </div>
@@ -45,7 +42,7 @@ use Codbear\Alaska\Models\ChapterModel; ?>
                 <div id="chapter-content">
                     <div class="row">
                         <div class="col s10 offset-s1">
-                            <textarea class="tiny-editor" name="chapter-content" id="chapterContent"><?= $chapter->content ?></textarea>
+                            <textarea class="tiny-editor" name="chapter-content" id="chapterContent"><?= isset($chapter->content) ? "$chapter->content" : "" ?></textarea>
                             <br>
                         </div>
                     </div>
@@ -57,13 +54,13 @@ use Codbear\Alaska\Models\ChapterModel; ?>
                 </a>
                 <ul>
                     <li>
-                        <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" class="btn-floating red">
+                        <a href="?view=chaptersPanel&action=moveChapterToTrash<?= isset($chapter->id) ? "&chapterId=$chapter->id" : "" ?>" class="btn-floating red">
                             <i class="material-icons">delete</i>
                         </a>
                     </li>
-                    <?php if ($chapter->status != ChapterModel::STATUS_PUBLISHED) : ?>
+                    <?php if (!isset($chapter->status) || $chapter->status != ChaptersTable::STATUS_PUBLISHED) : ?>
                         <li>
-                            <button type="submit" formaction="/?view=chapterEditor&action=publishChapter&chapterId=<?= $chapter->id ?>" class="btn-floating blue">
+                            <button type="submit" formaction="/?view=chapterEditor&action=publishChapter<?= isset($chapter->id) ? "&chapterId=$chapter->id" : "" ?>" class="btn-floating blue">
                                 <i class="material-icons">publish</i>
                             </button>
                         </li>

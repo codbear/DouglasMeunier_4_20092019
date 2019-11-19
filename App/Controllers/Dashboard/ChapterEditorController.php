@@ -3,65 +3,89 @@
 namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\ChapterModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
+use Codbear\Alaska\Models\Entity\ChapterEntity;
+use Codbear\Alaska\Models\Tables\ChaptersTable;
+use Exception;
 
 class ChapterEditorController extends DashboardController implements ControllerInterface
 {
-    private $chapter = null;
+    private $chapter;
 
     public function execute(array $params, array $datas)
     {
-        $this->chapter = ChapterModel::getChapter((int) $params['chapterId']);
+        if (isset($params['chapterId'])) {
+            $this->chapter = ChaptersTable::get((int) $params['chapterId']);
+        } else {
+            $this->chapter = new ChapterEntity();
+        }
         if (isset($params['action'])) {
             switch ($params['action']) {
                 case 'saveChapter':
-                    $this->saveChapter($datas, $this->chapter->status);
+                    $this->save($datas);
                     break;
 
                 case 'publishChapter':
-                    $this->saveChapter($datas, ChapterModel::STATUS_PUBLISHED);
-                    header('Location: /?view=chaptersPanel');
-                    exit();
+                    $this->save($datas, true);
                     break;
 
                 default:
                     return $this->notFound();
                     break;
             }
-            header('Location: ' . $this->chapter->editorUrl . '');
-        } else {
-            $this->renderer->addGlobal('title', 'Dashboard | Editeur');
-            return $this->renderer->render('dashboard/chapterEditor', [
-                'chapter' => $this->chapter]);
         }
+        $this->renderer->addGlobal('title', 'Dashboard | Editeur');
+        return $this->renderer->render('dashboard/chapterEditor', [
+            'chapter' => $this->chapter
+        ]);
     }
 
-    private function saveChapter(array $datas, $chapterStatus)
+    private function save(array $datas, bool $publish = false)
     {
         $this->chapter->title = $datas['chapter-title'];
-        $this->chapter->number = $datas['chapter-number'];
+        $this->chapter->number = $this->chapter->number_save = $datas['chapter-number'];
         $this->chapter->content = $datas['chapter-content'];
         if (empty($datas['chapter-excerpt'])) {
             $this->chapter->excerpt = substr($this->chapter->content, 0, 252) . '...';
         } else {
             $this->chapter->excerpt = $datas['chapter-excerpt'];
         }
-        if (ChapterModel::save(
-            $this->chapter->id,
-            $this->chapter->title,
-            $this->chapter->number,
-            $this->chapter->content,
-            $this->chapter->excerpt,
-            $chapterStatus
-        )) {
-            if ($chapterStatus === ChapterModel::STATUS_PUBLISHED) {
-                Session::setFlashbag('Le chapitre a bien été publié', 'success');
-            } else {
-                Session::setFlashbag('Le chapitre a bien été enregistré', 'success');
+        if ($publish) {
+            $this->chapter->status = ChaptersTable::STATUS_PUBLISHED;
+        } elseif (!isset($this->chapter->status)) {
+            $this->chapter->status = ChaptersTable::STATUS_DRAFT;
+        }
+        try {
+            if (empty($this->chapter->title)) {
+                throw new Exception("Vous devez saisir un titre pour votre chapitre");
             }
-        } else {
-            Session::setFlashbag('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.', 'error');
+            if (empty($this->chapter->number)) {
+                throw new Exception("Vous devez saisir un numéro de chapitre");
+            }
+            if ($this->chapter->status === ChaptersTable::STATUS_PUBLISHED) {
+                if (empty($this->chapter->content)) {
+                    throw new Exception('Impossible de publier un chapitre sans contenu');
+                }
+            }
+            if (ChaptersTable::save($this->chapter)) {
+                if ($this->chapter->status === ChaptersTable::STATUS_PUBLISHED) {
+                    Session::setFlashbag('Le chapitre a bien été publié', 'success');
+                } else {
+                    if (empty($this->chapter->content)) {
+                        Session::setFlashbag('Le chapitre a bien été enregistré, mais son contenu est vide');
+                    } else {
+                        Session::setFlashbag('Le chapitre a bien été enregistré', 'success');
+                    }
+                }
+                header('Location: /?view=chaptersPanel');
+            } else {
+                throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.');
+            }
+        } catch (Exception $e) {
+            if ($publish) {
+                $this->chapter->status = ChaptersTable::STATUS_DRAFT;
+            }
+            Session::setFlashbag($e->getMessage(), 'error');
         }
     }
 }

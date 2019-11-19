@@ -4,9 +4,9 @@ namespace Codbear\Alaska\Controllers;
 
 use PDOStatement;
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\ChapterModel;
 use Codbear\Alaska\Models\Tables\CommentsTable;
 use Codbear\Alaska\Interfaces\ControllerInterface;
+use Codbear\Alaska\Models\Tables\ChaptersTable;
 
 class BookController extends Controller implements ControllerInterface
 {
@@ -21,9 +21,9 @@ class BookController extends Controller implements ControllerInterface
                 header('Location: /?view=book&chapterId=' . $chapterId);
             }
 
-            $chapter = ChapterModel::getChapter($chapterId);
+            $chapter = ChaptersTable::get($chapterId);
 
-            if (!$chapter || $chapter->status != ChapterModel::STATUS_PUBLISHED) {
+            if (!$chapter || $chapter->status != ChaptersTable::STATUS_PUBLISHED) {
                 return $this->notFound();
             }
 

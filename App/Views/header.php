@@ -1,7 +1,7 @@
 <?php
 
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\ChapterModel;
+use Codbear\Alaska\Models\Tables\ChaptersTable;
 use Codbear\Alaska\Models\Tables\UsersTable; ?>
 
 <header>
@@ -60,7 +60,7 @@ use Codbear\Alaska\Models\Tables\UsersTable; ?>
         <li>
             <ul>
                 <?php foreach ($tableOfContent as $chapterLink) : ?>
-                    <?php if ($chapterLink->status == ChapterModel::STATUS_PUBLISHED) : ?>
+                    <?php if ($chapterLink->status == ChaptersTable::STATUS_PUBLISHED) : ?>
                         <li>
                             <a href="<?= $chapterLink->url ?>" class="black-text">Chapitre <?= $chapterLink->number ?> - <?= $chapterLink->title ?></a>
                         </li>
