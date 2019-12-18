@@ -80,6 +80,11 @@ body.has-fixed-sidenav {
   }
 }
 
+.badge {
+  float: none !important;
+  font-weight: bold !important;
+}
+
 /** Homepage **/
 
 .hero {

@@ -8,7 +8,7 @@
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
                         <li class="tab col s6"><a class="blue-grey-text text-darken-4 active" href="#all">Tous</a></li>
-                        <li class="tab col s6"><a class="blue-grey-text text-darken-4" href="#signaled">Signalés<span class="new badge <?= ($signaled) ? 'red' : 'green' ?>" data-badge-caption=""><?= count($signaled) ?></span></a></li>
+                        <li class="tab col s6"><a class="blue-grey-text text-darken-4" href="#signaled">Signalés<?= count($signaled) > 0 ? '<span class="new badge red" data-badge-caption="">' . count($signaled) . '</span>': '' ?></a></li>
                     </ul>
                 </div>
                 <div class="card-content">
@@ -30,18 +30,18 @@
                                         <?php foreach ($comments as $comment) : ?>
                                             <tr>
                                                 <th>
+                                                    <a href="<?= protect($comment->deleteUrl) ?>" title="Supprimer"><i class="material-icons red-text">delete_forever</i></a>
                                                     <?php if ($comment->reporting > 0) : ?>
-                                                        <a href="<?= protect($comment->validateUrl) ?>"><i class="material-icons green-text">done_all</i></a>
+                                                        <a href="<?= protect($comment->validateUrl) ?>" title="Approuver"><i class="material-icons green-text">done_all</i></a>
                                                     <?php endif ?>
-                                                    <a href="<?= protect($comment->deleteUrl) ?>"><i class="material-icons red-text">delete_forever</i></a>
                                                 </th>
                                                 <th><?= protect($comment->chapter_number) ?></th>
                                                 <th><?= protect($comment->author) ?></th>
                                                 <th>
-                                                    <?= protect($comment->content) ?>
                                                     <?php if ($comment->reporting > 0) : ?>
                                                         <span class="right new badge orange" data-badge-caption="Signalé"></span>
                                                     <?php endif ?>
+                                                    <?= protect($comment->content) ?>
                                                 </th>
                                             </tr>
                                         <?php endforeach ?>
@@ -72,8 +72,8 @@
                                                 <th><?= protect($comment->chapter_number) ?></th>
                                                 <th><?= protect($comment->author) ?></th>
                                                 <th>
-                                                    <?= protect($comment->content) ?>
                                                     <span class="right new badge orange" data-badge-caption="<?= ($comment->reporting > 1) ? 'signalements' : 'signalement' ?>"><?= protect($comment->reporting) ?></span>
+                                                    <?= protect($comment->content) ?>
                                                 </th>
                                             </tr>
                                         <?php endforeach ?>
