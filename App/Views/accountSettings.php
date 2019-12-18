@@ -4,7 +4,7 @@
     </div>
     <div class="row">
         <div class="col s12">
-            <form action="?view=accountSettings&action=updateAccount&userId=<?= $user->id ?>" method="post" class="card">
+            <form action="?view=accountSettings&action=updateAccount&userId=<?= protect($user->id) ?>" method="post" class="card">
                 <div class="card-content">
                     <div class="card-title">
                         <h3>Profil</h3>
@@ -12,13 +12,13 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12 xl8 offset-xl2">
-                            <input type="text" name="chapter-title" id="chapter-title" class="validate" value="<?= $user->username ?>" disabled>
+                            <input type="text" name="chapter-title" id="chapter-title" class="validate" value="<?= protect($user->username) ?>" disabled>
                             <label for="chapter-title">Nom d'utilisateur</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 xl8 offset-xl2">
-                            <input type="email" name="email" id="email" class="validate" value="<?= $user->email ?>" required>
+                            <input type="email" name="email" id="email" class="validate" value="<?= protect($user->email) ?>" required>
                             <label for="email">E-mail</label>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="row">
         <div class="col s12">
-            <form action="?view=accountSettings&action=updatePassword&userId=<?= $user->id ?>" method="post" class="card">
+            <form action="?view=accountSettings&action=updatePassword&userId=<?= protect($user->id) ?>" method="post" class="card">
                 <div class="card-content">
                     <div class="card-title">
                         <h3>Sécurité</h3>
@@ -64,7 +64,7 @@
     </div>
     <div class="row">
         <div class="col s12">
-            <form action="?view=accountSettings&action=deleteAccount&userId=<?= $user->id ?>" method="post" class="card">
+            <form action="?view=accountSettings&action=deleteAccount&userId=<?= protect($user->id) ?>" method="post" class="card">
                 <div class="card-content">
                     <div class="card-title">
                         <h3>Supprimer le compte</h3>

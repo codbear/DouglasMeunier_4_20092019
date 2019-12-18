@@ -22,8 +22,8 @@
                                 <div class="row">
                                     <div class="col s8">
                                         <div class="card-content">
-                                            <span class="card-title">Chapitre <?= $chapter->number ?> - <?= $chapter->title ?></span>
-                                            <p>Date de création : <?= $chapter->creation_date_fr ?></p>
+                                            <span class="card-title">Chapitre <?= protect($chapter->number) ?> - <?= protect($chapter->title) ?></span>
+                                            <p>Date de création : <?= protect($chapter->creation_date_fr) ?></p>
                                             <br>
                                             <p><?= $chapter->excerpt ?></p>
                                         </div>
@@ -32,12 +32,12 @@
                                         <div class="card-action">
                                             <div class="row">
                                                 <div class="col s12">
-                                                    <a href="?view=chapterEditor&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light blue"><i class="material-icons left">edit</i>Editer</a>
+                                                    <a href="?view=chapterEditor&chapterId=<?= protect($chapter->id) ?>" class="btn-small waves-effect waves-light blue"><i class="material-icons left">edit</i>Editer</a>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col s12">
-                                                    <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light red"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
+                                                    <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= protect($chapter->id) ?>" class="btn-small waves-effect waves-light red"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -60,8 +60,8 @@
                                 <div class="row">
                                     <div class="col s12">
                                         <div class="card-content">
-                                            <span class="card-title">Chapitre <?= $chapter->number ?> - <?= $chapter->title ?></span>
-                                            <p>Date de création : <?= $chapter->creation_date_fr ?></p>
+                                            <span class="card-title">Chapitre <?= protect($chapter->number) ?> - <?= protect($chapter->title) ?></span>
+                                            <p>Date de création : <?= protect($chapter->creation_date_fr) ?></p>
                                             <br>
                                             <p><?= $chapter->excerpt ?></p>
                                         </div>
@@ -70,12 +70,12 @@
                                         <div class="card-action">
                                             <div class="row">
                                                 <div class="col s12">
-                                                    <a href="?view=chapterEditor&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light blue"><i class="material-icons left">edit</i>Editer</a>
+                                                    <a href="?view=chapterEditor&chapterId=<?= protect($chapter->id) ?>" class="btn-small waves-effect waves-light blue"><i class="material-icons left">edit</i>Editer</a>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col s12">
-                                                    <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light red"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
+                                                    <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= protect($chapter->id) ?>" class="btn-small waves-effect waves-light red"><i class="material-icons left">delete</i>Mettre à la corbeille</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,8 +98,8 @@
                                 <div class="row">
                                     <div class="col s8">
                                         <div class="card-content">
-                                            <span class="card-title">Chapitre <?= $chapter->number_save ?> - <?= $chapter->title ?></span>
-                                            <p>Date de création : <?= $chapter->creation_date_fr ?></p>
+                                            <span class="card-title">Chapitre <?= protect($chapter->number_save) ?> - <?= protect($chapter->title) ?></span>
+                                            <p>Date de création : <?= protect($chapter->creation_date_fr) ?></p>
                                             <br>
                                             <p><?= $chapter->excerpt ?></p>
                                         </div>
@@ -108,12 +108,12 @@
                                         <div class="card-action">
                                             <div class="row">
                                                 <div class="col s12">
-                                                    <a href="/?view=chaptersPanel&action=restoreChapterFromTrash&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light green"><i class="material-icons left">restore</i>Restaurer</a>
+                                                    <a href="/?view=chaptersPanel&action=restoreChapterFromTrash&chapterId=<?= protect($chapter->id) ?>" class="btn-small waves-effect waves-light green"><i class="material-icons left">restore</i>Restaurer</a>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col s12">
-                                                    <a href="/?view=chaptersPanel&action=deleteChapterPermanently&chapterId=<?= $chapter->id ?>" class="btn-small waves-effect waves-light black"><i class="material-icons left">delete_forever</i>Supprimer définitivement</a>
+                                                    <a href="/?view=chaptersPanel&action=deleteChapterPermanently&chapterId=<?= protect($chapter->id) ?>" class="btn-small waves-effect waves-light black"><i class="material-icons left">delete_forever</i>Supprimer définitivement</a>
                                                 </div>
                                             </div>
                                         </div>
