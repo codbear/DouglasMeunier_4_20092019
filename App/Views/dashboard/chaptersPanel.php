@@ -22,7 +22,7 @@
                                 <div class="row">
                                     <div class="col s8">
                                         <div class="card-content">
-                                            <span class="card-title">Chapitre <?= protect($chapter->number) ?> - <?= protect($chapter->title) ?></span>
+                                            <span class="card-title">Chapitre <?= protect($chapter->number_save) ?> - <?= protect($chapter->title) ?></span>
                                             <p>Date de création : <?= protect($chapter->creation_date_fr) ?></p>
                                             <br>
                                             <p><?= $chapter->excerpt ?></p>

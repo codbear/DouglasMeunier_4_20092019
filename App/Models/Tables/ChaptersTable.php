@@ -33,7 +33,8 @@ class ChaptersTable
         return Database::prepare($statement, [$id], Database::FETCH_SINGLE, self::CHAPTER_ENTITY_CLASS);
     }
 
-    public static function getWithNumber(int $number) {
+    public static function getWithNumber(int $number)
+    {
         $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
                         DATE_FORMAT(creation_date, \'%d/%m/%Y %H:%i:%s\') AS creation_date_fr
                         FROM chapters 
@@ -43,17 +44,22 @@ class ChaptersTable
 
     public static function setStatus(int $id, int $status): PDOStatement
     {
+        $datas = [
+            'id' => $id,
+            'status' => $status
+        ];
         if ($status === self::STATUS_TRASH || $status === self::STATUS_DELETED) {
             $statement = 'UPDATE chapters 
                         SET status = :status,
-                        number = MIN(number) -1
+                        number = :number
                         WHERE id = :id';
+            $datas['number']= self::getMinChapterNumber() - 1;
         } else {
             $statement = 'UPDATE chapters 
                             SET status = :status
                             WHERE id = :id';
         }
-        return Database::prepare($statement, compact('status', 'id'), false);
+        return Database::prepare($statement, $datas, false);
     }
 
     public static function save(ChapterEntity $chapter): PDOStatement
@@ -81,5 +87,20 @@ class ChaptersTable
             $datas['id'] = (int) $chapter->id;
         }
         return Database::prepare($statement, $datas, false);
+    }
+
+    public static function getMaxChapterNumber(): int
+    {
+        $req = Database::query('SELECT MAX(number) AS max_number FROM chapters', Database::FETCH_SINGLE);
+        if ($req->max_number < 0) {
+            return 0;
+        }
+        return $req->max_number;
+    }
+
+    private static function getMinChapterNumber(): int
+    {
+        $req = Database::query('SELECT MIN(number) AS min_number FROM chapters', Database::FETCH_SINGLE);
+        return $req->min_number;
     }
 }

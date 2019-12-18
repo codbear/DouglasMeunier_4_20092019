@@ -34,6 +34,9 @@ class ChapterEditorController extends DashboardController implements ControllerI
                     break;
             }
         }
+        if (!isset($this->chapter->number) || $this->chapter->number < 1) {
+            $this->chapter->number = ChaptersTable::getMaxChapterNumber() + 1;
+        }
         $this->renderer->addGlobal('title', 'Dashboard | Editeur');
         return $this->renderer->render('dashboard/chapterEditor', [
             'chapter' => $this->chapter
@@ -61,6 +64,9 @@ class ChapterEditorController extends DashboardController implements ControllerI
             }
             if (empty($this->chapter->number)) {
                 throw new Exception("Vous devez saisir un numéro de chapitre");
+            }
+            if ($this->chapter->number < 1) {
+                throw new Exception("Vous ne pouvez pas saisir un numéro de chapitre négatif");
             }
             if ($this->chapter->status === ChaptersTable::STATUS_PUBLISHED) {
                 if (empty($this->chapter->content)) {
