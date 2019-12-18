@@ -9,15 +9,34 @@ use Codbear\Alaska\Models\Tables\ChaptersTable;
         <div class="row">
             <h2>Editeur de chapitre</h2>
         </div>
-        <form action="?view=chapterEditor&action=saveChapter<?= isset($chapter->id) ? '&chapterId=' . protect($chapter->id) . '' : '' ?>" method="post">
+        <form action="<?= protect($chapter->saveUrl)?> " method="post">
             <div class="card">
-                <div class="card-tabs">
-                    <ul class="tabs tabs-fixed-width">
-                        <li class="tab"><a class="blue-grey-text text-darken-4 active" href="#chapter-metadatas">Métadonnées</a></li>
-                        <li class="tab"><a class="blue-grey-text text-darken-4" href="#chapter-content">Contenu</a></li>
-                    </ul>
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col s3 m2 xl1">
+                            <button type="submit" title="Enregistrer" class="btn green"><i class="material-icons">save</i></button>
+                        </div>
+                        <div class="col s3 m2 xl1">
+                            <?php if (!isset($chapter->status) || $chapter->status != ChaptersTable::STATUS_PUBLISHED) : ?>
+                                <button type="submit" formaction="<?= protect($chapter->publishUrl) ?>" title="Publier" class="btn blue">
+                                    <i class="material-icons">publish</i>
+                                </button>
+                            <?php endif ?>
+                        </div>
+                        <div class="col s3 m2 xl1">
+                            <a href="<?= protect($chapter->MoveToTrashUrl) ?>" title="Supprimer" class="btn red">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-content">
+                    <div class="card-tabs">
+                        <ul class="tabs tabs-fixed-width">
+                            <li class="tab"><a class="blue-grey-text text-darken-4 active" href="#chapter-metadatas">Métadonnées</a></li>
+                            <li class="tab"><a class="blue-grey-text text-darken-4" href="#chapter-content">Contenu</a></li>
+                        </ul>
+                    </div>
                     <div id="chapter-metadatas">
                         <div class="row">
                             <div class="input-field col s12 xl8 offset-xl2">
@@ -47,28 +66,6 @@ use Codbear\Alaska\Models\Tables\ChaptersTable;
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="fixed-action-btn">
-                <a class="btn-floating btn-large red">
-                    <i class="large material-icons">add</i>
-                </a>
-                <ul>
-                    <li>
-                        <a href="?view=chaptersPanel&action=moveChapterToTrash<?= isset($chapter->id) ? '&chapterId=' . protect($chapter->id) . '' : '' ?>" class="btn-floating red">
-                            <i class="material-icons">delete</i>
-                        </a>
-                    </li>
-                    <?php if (!isset($chapter->status) || $chapter->status != ChaptersTable::STATUS_PUBLISHED) : ?>
-                        <li>
-                            <button type="submit" formaction="/?view=chapterEditor&action=publishChapter<?= isset($chapter->id) ? '&chapterId=' . protect($chapter->id) . '' : '' ?>" class="btn-floating blue">
-                                <i class="material-icons">publish</i>
-                            </button>
-                        </li>
-                    <?php endif ?>
-                    <li>
-                        <button type="submit" class="btn-floating green"><i class="material-icons">save</i></button>
-                    </li>
-                </ul>
             </div>
         </form>
     </div>

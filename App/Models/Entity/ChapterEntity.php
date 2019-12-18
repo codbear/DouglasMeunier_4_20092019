@@ -23,6 +23,33 @@ class ChapterEntity
         return '/?view=chapterEditor&chapterId=' . $this->id;
     }
 
+    private function getPublishUrl(): string
+    {
+        if (isset($this->id)) {
+            return '/?view=chapterEditor&action=publishChapter&chapterId=' . $this->id;
+        } else {
+            return '/?view=chapterEditor&action=publishChapter';
+        }
+    }
+
+    private function getSaveUrl(): string
+    {
+        if (isset($this->id)) {
+            return '?view=chapterEditor&action=saveChapter&chapterId=' . $this->id;
+        } else {
+            return '?view=chapterEditor&action=saveChapter';
+        }
+    }
+
+    private function getMoveToTrashUrl(): string
+    {
+        if (isset($this->id)) {
+            return '?view=chaptersPanel&action=moveChapterToTrash&chapterId=' . $this->id;
+        } else {
+            return '?view=chaptersPanel&action=moveChapterToTrash';
+        }
+    }
+
     private function getPreviousChapterUrl()
     {
         if ($previousChapter = ChaptersTable::getWithNumber($this->number - 1)) {
