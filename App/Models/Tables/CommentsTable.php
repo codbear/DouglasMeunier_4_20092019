@@ -13,7 +13,7 @@ abstract class CommentsTable
         $statement = 'SELECT c.id, c.content, c.deleted, u.username AS author, ch.number AS chapter_number, DATE_FORMAT(c.creation_date, \'%d.%m.%Y\') AS creation_date_fr
                         FROM comments AS c
                         INNER JOIN users AS u
-                        ON u.id = c.user_id
+                        ON u.id = c.author
                         INNER JOIN chapters AS ch
                         ON c.chapter_id = ch.id
                         WHERE deleted = 0
@@ -35,7 +35,7 @@ abstract class CommentsTable
                         DATE_FORMAT(c.creation_date, \'%d.%m.%Y\') AS creation_date_fulltext
                         FROM comments AS c
                         INNER JOIN users AS u
-                        ON u.id = c.user_id
+                        ON u.id = c.author
                         WHERE c.deleted = 0 AND c.chapter_id = ? 
                         ORDER BY c.creation_date DESC';
         $datas = [$chapterId];
@@ -44,7 +44,7 @@ abstract class CommentsTable
 
     public static function publish(int $chapter_id, int $user_id, string $content): PDOStatement
     {
-        $statement = 'INSERT INTO comments(chapter_id, user_id, content)
+        $statement = 'INSERT INTO comments(chapter_id, author, content)
                         VALUES (:chapter_id, :user_id, :content)';
         $datas = compact('chapter_id', 'user_id', 'content');
         return Database::prepare($statement, $datas);

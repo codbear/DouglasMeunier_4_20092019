@@ -74,5 +74,5 @@ use Codbear\Alaska\Models\Tables\ChaptersTable;
     </div>
 </div>
 
-<script src="public/scripts/tinymce/js/tinymce/tinymce.min.js"></script>
-<script src="public/scripts/chapterEditor.js"></script>
+<script src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="scripts/chapterEditor.js"></script>

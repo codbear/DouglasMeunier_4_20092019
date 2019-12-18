@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/css?family=Baloo|Concert+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="has-fixed-sidenav">
@@ -79,7 +79,7 @@
 
     <?php include('footer.php') ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="public/scripts/main.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 
 </html>

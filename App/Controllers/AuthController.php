@@ -67,7 +67,7 @@ class AuthController extends Controller implements ControllerInterface
             }
             Session::set('user', [
                 'username' => $user->username,
-                'role' => (int) $user->role_id,
+                'role' => (int) $user->role,
                 'id' => (int) $user->id
             ]);
         } catch (Exception $e) {

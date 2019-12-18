@@ -18,23 +18,23 @@ abstract class UsersTable
         $statement = 'SELECT u.id, u.username, u.email, r.role AS role
                         FROM users AS u
                         INNER JOIN roles AS r
-                            ON u.role_id = r.id';
+                            ON u.role = r.id';
         return Database::query($statement, Database::FETCH_ALL, self::USER_ENTITY_CLASS);
     }
 
     public static function get($username)
     {
-        $statement = 'SELECT id, username, password, email, role_id 
+        $statement = 'SELECT id, username, password, email, role 
                         FROM users
                         WHERE username = ?';
         return Database::prepare($statement, [$username], Database::FETCH_SINGLE, self::USER_ENTITY_CLASS);
     }
 
-    public static function register($username, $password, $email, $role_id = self::ROLE_DEFAULT)
+    public static function register($username, $password, $email, $role = self::ROLE_DEFAULT)
     {
-        $statement = 'INSERT INTO users(username, password, email, role_id)
-                        VALUES (:username, :password, :email, :role_id)';
-        $datas = compact('username', 'password', 'email', 'role_id');
+        $statement = 'INSERT INTO users(username, password, email, role)
+                        VALUES (:username, :password, :email, :role)';
+        $datas = compact('username', 'password', 'email', 'role');
         return Database::prepare($statement, $datas, false);
     }
 
@@ -51,8 +51,8 @@ abstract class UsersTable
     }
 
     public static function getRole(int $id) {
-        $response = Database::prepare('SELECT role_id FROM users WHERE id = ?', [$id], Database::FETCH_SINGLE);
-        return $response->role_id;
+        $response = Database::prepare('SELECT role FROM users WHERE id = ?', [$id], Database::FETCH_SINGLE);
+        return $response->role;
     }
 
     public static function delete(int $id) {
