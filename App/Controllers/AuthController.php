@@ -60,10 +60,10 @@ class AuthController extends Controller implements ControllerInterface
         try {
             $user = UsersTable::get($username);
             if ($user === false) {
-                throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrecte");
+                throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrect");
             }
             if (!password_verify($password, $user->password)) {
-                throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrecte");
+                throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrect");
             }
             Session::set('user', [
                 'username' => $user->username,
