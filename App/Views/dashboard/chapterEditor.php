@@ -14,14 +14,14 @@ use Codbear\Alaska\Models\ChaptersModel;
                 <div class="card-action">
                     <div class="row">
                         <div class="col s3 m2 xl1">
-                            <button type="submit" title="Enregistrer" class="btn green"><i class="material-icons">save</i></button>
-                        </div>
-                        <div class="col s3 m2 xl1">
                             <?php if (!isset($chapter->status) || $chapter->status != ChaptersModel::STATUS_PUBLISHED) : ?>
                                 <button type="submit" formaction="<?= protect($chapter->publishUrl) ?>" title="Publier" class="btn blue">
                                     <i class="material-icons">publish</i>
                                 </button>
                             <?php endif ?>
+                        </div>
+                        <div class="col s3 m2 xl1">
+                            <button type="submit" title="Enregistrer" class="btn green"><i class="material-icons">save</i></button>
                         </div>
                         <div class="col s3 m2 xl1">
                             <a href="<?= protect($chapter->MoveToTrashUrl) ?>" title="Supprimer" class="btn red">

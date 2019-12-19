@@ -2,15 +2,15 @@
 
 namespace Codbear\Alaska\Services;
 
-use Codbear\Alaska\Models\Tables\UsersTable;
+use Codbear\Alaska\Models\UsersModel;
 
 class Session
 {
     public static function start()
     {
         session_start();
-        if (!isset($_SESSION['user']['role'])) {
-            self::set('user', ['role' => UsersTable::ROLE_ANONYMOUS]);
+        if (!isset($_SESSION['user'])) {
+            self::set('user', ['role' => UsersModel::ROLE_ANONYMOUS]);
         }
     }
 

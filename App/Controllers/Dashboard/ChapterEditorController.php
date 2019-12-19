@@ -68,6 +68,9 @@ class ChapterEditorController extends DashboardController implements ControllerI
             if ($this->chapter->number < 1) {
                 throw new Exception("Vous ne pouvez pas saisir un numéro de chapitre négatif");
             }
+            if (ChaptersModel::getWithNumber($this->chapter->number)) {
+                throw new Exception('Le chapitre ' . $this->chapter->number . ' existe déjà');
+            }
             if ($this->chapter->status === ChaptersModel::STATUS_PUBLISHED) {
                 if (empty($this->chapter->content)) {
                     throw new Exception('Impossible de publier un chapitre sans contenu');
