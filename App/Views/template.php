@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title><?= $title ?></title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/css?family=Baloo|Concert+One&display=swap" rel="stylesheet">
