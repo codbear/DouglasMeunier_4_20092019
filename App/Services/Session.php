@@ -9,8 +9,8 @@ class Session
     public static function start()
     {
         session_start();
-        if (!isset($_SESSION['role'])) {
-            $_SESSION['role'] = UsersTable::ROLE_ANONYMOUS;
+        if (!isset($_SESSION['user']['role'])) {
+            self::set('user', ['role' => UsersTable::ROLE_ANONYMOUS]);
         }
     }
 
