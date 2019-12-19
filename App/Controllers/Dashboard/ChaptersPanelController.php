@@ -58,8 +58,8 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                         break;
                 }
             }
-            $this->renderer->addGlobal('title', 'Dashboard | Chapitres');
             return $this->renderer->render('dashboard/chaptersPanel', [
+                'title' => 'Chapitres | Dashboard',
                 'published' => $this->published, 
                 'trash' => $this->trash, 
                 'drafts' => $this->drafts

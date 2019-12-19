@@ -3,6 +3,7 @@
 namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Exception;
+use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Models\Tables\CommentsTable;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Controllers\Dashboard\DashboardController;
@@ -38,6 +39,7 @@ class CommentsPanelController extends DashboardController implements ControllerI
                 $signaled[] = $comment;
             }
         }
+        $this->renderer->addGlobal('title', 'Commentaires | Dashboard');
         return $this->renderer->render('dashboard/commentsPanel', compact('comments', 'signaled'));
     }
 

@@ -37,8 +37,8 @@ class ChapterEditorController extends DashboardController implements ControllerI
         if (!isset($this->chapter->number) || $this->chapter->number < 1) {
             $this->chapter->number = ChaptersTable::getMaxChapterNumber() + 1;
         }
-        $this->renderer->addGlobal('title', 'Dashboard | Editeur');
         return $this->renderer->render('dashboard/chapterEditor', [
+            'title' => 'Editeur | Dashboard',
             'chapter' => $this->chapter
         ]);
     }

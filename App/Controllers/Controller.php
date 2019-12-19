@@ -19,7 +19,7 @@ class Controller
     public function __construct()
     {
         $this->renderer = Renderer::getInstance(dirname((__DIR__)) . '/Views');
-        $this->renderer->addGlobal('title', 'Un billet pour l\'Alaska');
+        $this->renderer->addGlobal('title', "Billet simple pour l'Alaska");
         $this->renderer->addGlobal('tableOfContent', ChaptersTable::getAll());
     }
 

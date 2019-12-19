@@ -27,7 +27,7 @@ class UsersPanelController extends DashboardController implements ControllerInte
         } else {
             $users = UsersTable::getAll();
             return $this->renderer->render('dashboard/usersPanel', [
-                'title' => 'Utilisateurs | Billet simple pour l\'Alaska',
+                'title' => 'Utilisateurs | Dashboard',
                 'users' => $users
             ]);
         }

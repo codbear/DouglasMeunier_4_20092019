@@ -36,6 +36,7 @@ class AccountSettingsController extends Controller implements ControllerInterfac
             }
         } else {
             return $this->renderer->render('accountSettings', [
+                'title' => "Mon compte | Billet simple pour l'Alaska",
                 'user' => $this->user
             ]);
         }
