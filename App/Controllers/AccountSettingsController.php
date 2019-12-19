@@ -4,8 +4,8 @@ namespace Codbear\Alaska\Controllers;
 
 use Exception;
 use Codbear\Alaska\Services\Session;
+use Codbear\Alaska\Models\UsersModel;
 use Codbear\Alaska\Controllers\Controller;
-use Codbear\Alaska\Models\Tables\UsersTable;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class AccountSettingsController extends Controller implements ControllerInterface
@@ -14,7 +14,7 @@ class AccountSettingsController extends Controller implements ControllerInterfac
 
     public function execute(array $params, array $datas)
     {
-        $this->user = UsersTable::get(Session::get('user')['username']);
+        $this->user = UsersModel::get(Session::get('user')['username']);
         if (isset($params['action'])) {
             $userId = $params['userId'];
             switch ($params['action']) {
@@ -45,11 +45,11 @@ class AccountSettingsController extends Controller implements ControllerInterfac
     private function updateAccount(string $email)
     {
         try {
-            if ((!filter_var($email, FILTER_VALIDATE_EMAIL)) || (UsersTable::checkEmailInDatabase($email))) {
+            if ((!filter_var($email, FILTER_VALIDATE_EMAIL)) || (UsersModel::checkEmailInDatabase($email))) {
                 throw new Exception("L'e-mail que vous avez saisie n'est pas valide.");
             }
             $this->user->email = $email;
-            if (UsersTable::updateAccount($this->user->id, $this->user->email)) {
+            if (UsersModel::updateAccount($this->user->id, $this->user->email)) {
                 Session::setFlashbag('Votre e-mail a été modifié', 'success');
                 header('Location: /?view=accountSettings');
             }
@@ -69,7 +69,7 @@ class AccountSettingsController extends Controller implements ControllerInterfac
                 throw new Exception('Les mots de passe saisis ne sont pas identiques');
             }
             $this->user->password = password_hash($newPassword, PASSWORD_DEFAULT);
-            if (UsersTable::updatePassword($this->user->id, $this->user->password)) {
+            if (UsersModel::updatePassword($this->user->id, $this->user->password)) {
                 Session::setFlashbag('Votre mot de passe a été modifié', 'success');
                 header("Location: /?view=accountSettings");
             }
@@ -85,10 +85,10 @@ class AccountSettingsController extends Controller implements ControllerInterfac
             if (!password_verify($password, $this->user->password)) {
                 throw new Exception('Le mot de passe que vous avez saisis est incorrect');
             }
-            if (UsersTable::delete($this->user->id)) {
+            if (UsersModel::delete($this->user->id)) {
                 Session::setFlashbag('Votre compte a été supprimé', 'success');
                 Session::unset('user');
-                Session::set('user', ['role' => UsersTable::ROLE_ANONYMOUS]);
+                Session::set('user', ['role' => UsersModel::ROLE_ANONYMOUS]);
                 header("Location: /");
             }
         } catch (Exception $e) {

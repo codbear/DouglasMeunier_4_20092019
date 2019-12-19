@@ -1,14 +1,14 @@
 <?php
 
-namespace Codbear\Alaska\Models\Tables;
+namespace Codbear\Alaska\Models;
 
 use PDOStatement;
 use Codbear\Alaska\Services\Database;
-use Codbear\Alaska\Models\Entity\ChapterEntity;
+use Codbear\Alaska\Models\ViewModels\ChapterViewModel;
 
-class ChaptersTable
+class ChaptersModel
 {
-    const CHAPTER_ENTITY_CLASS = 'Codbear\\Alaska\\Models\\Entity\\ChapterEntity';
+    const VIEW_MODEL = 'Codbear\\Alaska\\Models\\ViewModels\\ChapterViewModel';
     const STATUS_DRAFT = 1;
     const STATUS_PUBLISHED = 2;
     const STATUS_TRASH = 3;
@@ -21,16 +21,16 @@ class ChaptersTable
                         DATE_FORMAT(creation_date, \'%d/%m/%Y - %H:%i:%s\') AS creation_date_fr 
                         FROM chapters 
                         ORDER BY number';
-        return Database::query($statement, Database::FETCH_ALL, self::CHAPTER_ENTITY_CLASS);
+        return Database::query($statement, Database::FETCH_ALL, self::VIEW_MODEL);
     }
 
-    public static function get(int $id): ChapterEntity
+    public static function get(int $id): ChapterViewModel
     {
         $statement = 'SELECT id, number, number_save, title, content, excerpt, status, 
                         DATE_FORMAT(creation_date, \'%d/%m/%Y %H:%i:%s\') AS creation_date_fr
                         FROM chapters 
                         WHERE id = ?';
-        return Database::prepare($statement, [$id], Database::FETCH_SINGLE, self::CHAPTER_ENTITY_CLASS);
+        return Database::prepare($statement, [$id], Database::FETCH_SINGLE, self::VIEW_MODEL);
     }
 
     public static function getWithNumber(int $number)
@@ -39,7 +39,7 @@ class ChaptersTable
                         DATE_FORMAT(creation_date, \'%d/%m/%Y %H:%i:%s\') AS creation_date_fr
                         FROM chapters 
                         WHERE number = ?';
-        return Database::prepare($statement, [$number], Database::FETCH_SINGLE, self::CHAPTER_ENTITY_CLASS);
+        return Database::prepare($statement, [$number], Database::FETCH_SINGLE, self::VIEW_MODEL);
     }
 
     public static function setStatus(int $id, int $status): PDOStatement
@@ -62,7 +62,7 @@ class ChaptersTable
         return Database::prepare($statement, $datas, false);
     }
 
-    public static function save(ChapterEntity $chapter): PDOStatement
+    public static function save(ChapterViewModel $chapter): PDOStatement
     {
         $datas = [
             'number' => (int) $chapter->number,

@@ -1,10 +1,10 @@
 <?php
 
-namespace Codbear\Alaska\Models\Entity;
+namespace Codbear\Alaska\Models\ViewModels;
 
-use Codbear\Alaska\Models\Tables\ChaptersTable;
+use Codbear\Alaska\Models\ChaptersModel;
 
-class ChapterEntity
+class ChapterViewModel
 {
     public function __get(string $attribute)
     {
@@ -52,8 +52,8 @@ class ChapterEntity
 
     private function getPreviousChapterUrl()
     {
-        if ($previousChapter = ChaptersTable::getWithNumber($this->number - 1)) {
-            if ($previousChapter->status == ChaptersTable::STATUS_PUBLISHED) {
+        if ($previousChapter = ChaptersModel::getWithNumber($this->number - 1)) {
+            if ($previousChapter->status == ChaptersModel::STATUS_PUBLISHED) {
                 return $previousChapter->url;
             }
         }
@@ -61,8 +61,8 @@ class ChapterEntity
 
     private function getNextChapterUrl()
     {
-        if ($nextChapter = ChaptersTable::getWithNumber($this->number + 1)) {
-            if ($nextChapter->status == ChaptersTable::STATUS_PUBLISHED) {
+        if ($nextChapter = ChaptersModel::getWithNumber($this->number + 1)) {
+            if ($nextChapter->status == ChaptersModel::STATUS_PUBLISHED) {
                 return $nextChapter->url;
             }
         }

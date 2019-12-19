@@ -4,9 +4,9 @@ namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Exception;
 use Codbear\Alaska\Services\Session;
+use Codbear\Alaska\Models\ChaptersModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Controllers\Dashboard\DashboardController;
-use Codbear\Alaska\Models\Tables\ChaptersTable;
 
 class ChaptersPanelController extends DashboardController implements ControllerInterface
 {
@@ -20,15 +20,15 @@ class ChaptersPanelController extends DashboardController implements ControllerI
             switch ($params['action']) {
 
                 case 'moveChapterToTrash':
-                    $this->changeChapterStatus($params['chapterId'], ChaptersTable::STATUS_TRASH);
+                    $this->changeChapterStatus($params['chapterId'], ChaptersModel::STATUS_TRASH);
                     break;
 
                 case 'restoreChapterFromTrash':
-                    $this->changeChapterStatus($params['chapterId'], ChaptersTable::STATUS_DRAFT);
+                    $this->changeChapterStatus($params['chapterId'], ChaptersModel::STATUS_DRAFT);
                     break;
 
                 case 'deleteChapterPermanently':
-                    $this->changeChapterStatus($params['chapterId'], ChaptersTable::STATUS_DELETED);
+                    $this->changeChapterStatus($params['chapterId'], ChaptersModel::STATUS_DELETED);
                     break;
 
                 case 'createNewChapter':
@@ -40,17 +40,17 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     break;
             }
         } else {
-            foreach (ChaptersTable::getAll() as $chapter) {
+            foreach (ChaptersModel::getAll() as $chapter) {
                 switch ($chapter->status) {
-                    case ChaptersTable::STATUS_PUBLISHED:
+                    case ChaptersModel::STATUS_PUBLISHED:
                         $this->published[] = $chapter;
                         break;
 
-                    case ChaptersTable::STATUS_TRASH:
+                    case ChaptersModel::STATUS_TRASH:
                         $this->trash[] = $chapter;
                         break;
 
-                    case ChaptersTable::STATUS_DRAFT:
+                    case ChaptersModel::STATUS_DRAFT:
                         $this->drafts[] = $chapter;
                         break;
 
@@ -67,20 +67,20 @@ class ChaptersPanelController extends DashboardController implements ControllerI
         }
     }
 
-    private function changeChapterStatus(int $chapterId, int $newStatus = ChaptersTable::STATUS_DEFAULT)
+    private function changeChapterStatus(int $chapterId, int $newStatus = ChaptersModel::STATUS_DEFAULT)
     {
         try {
-            if (ChaptersTable::setStatus((int) $chapterId, (int) $newStatus)) {
+            if (ChaptersModel::setStatus((int) $chapterId, (int) $newStatus)) {
                 switch ($newStatus) {
-                    case ChaptersTable::STATUS_TRASH:
+                    case ChaptersModel::STATUS_TRASH:
                         Session::setFlashbag('Le chapitre a été placé dans la corbeille', 'success');
                         break;
 
-                    case ChaptersTable::STATUS_DRAFT:
+                    case ChaptersModel::STATUS_DRAFT:
                         Session::setFlashbag('Le chapitre a été placé dans les brouillons', 'success');
                         break;
 
-                    case ChaptersTable::STATUS_DELETED:
+                    case ChaptersModel::STATUS_DELETED:
                         Session::setFlashbag('Le chapitre a été supprimé', 'success');
                         break;
 

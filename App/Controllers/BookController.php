@@ -4,9 +4,9 @@ namespace Codbear\Alaska\Controllers;
 
 use PDOStatement;
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\Tables\CommentsTable;
+use Codbear\Alaska\Models\ChaptersModel;
+use Codbear\Alaska\Models\CommentsModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
-use Codbear\Alaska\Models\Tables\ChaptersTable;
 
 class BookController extends Controller implements ControllerInterface
 {
@@ -21,16 +21,16 @@ class BookController extends Controller implements ControllerInterface
                 header('Location: /?view=book&chapterId=' . $chapterId);
             }
 
-            $chapter = ChaptersTable::get($chapterId);
+            $chapter = ChaptersModel::get($chapterId);
 
-            if (!$chapter || $chapter->status != ChaptersTable::STATUS_PUBLISHED) {
+            if (!$chapter || $chapter->status != ChaptersModel::STATUS_PUBLISHED) {
                 return $this->notFound();
             }
 
-            $comments = CommentsTable::getAllWithChapterId($chapterId);
+            $comments = CommentsModel::getAllWithChapterId($chapterId);
 
             foreach ($comments as $comment) {
-                $reportedBy = CommentsTable::getReportsList($comment->id);
+                $reportedBy = CommentsModel::getReportsList($comment->id);
                 foreach ($reportedBy as $k => $v) {
                     if (Session::get('user')['id'] === (int) $v->user_id) {
                         $comment->setReported();
@@ -63,11 +63,11 @@ class BookController extends Controller implements ControllerInterface
 
     private function publishComment(int $chapterId, int $userId, string $commentContent): PDOStatement
     {
-        return CommentsTable::publish((int) $chapterId, (int) $userId, (string) $commentContent);
+        return CommentsModel::publish((int) $chapterId, (int) $userId, (string) $commentContent);
     }
 
     private function reportComment(int $commentId) {
         $userId = Session::get('user')['id'];
-        return CommentsTable::report((int) $userId, (int) $commentId);
+        return CommentsModel::report((int) $userId, (int) $commentId);
     }
 }

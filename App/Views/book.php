@@ -1,7 +1,7 @@
 <?php
 
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\Tables\UsersTable; ?>
+use Codbear\Alaska\Models\UsersModel; ?>
 
 <div class="row">
     <article class="col s10 offset-s1">
@@ -45,7 +45,7 @@ use Codbear\Alaska\Models\Tables\UsersTable; ?>
             } ?>
         </h5>
         <div class="card">
-            <?php if (Session::get('user')['role'] === UsersTable::ROLE_ANONYMOUS) : ?>
+            <?php if (Session::get('user')['role'] === UsersModel::ROLE_ANONYMOUS) : ?>
                 <div class="card-content">
                     <p>Vous devez être connecté pour écrire un commenraire.</p>
                 </div>

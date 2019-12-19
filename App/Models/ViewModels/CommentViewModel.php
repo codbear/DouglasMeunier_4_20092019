@@ -1,8 +1,8 @@
 <?php
 
-namespace Codbear\Alaska\Models\Entity;
+namespace Codbear\Alaska\Models\ViewModels;
 
-class CommentEntity
+class CommentViewModel
 {
     public $reporting = 0;
     public $reported = 0;

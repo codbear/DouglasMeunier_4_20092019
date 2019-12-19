@@ -1,13 +1,13 @@
 <?php
 
-namespace Codbear\Alaska\Models\Tables;
+namespace Codbear\Alaska\Models;
 
 use Codbear\Alaska\Services\Database;
 use PDOStatement;
 
-abstract class CommentsTable
+abstract class CommentsModel
 {
-    const USER_ENTITY_CLASS = 'Codbear\\Alaska\\Models\\Entity\\CommentEntity';
+    const VIEW_MODEL = 'Codbear\\Alaska\\Models\\ViewModels\\CommentViewModel';
 
     public static function getAll() {
         $statement = 'SELECT c.id, c.content, c.deleted, u.username AS author, ch.number AS chapter_number, DATE_FORMAT(c.creation_date, \'%d.%m.%Y\') AS creation_date_fr
@@ -18,7 +18,7 @@ abstract class CommentsTable
                         ON c.chapter_id = ch.id
                         WHERE deleted = 0
                         ORDER BY c.creation_date DESC';
-        return Database::query($statement, Database::FETCH_ALL, self::USER_ENTITY_CLASS);
+        return Database::query($statement, Database::FETCH_ALL, self::VIEW_MODEL);
     }
 
     public static function getReporting(int $commentId) {
@@ -39,7 +39,7 @@ abstract class CommentsTable
                         WHERE c.deleted = 0 AND c.chapter_id = ? 
                         ORDER BY c.creation_date DESC';
         $datas = [$chapterId];
-        return Database::prepare($statement, $datas, Database::FETCH_ALL, self::USER_ENTITY_CLASS);
+        return Database::prepare($statement, $datas, Database::FETCH_ALL, self::VIEW_MODEL);
     }
 
     public static function publish(int $chapter_id, int $user_id, string $content): PDOStatement

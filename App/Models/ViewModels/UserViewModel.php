@@ -1,8 +1,8 @@
 <?php
 
-namespace Codbear\Alaska\Models\Entity;
+namespace Codbear\Alaska\Models\ViewModels;
 
-class UserEntity
+class UserViewModel
 { 
     public function __get($attribute)
     {

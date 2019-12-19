@@ -1,17 +1,17 @@
 <?php
 
-namespace Codbear\Alaska\Models\Tables;
+namespace Codbear\Alaska\Models;
 
 use Codbear\Alaska\Services\Database;
 
-abstract class UsersTable
+abstract class UsersModel
 {
 
+    const VIEW_MODEL = "Codbear\\Alaska\\Models\\ViewModels\\UserViewModel";
     const ROLE_ADMIN = 1;
     const ROLE_SUBSCRIBER = 2;
     const ROLE_ANONYMOUS = 3;
     const ROLE_DEFAULT = self::ROLE_SUBSCRIBER;
-    const USER_ENTITY_CLASS = "Codbear\\Alaska\\Models\\Entity\\UserEntity";
 
     public static function getAll()
     {
@@ -19,7 +19,7 @@ abstract class UsersTable
                         FROM users AS u
                         INNER JOIN roles AS r
                             ON u.role = r.id';
-        return Database::query($statement, Database::FETCH_ALL, self::USER_ENTITY_CLASS);
+        return Database::query($statement, Database::FETCH_ALL, self::VIEW_MODEL);
     }
 
     public static function get($username)
@@ -27,7 +27,7 @@ abstract class UsersTable
         $statement = 'SELECT id, username, password, email, role 
                         FROM users
                         WHERE username = ?';
-        return Database::prepare($statement, [$username], Database::FETCH_SINGLE, self::USER_ENTITY_CLASS);
+        return Database::prepare($statement, [$username], Database::FETCH_SINGLE, self::VIEW_MODEL);
     }
 
     public static function register($username, $password, $email, $role = self::ROLE_DEFAULT)

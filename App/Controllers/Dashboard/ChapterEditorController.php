@@ -2,11 +2,11 @@
 
 namespace Codbear\Alaska\Controllers\Dashboard;
 
-use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Interfaces\ControllerInterface;
-use Codbear\Alaska\Models\Entity\ChapterEntity;
-use Codbear\Alaska\Models\Tables\ChaptersTable;
 use Exception;
+use Codbear\Alaska\Services\Session;
+use Codbear\Alaska\Models\ChaptersModel;
+use Codbear\Alaska\Interfaces\ControllerInterface;
+use Codbear\Alaska\Models\ViewModels\ChapterViewModel;
 
 class ChapterEditorController extends DashboardController implements ControllerInterface
 {
@@ -15,9 +15,9 @@ class ChapterEditorController extends DashboardController implements ControllerI
     public function execute(array $params, array $datas)
     {
         if (isset($params['chapterId'])) {
-            $this->chapter = ChaptersTable::get((int) $params['chapterId']);
+            $this->chapter = ChaptersModel::get((int) $params['chapterId']);
         } else {
-            $this->chapter = new ChapterEntity();
+            $this->chapter = new ChapterViewModel();
         }
         if (isset($params['action'])) {
             switch ($params['action']) {
@@ -35,7 +35,7 @@ class ChapterEditorController extends DashboardController implements ControllerI
             }
         }
         if (!isset($this->chapter->number) || $this->chapter->number < 1) {
-            $this->chapter->number = ChaptersTable::getMaxChapterNumber() + 1;
+            $this->chapter->number = ChaptersModel::getMaxChapterNumber() + 1;
         }
         return $this->renderer->render('dashboard/chapterEditor', [
             'title' => 'Editeur | Dashboard',
@@ -54,9 +54,9 @@ class ChapterEditorController extends DashboardController implements ControllerI
             $this->chapter->excerpt = $datas['chapter-excerpt'];
         }
         if ($publish) {
-            $this->chapter->status = ChaptersTable::STATUS_PUBLISHED;
+            $this->chapter->status = ChaptersModel::STATUS_PUBLISHED;
         } elseif (!isset($this->chapter->status)) {
-            $this->chapter->status = ChaptersTable::STATUS_DRAFT;
+            $this->chapter->status = ChaptersModel::STATUS_DRAFT;
         }
         try {
             if (empty($this->chapter->title)) {
@@ -68,13 +68,13 @@ class ChapterEditorController extends DashboardController implements ControllerI
             if ($this->chapter->number < 1) {
                 throw new Exception("Vous ne pouvez pas saisir un numéro de chapitre négatif");
             }
-            if ($this->chapter->status === ChaptersTable::STATUS_PUBLISHED) {
+            if ($this->chapter->status === ChaptersModel::STATUS_PUBLISHED) {
                 if (empty($this->chapter->content)) {
                     throw new Exception('Impossible de publier un chapitre sans contenu');
                 }
             }
-            if (ChaptersTable::save($this->chapter)) {
-                if ($this->chapter->status === ChaptersTable::STATUS_PUBLISHED) {
+            if (ChaptersModel::save($this->chapter)) {
+                if ($this->chapter->status === ChaptersModel::STATUS_PUBLISHED) {
                     Session::setFlashbag('Le chapitre a bien été publié', 'success');
                 } else {
                     if (empty($this->chapter->content)) {
@@ -89,7 +89,7 @@ class ChapterEditorController extends DashboardController implements ControllerI
             }
         } catch (Exception $e) {
             if ($publish) {
-                $this->chapter->status = ChaptersTable::STATUS_DRAFT;
+                $this->chapter->status = ChaptersModel::STATUS_DRAFT;
             }
             Session::setFlashbag($e->getMessage(), 'error');
         }

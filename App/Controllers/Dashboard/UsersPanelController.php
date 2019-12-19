@@ -4,7 +4,7 @@ namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Exception;
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\Tables\UsersTable;
+use Codbear\Alaska\Models\UsersModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 
@@ -25,7 +25,7 @@ class UsersPanelController extends DashboardController implements ControllerInte
                     break;
             }
         } else {
-            $users = UsersTable::getAll();
+            $users = UsersModel::getAll();
             return $this->renderer->render('dashboard/usersPanel', [
                 'title' => 'Utilisateurs | Dashboard',
                 'users' => $users
@@ -35,10 +35,10 @@ class UsersPanelController extends DashboardController implements ControllerInte
 
     private function delete(int $userId) {
         try {
-            if (UsersTable::getRole((int) $userId) == UsersTable::ROLE_ADMIN) {
+            if (UsersModel::getRole((int) $userId) == UsersModel::ROLE_ADMIN) {
                 throw new Exception("Vous ne pouvez pas supprimer un compte administrateur");
             }
-            if (!UsersTable::delete((int) $userId)) {
+            if (!UsersModel::delete((int) $userId)) {
                 throw new Exception("Une erreur innatendue est survenue. Merci de réessayer ultérieurement");
             }
             header('Location: /?view=usersPanel');

@@ -1,8 +1,8 @@
 <?php
 
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\Tables\ChaptersTable;
-use Codbear\Alaska\Models\Tables\UsersTable; ?>
+use Codbear\Alaska\Models\ChaptersModel;
+use Codbear\Alaska\Models\UsersModel; ?>
 
 <header>
     <ul id="slide-out" class="sidenav sidenav-fixed blue-grey lighten-3">
@@ -13,8 +13,8 @@ use Codbear\Alaska\Models\Tables\UsersTable; ?>
             <ul>
                 <li class="waves-effect"><a href="/" class="sidenav-elem">Accueil</a></li>
                 <li class="waves-effect"><a href="#" data-target="table-of-chapters" class="sidenav-trigger show-on-large sidenav-elem">Lire</a></li>
-                <?php if (Session::get('user')['role'] !== UsersTable::ROLE_ANONYMOUS) : ?>
-                    <?php if (Session::get('user')['role'] == UsersTable::ROLE_ADMIN) : ?>
+                <?php if (Session::get('user')['role'] !== UsersModel::ROLE_ANONYMOUS) : ?>
+                    <?php if (Session::get('user')['role'] == UsersModel::ROLE_ADMIN) : ?>
                         <li>
                             <ul class="collapsible collapsible-accordion">
                                 <li>
@@ -60,7 +60,7 @@ use Codbear\Alaska\Models\Tables\UsersTable; ?>
         <li>
             <ul>
                 <?php foreach ($tableOfContent as $chapterLink) : ?>
-                    <?php if ($chapterLink->status == ChaptersTable::STATUS_PUBLISHED) : ?>
+                    <?php if ($chapterLink->status == ChaptersModel::STATUS_PUBLISHED) : ?>
                         <li>
                             <a href="<?= $chapterLink->url ?>" class="black-text">Chapitre <?= $chapterLink->number ?> - <?= $chapterLink->title ?></a>
                         </li>

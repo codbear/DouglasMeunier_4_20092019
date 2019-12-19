@@ -4,7 +4,7 @@ namespace Codbear\Alaska\Controllers\Dashboard;
 
 use Exception;
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\Tables\CommentsTable;
+use Codbear\Alaska\Models\CommentsModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Controllers\Dashboard\DashboardController;
 
@@ -31,10 +31,10 @@ class CommentsPanelController extends DashboardController implements ControllerI
                     break;
             }
         }
-        $comments = CommentsTable::getAll();
+        $comments = CommentsModel::getAll();
         $signaled = [];
         foreach ($comments as $comment) {
-            $comment->setReporting(CommentsTable::getReporting($comment->id));
+            $comment->setReporting(CommentsModel::getReporting($comment->id));
             if ($comment->reporting > 0) {
                 $signaled[] = $comment;
             }
@@ -46,7 +46,7 @@ class CommentsPanelController extends DashboardController implements ControllerI
     private function deleteComment(int $commentId)
     {
         try {
-            if (!CommentsTable::delete($commentId)) {
+            if (!CommentsModel::delete($commentId)) {
                 throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.");
             }
             header('Location: /?view=commentsPanel');
@@ -58,7 +58,7 @@ class CommentsPanelController extends DashboardController implements ControllerI
 
     private function validateComment(int $comment_id) {
         try {
-            if (!CommentsTable::validate($comment_id)) {
+            if (!CommentsModel::validate($comment_id)) {
                 throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement');
             }
             header('Location: /?view=commentsPanel');

@@ -4,7 +4,7 @@ namespace Codbear\Alaska\Controllers;
 
 use Exception;
 use Codbear\Alaska\Services\Session;
-use Codbear\Alaska\Models\Tables\UsersTable;
+use Codbear\Alaska\Models\UsersModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 
 class AuthController extends Controller implements ControllerInterface
@@ -58,7 +58,7 @@ class AuthController extends Controller implements ControllerInterface
     private function login(string $username, string $password)
     {
         try {
-            $user = UsersTable::get($username);
+            $user = UsersModel::get($username);
             if ($user === false) {
                 throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrect");
             }
@@ -78,13 +78,13 @@ class AuthController extends Controller implements ControllerInterface
     private function register(string $username, string $password, string $email)
     {
         try {
-            if (UsersTable::checkUsernameInDatabase($username)) {
+            if (UsersModel::checkUsernameInDatabase($username)) {
                 throw new Exception("Le pseudo que vous avez saisi n'est pas valide");
             }
-            if (UsersTable::checkEmailInDatabase($email)) {
+            if (UsersModel::checkEmailInDatabase($email)) {
                 throw new Exception("L'adresse e-mail que vous avez saisie n'est pas valide");
             }
-            if (UsersTable::register($username, password_hash($password, PASSWORD_DEFAULT), $email)) {
+            if (UsersModel::register($username, password_hash($password, PASSWORD_DEFAULT), $email)) {
                 $this->login($username, $password);
             } else {
                 throw new Exception("Une erreur innatendue est survenue, merci de réessayer plus tard");
@@ -97,6 +97,6 @@ class AuthController extends Controller implements ControllerInterface
     private function logout()
     {
         Session::unset('user');
-        Session::set('user', ['role' => UsersTable::ROLE_ANONYMOUS]);
+        Session::set('user', ['role' => UsersModel::ROLE_ANONYMOUS]);
     }
 }
