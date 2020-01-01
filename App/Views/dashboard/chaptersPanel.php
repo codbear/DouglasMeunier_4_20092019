@@ -6,9 +6,9 @@
     <div class="row">
         <div class="col s12">
             <ul class="tabs">
-                <li class="tab col s4"><a class="blue-grey-text text-darken-4" href="#drafts">Brouillons</a></li>
-                <li class="tab col s4"><a class="blue-grey-text text-darken-4 active" href="#published">Publiés</a></li>
-                <li class="tab col s4"><a class="blue-grey-text text-darken-4" href="#trash">Corbeille</a></li>
+                <li class="tab col s4"><a class="blue-grey-text text-darken-4" href="#drafts">Brouillons<?= count($drafts) > 0 ? '<span class="new badge green" data-badge-caption="">' . count($drafts) . '</span>': '' ?></a></li>
+                <li class="tab col s4"><a class="blue-grey-text text-darken-4 active" href="#published">Publiés<?= count($published) > 0 ? '<span class="new badge blue" data-badge-caption="">' . count($published) . '</span>': '' ?></a></li>
+                <li class="tab col s4"><a class="blue-grey-text text-darken-4" href="#trash">Corbeille<?= count($trash) > 0 ? '<span class="new badge red" data-badge-caption="">' . count($trash) . '</span>': '' ?></a></li>
             </ul>
         </div>
         <div id="drafts" class="col s12">
