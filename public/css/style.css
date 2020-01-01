@@ -1,3 +1,17 @@
+@keyframes flashbagVisibility {
+  0% {
+    opacity: 100%;
+  }
+
+  75% {
+    opacity: 100%;
+  }
+
+  100% {
+    opacity: 0%;
+  }
+}
+
 /** Framework **/
 body {
   margin: 0;
@@ -143,6 +157,7 @@ body.has-fixed-sidenav {
   padding-left: 20px;
   color: #fff;
   font-weight: bold;
+  animation: flashbagVisibility 4s forwards;
 }
 
 @media only screen and (min-width: 992px) {
