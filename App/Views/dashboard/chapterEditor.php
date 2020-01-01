@@ -9,7 +9,7 @@ use Codbear\Alaska\Models\ChaptersModel;
         <div class="row">
             <h2>Editeur de chapitre</h2>
         </div>
-        <form action="<?= $chapter->saveUrl?> " method="post">
+        <form action="<?= $chapter->saveUrl ?> " method="post">
             <div class="card">
                 <div class="card-action">
                     <div class="row">
@@ -24,9 +24,19 @@ use Codbear\Alaska\Models\ChaptersModel;
                             <button type="submit" title="Enregistrer" class="btn green"><i class="material-icons">save</i></button>
                         </div>
                         <div class="col s3 m2 xl1">
-                            <a href="<?= $chapter->MoveToTrashUrl ?>" title="Supprimer" class="btn red">
-                                <i class="material-icons">delete</i>
-                            </a>
+                            <a href="#modal-delete-chapter" title="Supprimer" class="modal-trigger btn red"><i class="material-icons">delete</i></a>
+                            <div id="modal-delete-chapter" class="modal">
+                                <div class="modal-content center">
+                                    <h4>Demande de confirmation</h4>
+                                    <p>Vous êtes sur le point de supprimer ce chapitre.</p>
+                                    <i class="large material-icons red-text">error_outline</i>
+                                    <p class="red-text">Attention, si le chapitre n'a jamais été enregistré, il sera supprimé définitivement !</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="<?= $chapter->MoveToTrashUrl ?>" title="Supprimer" class="btn red">Supprimer</a>
+                                    <a href="#!" class="modal-close waves-effect waves-green btn-flat black-text">Fermer</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

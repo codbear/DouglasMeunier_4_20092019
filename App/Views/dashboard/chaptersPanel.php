@@ -28,7 +28,17 @@
                             <tr>
                                 <th>
                                     <a href="?view=chapterEditor&chapterId=<?= $chapter->id ?>" title="Éditer" class="btn-small waves-effect waves-light blue"><i class="material-icons">edit</i></a>
-                                    <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" title="Supprimer" class="btn-small waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                                    <a href="#modal-delete-chapter-<?= $chapter->id ?>" title="Supprimer" class="modal-trigger btn-small waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                                    <div id="modal-delete-chapter-<?= $chapter->id ?>" class="modal">
+                                        <div class="modal-content">
+                                        <h4>Demande de confirmation</h4>
+                                            <p>Le chapitre <?= $chapter->number_save ?> "<?= $chapter->title ?>" va être déplacé vers la corbeille.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" title="Supprimer" class="btn-small waves-effect waves-light red">Supprimer</a>
+                                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+                                        </div>
+                                    </div>
                                 </th>
                                 <th>
                                     <h4>Chapitre <?= $chapter->number_save ?> - <?= $chapter->title ?></h4>
@@ -60,7 +70,17 @@
                             <tr>
                                 <th>
                                     <a href="?view=chapterEditor&chapterId=<?= $chapter->id ?>" title="Éditer" class="btn-small waves-effect waves-light blue"><i class="material-icons">edit</i></a>
-                                    <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" title="Supprimer" class="btn-small waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                                    <a href="#modal-delete-chapter-<?= $chapter->id ?>" title="Supprimer" class="modal-trigger btn-small waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                                    <div id="modal-delete-chapter-<?= $chapter->id ?>" class="modal">
+                                        <div class="modal-content">
+                                        <h4>Demande de confirmation</h4>
+                                            <p>Le chapitre <?= $chapter->number_save ?> "<?= $chapter->title ?>" va être déplacé vers la corbeille.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="?view=chaptersPanel&action=moveChapterToTrash&chapterId=<?= $chapter->id ?>" title="Supprimer" class="btn-small waves-effect waves-light red">Supprimer</a>
+                                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+                                        </div>
+                                    </div>
                                 </th>
                                 <th>
                                     <h4>Chapitre <?= $chapter->number_save ?> - <?= $chapter->title ?></h4>
@@ -91,8 +111,20 @@
                         <?php foreach ($trash as $chapter) : ?>
                             <tr>
                                 <th>
-                                <a href="/?view=chaptersPanel&action=restoreChapterFromTrash&chapterId=<?= $chapter->id ?>" title="Restaurer" class="btn-small waves-effect waves-light green"><i class="material-icons">restore</i></a>
-                                <a href="/?view=chaptersPanel&action=deleteChapterPermanently&chapterId=<?= $chapter->id ?>" title="Supprimer définitivement" class="btn-small waves-effect waves-light black"><i class="material-icons">delete_forever</i></a>
+                                    <a href="/?view=chaptersPanel&action=restoreChapterFromTrash&chapterId=<?= $chapter->id ?>" title="Restaurer" class="btn-small waves-effect waves-light green"><i class="material-icons">restore</i></a>
+                                    <a href="#modal-delete-chapter-<?= $chapter->id ?>" title="Supprimer définitivement" class="modal-trigger btn-small waves-effect waves-light red"><i class="material-icons">delete_forever</i></a>
+                                    <div id="modal-delete-chapter-<?= $chapter->id ?>" class="modal">
+                                        <div class="modal-content">
+                                            <h4>Demande de confirmation</h4>
+                                            <p>Vous êtes sur le point de supprimer définitivement le chapitre <?= $chapter->number_save ?> "<?= $chapter->title ?>".</p>
+                                            <i class="large material-icons red-text">error_outline</i>
+                                            <p class="red-text">Attention, cette action est irréversible !</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="/?view=chaptersPanel&action=deleteChapterPermanently&chapterId=<?= $chapter->id ?>" title="Supprimer définitivement" class="btn-small waves-effect waves-light red">Supprimer définitivement</a>
+                                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+                                        </div>
+                                    </div>
                                 </th>
                                 <th>
                                     <h4>Chapitre <?= $chapter->number_save ?> - <?= $chapter->title ?></h4>

@@ -46,7 +46,7 @@ class ChapterViewModel
         if (isset($this->id)) {
             return '?view=chaptersPanel&action=moveChapterToTrash&chapterId=' . $this->id;
         } else {
-            return '?view=chaptersPanel&action=moveChapterToTrash';
+            return '?view=chaptersPanel';
         }
     }
 
