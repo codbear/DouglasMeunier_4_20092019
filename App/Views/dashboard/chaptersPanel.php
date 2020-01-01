@@ -88,7 +88,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($drafts as $chapter) : ?>
+                        <?php foreach ($trash as $chapter) : ?>
                             <tr>
                                 <th>
                                 <a href="/?view=chaptersPanel&action=restoreChapterFromTrash&chapterId=<?= $chapter->id ?>" title="Restaurer" class="btn-small waves-effect waves-light green"><i class="material-icons">restore</i></a>

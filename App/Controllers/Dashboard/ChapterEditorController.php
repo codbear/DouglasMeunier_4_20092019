@@ -46,12 +46,12 @@ class ChapterEditorController extends DashboardController implements ControllerI
     private function save(array $datas, bool $publish = false)
     {
         $this->chapter->title = self::protectString($datas['chapter-title']);
-        $this->chapter->number = (int) $this->chapter->number_save = $datas['chapter-number'];
+        $this->chapter->number = $this->chapter->number_save = (int) $datas['chapter-number'];
         $this->chapter->content = $datas['chapter-content'];
         if (empty($datas['chapter-excerpt'])) {
             $this->chapter->excerpt = substr(strip_tags($this->chapter->content), 0, 252) . '...';
         } else {
-            $this->chapter->excerpt = self::protectString($datas['chapter-excerpt']);
+            $this->chapter->excerpt = $datas['chapter-excerpt'];
         }
         if ($publish) {
             $this->chapter->status = ChaptersModel::STATUS_PUBLISHED;
@@ -59,24 +59,9 @@ class ChapterEditorController extends DashboardController implements ControllerI
             $this->chapter->status = ChaptersModel::STATUS_DRAFT;
         }
         try {
-            if (empty($this->chapter->title)) {
-                throw new Exception("Vous devez saisir un titre pour votre chapitre");
-            }
-            if (empty($this->chapter->number)) {
-                throw new Exception("Vous devez saisir un numéro de chapitre");
-            }
-            if ($this->chapter->number < 1) {
-                throw new Exception("Vous ne pouvez pas saisir un numéro de chapitre négatif");
-            }
-            if (ChaptersModel::getWithNumber($this->chapter->number)) {
-                throw new Exception('Le chapitre ' . $this->chapter->number . ' existe déjà');
-            }
-            if ($this->chapter->status === ChaptersModel::STATUS_PUBLISHED) {
-                if (empty($this->chapter->content)) {
-                    throw new Exception('Impossible de publier un chapitre sans contenu');
-                }
-            }
-            if (ChaptersModel::save($this->chapter)) {
+            $this->checkDatas();
+            $save = ChaptersModel::save($this->chapter);
+            if ($save) {
                 if ($this->chapter->status === ChaptersModel::STATUS_PUBLISHED) {
                     Session::setFlashbag('Le chapitre a bien été publié', 'success');
                 } else {
@@ -87,6 +72,7 @@ class ChapterEditorController extends DashboardController implements ControllerI
                     }
                 }
                 header('Location: /?view=chaptersPanel');
+                exit;
             } else {
                 throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.');
             }
@@ -96,5 +82,32 @@ class ChapterEditorController extends DashboardController implements ControllerI
             }
             Session::setFlashbag($e->getMessage(), 'error');
         }
+    }
+
+    private function checkDatas() {
+        if (empty($this->chapter->title)) {
+            throw new Exception("Vous devez saisir un titre pour votre chapitre");
+        }
+        if (empty($this->chapter->number)) {
+            throw new Exception("Vous devez saisir un numéro de chapitre");
+        }
+        if ($this->chapter->number < 1) {
+            throw new Exception("Vous ne pouvez pas saisir un numéro de chapitre négatif");
+        }
+        if ($this->numberAlreadyInUse($this->chapter->number)) {
+            throw new Exception('Le chapitre ' . $this->chapter->number . ' existe déjà');
+        }
+        if ($this->chapter->status === ChaptersModel::STATUS_PUBLISHED && empty($this->chapter->content)) {
+            throw new Exception('Impossible de publier un chapitre sans contenu');
+        }
+    }
+
+    private function numberAlreadyInUse($number)
+    {
+        $chapterInDB = ChaptersModel::getWithNumber($number);
+        if ($chapterInDB === false || (int) $chapterInDB->id === (int) $this->chapter->id) {
+            return false;
+        }
+        return true;
     }
 }
