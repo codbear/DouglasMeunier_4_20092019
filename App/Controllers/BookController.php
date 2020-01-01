@@ -19,16 +19,17 @@ class BookController extends Controller implements ControllerInterface
             if (isset($params['action']) && $params['action'] === 'publishComment') {
                 $this->publishComment($chapterId, Session::get('user')['id'], $datas['comment-content']);
                 header('Location: /?view=book&chapterId=' . $chapterId);
+                exit;
             }
-
+            
             $chapter = ChaptersModel::get($chapterId);
-
+            
             if (!$chapter || $chapter->status != ChaptersModel::STATUS_PUBLISHED) {
                 return $this->notFound();
             }
-
+            
             $comments = CommentsModel::getAllWithChapterId($chapterId);
-
+            
             foreach ($comments as $comment) {
                 $reportedBy = CommentsModel::getReportsList($comment->id);
                 foreach ($reportedBy as $k => $v) {
@@ -37,7 +38,7 @@ class BookController extends Controller implements ControllerInterface
                     }
                 }
             }
-
+            
             return $this->renderer->render('book', [
                 'title' => $chapter->title . ' | Billet simple pour l\'Alaska',
                 'chapter' => $chapter,
@@ -61,9 +62,13 @@ class BookController extends Controller implements ControllerInterface
         }
     }
 
-    private function publishComment(int $chapterId, int $userId, string $commentContent): PDOStatement
+    private function publishComment(int $chapterId, int $userId, string $commentContent)
     {
-        return CommentsModel::publish((int) $chapterId, (int) $userId, (string) $commentContent);
+        if(CommentsModel::publish((int) $chapterId, (int) $userId, self::protectString($commentContent))) {
+            Session::setFlashbag('Votre commentaire a été publié', 'success');
+        } else {
+            Session::setFlashbag('Une erreur est survenue, merci de réessayer plus tard', 'error');
+        }
     }
 
     private function reportComment(int $commentId) {

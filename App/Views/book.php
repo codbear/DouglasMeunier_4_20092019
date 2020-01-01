@@ -8,7 +8,7 @@ use Codbear\Alaska\Models\UsersModel; ?>
         <div class="card">
             <div class="card-content">
                 <div class="card-title">
-                    <h2 class="center-align">Chapitre <?= protect($chapter->number) ?> - <?= protect($chapter->title) ?></h2>
+                    <h2 class="center-align">Chapitre <?= $chapter->number ?> - <?= $chapter->title ?></h2>
                 </div>
                 <hr>
                 <?= $chapter->content ?>
@@ -18,14 +18,14 @@ use Codbear\Alaska\Models\UsersModel; ?>
                     <div class="col s6">
                         <?php if (!is_null($chapter->previousChapterUrl)) : ?>
                             <p class="center-align">
-                                <a href="<?= protect($chapter->previousChapterUrl) ?>" class="btn waves-effect waves-light blue-grey darken-1 white-text"><i class="material-icons left">navigate_before</i>Chapitre précedent</a>
+                                <a href="<?= $chapter->previousChapterUrl ?>" class="btn waves-effect waves-light blue-grey darken-1 white-text"><i class="material-icons left">navigate_before</i>Chapitre précedent</a>
                             </p>
                         <?php endif ?>
                     </div>
                     <div class="col s6">
                         <?php if (!is_null($chapter->nextChapterUrl)) : ?>
                             <p class="center-align">
-                                <a href="<?= protect($chapter->nextChapterUrl) ?>" class="btn waves-effect waves-light blue-grey darken-1 white-text"><i class="material-icons right">navigate_next</i>Chapitre suivant</a>
+                                <a href="<?= $chapter->nextChapterUrl ?>" class="btn waves-effect waves-light blue-grey darken-1 white-text"><i class="material-icons right">navigate_next</i>Chapitre suivant</a>
                             </p>
                         <?php endif ?>
                     </div>
@@ -54,7 +54,7 @@ use Codbear\Alaska\Models\UsersModel; ?>
                     <a href="#modal-register" class="btn-flat sidenav-elem modal-trigger blue-grey-text">S'inscrire</a></button>
                 </div>
             <?php else : ?>
-                <form method="POST" action="/?view=book&action=publishComment&chapterId=<?= protect($chapter->id) ?>">
+                <form method="POST" action="/?view=book&action=publishComment&chapterId=<?= $chapter->id ?>">
                     <div class="card-content">
                         <div class="input-field">
                             <textarea name="comment-content" id="comment-content" class="materialize-textarea"></textarea>
@@ -70,21 +70,21 @@ use Codbear\Alaska\Models\UsersModel; ?>
     </div>
 </div>
 <?php foreach ($comments as $comment) : ?>
-    <div class="row">
+    <div class="row" id="comment-id-<?= $comment->id ?>">
         <div class="col s10 offset-s1">
             <div class="card">
                 <div class="card-content">
-                    <em>Le <?= protect($comment->creation_date_fulltext) ?>, par <?= protect($comment->author) ?></em> -
+                    <em>Le <?= $comment->creation_date_fulltext ?>, par <?= $comment->author ?></em> -
                     <?php if ($comment->reported) : ?>
                         <span class="blue-grey-text">Signalé</span>
                     <?php else : ?>
                         <?php if (isset(Session::get('user')['id'])) : ?>
-                            <a href="<?= protect($comment->reportUrl) ?>" class="blue-grey-text">Signaler</a>
+                            <a href="<?= $comment->reportUrl ?>" class="blue-grey-text">Signaler</a>
                         <?php else : ?>
                             <span class="blue-grey-text">Vous devez être connecté pour signaler un commentaire</span>
                         <?php endif ?>
                     <?php endif ?>
-                    <blockquote><?= protect($comment->content) ?></blockquote>
+                    <blockquote><?= $comment->content ?></blockquote>
                 </div>
             </div>
         </div>

@@ -9,13 +9,13 @@ use Codbear\Alaska\Models\ChaptersModel;
         <div class="row">
             <h2>Editeur de chapitre</h2>
         </div>
-        <form action="<?= protect($chapter->saveUrl)?> " method="post">
+        <form action="<?= $chapter->saveUrl?> " method="post">
             <div class="card">
                 <div class="card-action">
                     <div class="row">
                         <div class="col s3 m2 xl1">
                             <?php if (!isset($chapter->status) || $chapter->status != ChaptersModel::STATUS_PUBLISHED) : ?>
-                                <button type="submit" formaction="<?= protect($chapter->publishUrl) ?>" title="Publier" class="btn blue">
+                                <button type="submit" formaction="<?= $chapter->publishUrl ?>" title="Publier" class="btn blue">
                                     <i class="material-icons">publish</i>
                                 </button>
                             <?php endif ?>
@@ -24,7 +24,7 @@ use Codbear\Alaska\Models\ChaptersModel;
                             <button type="submit" title="Enregistrer" class="btn green"><i class="material-icons">save</i></button>
                         </div>
                         <div class="col s3 m2 xl1">
-                            <a href="<?= protect($chapter->MoveToTrashUrl) ?>" title="Supprimer" class="btn red">
+                            <a href="<?= $chapter->MoveToTrashUrl ?>" title="Supprimer" class="btn red">
                                 <i class="material-icons">delete</i>
                             </a>
                         </div>
@@ -40,13 +40,13 @@ use Codbear\Alaska\Models\ChaptersModel;
                     <div id="chapter-metadatas">
                         <div class="row">
                             <div class="input-field col s12 xl8 offset-xl2">
-                                <input type="text" name="chapter-title" id="chapter-title" class="validate" <?= isset($chapter->title) ? 'value="' . protect($chapter->title) . '"' : '' ?> required>
+                                <input type="text" name="chapter-title" id="chapter-title" class="validate" <?= isset($chapter->title) ? 'value="' . $chapter->title . '"' : '' ?> required>
                                 <label for="chapter-title">Titre</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12 xl2 offset-xl2">
-                                <input type="number" name="chapter-number" id="chapter-number" class="validate" <?= isset($chapter->number) ? 'value="' . protect($chapter->number) . '"' : '' ?> required>
+                                <input type="number" name="chapter-number" id="chapter-number" class="validate" <?= isset($chapter->number) ? 'value="' . $chapter->number . '"' : '' ?> required>
                                 <label for="chapter-number">Chapitre n°</label>
                             </div>
                         </div>

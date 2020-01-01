@@ -84,7 +84,7 @@ class AuthController extends Controller implements ControllerInterface
             if (UsersModel::checkEmailInDatabase($email)) {
                 throw new Exception("L'adresse e-mail que vous avez saisie n'est pas valide");
             }
-            if (UsersModel::register($username, password_hash($password, PASSWORD_DEFAULT), $email)) {
+            if (UsersModel::register(self::protectString($username), password_hash($password, PASSWORD_DEFAULT), self::protectString($email))) {
                 $this->login($username, $password);
             } else {
                 throw new Exception("Une erreur innatendue est survenue, merci de réessayer plus tard");

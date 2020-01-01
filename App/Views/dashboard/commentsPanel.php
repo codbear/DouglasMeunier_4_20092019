@@ -30,18 +30,18 @@
                                         <?php foreach ($comments as $comment) : ?>
                                             <tr>
                                                 <th>
-                                                    <a href="<?= protect($comment->deleteUrl) ?>" title="Supprimer"><i class="material-icons red-text">delete_forever</i></a>
+                                                    <a href="<?= $comment->deleteUrl ?>" title="Supprimer"><i class="material-icons red-text">delete_forever</i></a>
                                                     <?php if ($comment->reporting > 0) : ?>
-                                                        <a href="<?= protect($comment->validateUrl) ?>" title="Approuver"><i class="material-icons green-text">done_all</i></a>
+                                                        <a href="<?= $comment->validateUrl ?>" title="Approuver"><i class="material-icons green-text">done_all</i></a>
                                                     <?php endif ?>
                                                 </th>
-                                                <th><?= protect($comment->chapter_number) ?></th>
-                                                <th><?= protect($comment->author) ?></th>
+                                                <th><?= $comment->chapter_number ?></th>
+                                                <th><?= $comment->author ?></th>
                                                 <th>
                                                     <?php if ($comment->reporting > 0) : ?>
                                                         <span class="right new badge orange" data-badge-caption="Signalé"></span>
                                                     <?php endif ?>
-                                                    <?= protect($comment->content) ?>
+                                                    <?= $comment->content ?>
                                                 </th>
                                             </tr>
                                         <?php endforeach ?>
@@ -66,14 +66,14 @@
                                         <?php foreach ($signaled as $comment) : ?>
                                             <tr>
                                                 <th>
-                                                    <a href="<?= protect($comment->validateUrl) ?>"><i class="material-icons green-text">done_all</i></a>
-                                                    <a href="<?= protect($comment->deleteUrl) ?>"><i class="material-icons red-text">delete_forever</i></a>
+                                                    <a href="<?= $comment->validateUrl ?>"><i class="material-icons green-text">done_all</i></a>
+                                                    <a href="<?= $comment->deleteUrl ?>"><i class="material-icons red-text">delete_forever</i></a>
                                                 </th>
-                                                <th><?= protect($comment->chapter_number) ?></th>
-                                                <th><?= protect($comment->author) ?></th>
+                                                <th><?= $comment->chapter_number ?></th>
+                                                <th><?= $comment->author ?></th>
                                                 <th>
-                                                    <span class="right new badge orange" data-badge-caption="<?= ($comment->reporting > 1) ? 'signalements' : 'signalement' ?>"><?= protect($comment->reporting) ?></span>
-                                                    <?= protect($comment->content) ?>
+                                                    <span class="right new badge orange" data-badge-caption="<?= ($comment->reporting > 1) ? 'signalements' : 'signalement' ?>"><?= $comment->reporting ?></span>
+                                                    <?= $comment->content ?>
                                                 </th>
                                             </tr>
                                         <?php endforeach ?>

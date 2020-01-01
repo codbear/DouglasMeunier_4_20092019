@@ -45,13 +45,13 @@ class ChapterEditorController extends DashboardController implements ControllerI
 
     private function save(array $datas, bool $publish = false)
     {
-        $this->chapter->title = $datas['chapter-title'];
-        $this->chapter->number = $this->chapter->number_save = $datas['chapter-number'];
+        $this->chapter->title = self::protectString($datas['chapter-title']);
+        $this->chapter->number = (int) $this->chapter->number_save = $datas['chapter-number'];
         $this->chapter->content = $datas['chapter-content'];
         if (empty($datas['chapter-excerpt'])) {
-            $this->chapter->excerpt = substr($this->chapter->content, 0, 252) . '...';
+            $this->chapter->excerpt = substr(strip_tags($this->chapter->content), 0, 252) . '...';
         } else {
-            $this->chapter->excerpt = $datas['chapter-excerpt'];
+            $this->chapter->excerpt = self::protectString($datas['chapter-excerpt']);
         }
         if ($publish) {
             $this->chapter->status = ChaptersModel::STATUS_PUBLISHED;
