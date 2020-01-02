@@ -4,12 +4,9 @@ namespace Codbear\Alaska\Controllers;
 
 use Codbear\Alaska\Models\ChaptersModel;
 use Codbear\Alaska\Services\Renderer\Renderer;
-use Codbear\Alaska\Services\Security;
 
 class Controller
 {
-    use Security;
-
     public $renderer;
 
     public static function factory(string $name = ''): Controller

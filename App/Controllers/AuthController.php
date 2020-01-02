@@ -6,6 +6,7 @@ use Exception;
 use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Models\UsersModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
+use Codbear\Alaska\Services\Security;
 
 class AuthController extends Controller implements ControllerInterface
 {
@@ -18,12 +19,15 @@ class AuthController extends Controller implements ControllerInterface
                         if (empty($datas['username'])) {
                             throw new Exception("Veuillez saisir un nom d'utilisateur");
                         }
+
                         if (empty($datas['password'])) {
                             throw new Exception('Veuillez saisir un mot de passe');
                         }
+
                         if (empty($datas['email'])) {
                             throw new Exception('Veuillez saisir un e-mail');
                         }
+
                         $this->register($datas['username'], $datas['password'], $datas['email']);
                         break;
 
@@ -31,9 +35,11 @@ class AuthController extends Controller implements ControllerInterface
                         if (empty($datas['username'])) {
                             throw new Exception("Veuillez saisir un nom d'utilisateur");
                         }
+
                         if (empty($datas['password'])) {
                             throw new Exception('Veuillez saisir un mot de passe');
                         }
+
                         $this->login($datas['username'], $datas['password']);
                         break;
 
@@ -45,6 +51,7 @@ class AuthController extends Controller implements ControllerInterface
                         return $this->notFound();
                         break;
                 }
+
                 header('Location: /');
             } else {
                 return $this->notFound();
@@ -59,12 +66,15 @@ class AuthController extends Controller implements ControllerInterface
     {
         try {
             $user = UsersModel::get($username);
+
             if ($user === false) {
                 throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrect");
             }
+
             if (!password_verify($password, $user->password)) {
                 throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrect");
             }
+
             Session::set('user', [
                 'username' => $user->username,
                 'role' => (int) $user->role,
@@ -81,10 +91,12 @@ class AuthController extends Controller implements ControllerInterface
             if (UsersModel::checkUsernameInDatabase($username)) {
                 throw new Exception("Le pseudo que vous avez saisi n'est pas valide");
             }
+
             if (UsersModel::checkEmailInDatabase($email)) {
                 throw new Exception("L'adresse e-mail que vous avez saisie n'est pas valide");
             }
-            if (UsersModel::register(self::protectString($username), password_hash($password, PASSWORD_DEFAULT), self::protectString($email))) {
+
+            if (UsersModel::register(Security::protectString($username), password_hash($password, PASSWORD_DEFAULT), Security::protectString($email))) {
                 $this->login($username, $password);
             } else {
                 throw new Exception("Une erreur innatendue est survenue, merci de réessayer plus tard");

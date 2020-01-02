@@ -2,11 +2,11 @@
 
 namespace Codbear\Alaska\Controllers;
 
-use PDOStatement;
 use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Models\ChaptersModel;
 use Codbear\Alaska\Models\CommentsModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
+use Codbear\Alaska\Services\Security;
 use Exception;
 
 class BookController extends Controller implements ControllerInterface
@@ -14,7 +14,6 @@ class BookController extends Controller implements ControllerInterface
     public function execute(array $params, array $datas)
     {
         if (isset($params['chapterId'])) {
-
             $chapterId = (int) $params['chapterId'];
             $chapter = ChaptersModel::get($chapterId);
 
@@ -50,7 +49,7 @@ class BookController extends Controller implements ControllerInterface
             }
 
             $comments = CommentsModel::getAllWithChapterId($chapterId);
-
+            
             foreach ($comments as $comment) {
                 $reportedBy = CommentsModel::getReportsList($comment->id);
                 foreach ($reportedBy as $k => $v) {
@@ -73,13 +72,16 @@ class BookController extends Controller implements ControllerInterface
     private function publishComment(int $chapterId, int $userId, string $commentContent)
     {
         try {
-            if(empty($commentContent)) {
+            if (empty($commentContent)) {
                 throw new Exception('Impossible de publier un commentaire sans contenu');
             }
-            $published = CommentsModel::publish((int) $chapterId, (int) $userId, self::protectString($commentContent));
-            if(!$published) {
+
+            $published = CommentsModel::publish((int) $chapterId, (int) $userId, Security::protectString($commentContent));
+            
+            if (!$published) {
                 throw new Exception('Une erreur est survenue, merci de réessayer ultérieurement');
             }
+
             Session::setFlashbag('Votre commentaire a été publié', 'success');
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');
@@ -90,13 +92,14 @@ class BookController extends Controller implements ControllerInterface
     {
         try {
             $reported = CommentsModel::report((int) $userId, (int) $commentId);
-            if(!$reported) {
+            
+            if (!$reported) {
                 throw new Exception('Une erreur est survenue, merci de réessayer ultérieurement');
             }
+
             Session::setFlashbag('Le commentaire a été signalé');
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');
         }
-
     }
 }
