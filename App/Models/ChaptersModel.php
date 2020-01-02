@@ -53,7 +53,7 @@ class ChaptersModel
                         SET status = :status,
                         number = :number
                         WHERE id = :id';
-            $datas['number']= self::getMinChapterNumber() - 1;
+            $datas['number'] = self::getMinChapterNumber() - 1;
         } else {
             $statement = 'UPDATE chapters 
                             SET status = :status

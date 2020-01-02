@@ -49,7 +49,7 @@ class BookController extends Controller implements ControllerInterface
             }
 
             $comments = CommentsModel::getAllWithChapterId($chapterId);
-            
+
             foreach ($comments as $comment) {
                 $reportedBy = CommentsModel::getReportsList($comment->id);
                 foreach ($reportedBy as $k => $v) {
@@ -77,7 +77,7 @@ class BookController extends Controller implements ControllerInterface
             }
 
             $published = CommentsModel::publish((int) $chapterId, (int) $userId, Security::protectString($commentContent));
-            
+
             if (!$published) {
                 throw new Exception('Une erreur est survenue, merci de réessayer ultérieurement');
             }
@@ -92,7 +92,7 @@ class BookController extends Controller implements ControllerInterface
     {
         try {
             $reported = CommentsModel::report((int) $userId, (int) $commentId);
-            
+
             if (!$reported) {
                 throw new Exception('Une erreur est survenue, merci de réessayer ultérieurement');
             }

@@ -17,6 +17,7 @@ class AccountSettingsController extends Controller implements ControllerInterfac
         $this->user = UsersModel::get(Session::get('user')['username']);
         if (isset($params['action'])) {
             $userId = $params['userId'];
+
             switch ($params['action']) {
                 case 'updateAccount':
                     $this->updateAccount($datas['email']);
@@ -46,9 +47,11 @@ class AccountSettingsController extends Controller implements ControllerInterfac
     {
         try {
             if ((!filter_var($email, FILTER_VALIDATE_EMAIL)) || (UsersModel::checkEmailInDatabase($email))) {
-                throw new Exception("L'e-mail que vous avez saisie n'est pas valide.");
+                throw new Exception('L\'e-mail que vous avez saisie n\'est pas valide.');
             }
+
             $this->user->email = $email;
+
             if (UsersModel::updateAccount($this->user->id, $this->user->email)) {
                 Session::setFlashbag('Votre e-mail a été modifié', 'success');
                 header('Location: /?view=accountSettings');
@@ -65,13 +68,16 @@ class AccountSettingsController extends Controller implements ControllerInterfac
             if (!password_verify($password, $this->user->password)) {
                 throw new Exception('Le mot de passe que vous avez saisis est incorrect');
             }
+
             if ($newPassword !== $newPasswordConfirmation) {
                 throw new Exception('Les mots de passe saisis ne sont pas identiques');
             }
+
             $this->user->password = password_hash($newPassword, PASSWORD_DEFAULT);
+
             if (UsersModel::updatePassword($this->user->id, $this->user->password)) {
                 Session::setFlashbag('Votre mot de passe a été modifié', 'success');
-                header("Location: /?view=accountSettings");
+                header('Location: /?view=accountSettings');
             }
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');
@@ -85,11 +91,12 @@ class AccountSettingsController extends Controller implements ControllerInterfac
             if (!password_verify($password, $this->user->password)) {
                 throw new Exception('Le mot de passe que vous avez saisis est incorrect');
             }
+
             if (UsersModel::delete($this->user->id)) {
                 Session::setFlashbag('Votre compte a été supprimé', 'success');
                 Session::unset('user');
                 Session::set('user', ['role' => UsersModel::ROLE_ANONYMOUS]);
-                header("Location: /");
+                header('Location: /');
             }
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');

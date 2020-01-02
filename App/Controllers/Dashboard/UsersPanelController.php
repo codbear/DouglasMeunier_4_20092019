@@ -18,8 +18,9 @@ class UsersPanelController extends DashboardController implements ControllerInte
                     if (isset($params['userId'])) {
                         $this->delete($params['userId']);
                     }
+
                     break;
-                
+
                 default:
                     return $this->notFound();
                     break;
@@ -33,14 +34,17 @@ class UsersPanelController extends DashboardController implements ControllerInte
         }
     }
 
-    private function delete(int $userId) {
+    private function delete(int $userId)
+    {
         try {
             if (UsersModel::getRole((int) $userId) == UsersModel::ROLE_ADMIN) {
-                throw new Exception("Vous ne pouvez pas supprimer un compte administrateur");
+                throw new Exception('Vous ne pouvez pas supprimer un compte administrateur');
             }
+
             if (!UsersModel::delete((int) $userId)) {
-                throw new Exception("Une erreur innatendue est survenue. Merci de réessayer ultérieurement");
+                throw new Exception('Une erreur innatendue est survenue. Merci de réessayer ultérieurement');
             }
+
             header('Location: /?view=usersPanel');
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');

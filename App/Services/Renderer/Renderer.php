@@ -7,19 +7,18 @@ use Codbear\Alaska\Services\Session;
 class Renderer
 {
     const DEFAULT_NAMESPACE = '@__MAIN';
-    const DEFAULT_SITE_TITLE = "Un billet pour l'Alaska";
 
     private static $_instance;
     private $globals = [];
     private $viewsPath;
 
     public static function getInstance(string $path): Renderer
-	{
-		if (is_null(self::$_instance)) {
-			self::$_instance = new Renderer($path);
+    {
+        if (is_null(self::$_instance)) {
+            self::$_instance = new Renderer($path);
         }
-		return self::$_instance;
-	}
+        return self::$_instance;
+    }
 
     public function __construct(string $path)
     {
@@ -30,7 +29,7 @@ class Renderer
     {
         if (Session::isSet('flashbag')) {
             $flashbag = Session::getFlashbag();
-        } 
+        }
         extract($this->globals);
         extract($datas);
         ob_start();

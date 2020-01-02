@@ -17,7 +17,7 @@ class AuthController extends Controller implements ControllerInterface
                 switch ($params['action']) {
                     case 'register':
                         if (empty($datas['username'])) {
-                            throw new Exception("Veuillez saisir un nom d'utilisateur");
+                            throw new Exception('Veuillez saisir un nom d\'utilisateur');
                         }
 
                         if (empty($datas['password'])) {
@@ -33,7 +33,7 @@ class AuthController extends Controller implements ControllerInterface
 
                     case 'login':
                         if (empty($datas['username'])) {
-                            throw new Exception("Veuillez saisir un nom d'utilisateur");
+                            throw new Exception('Veuillez saisir un nom d\'utilisateur');
                         }
 
                         if (empty($datas['password'])) {
@@ -68,11 +68,11 @@ class AuthController extends Controller implements ControllerInterface
             $user = UsersModel::get($username);
 
             if ($user === false) {
-                throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrect");
+                throw new Exception('Le nom d\'utilisateur ou le mot de passe que vous avez saisis est incorrect');
             }
 
             if (!password_verify($password, $user->password)) {
-                throw new Exception("Le nom d'utilisateur ou le mot de passe que vous avez saisis est incorrect");
+                throw new Exception('Le nom d\'utilisateur ou le mot de passe que vous avez saisis est incorrect');
             }
 
             Session::set('user', [
@@ -89,17 +89,17 @@ class AuthController extends Controller implements ControllerInterface
     {
         try {
             if (UsersModel::checkUsernameInDatabase($username)) {
-                throw new Exception("Le pseudo que vous avez saisi n'est pas valide");
+                throw new Exception('Le pseudo que vous avez saisi n\'est pas valide');
             }
 
             if (UsersModel::checkEmailInDatabase($email)) {
-                throw new Exception("L'adresse e-mail que vous avez saisie n'est pas valide");
+                throw new Exception('L\'adresse e-mail que vous avez saisie n\'est pas valide');
             }
 
             if (UsersModel::register(Security::protectString($username), password_hash($password, PASSWORD_DEFAULT), Security::protectString($email))) {
                 $this->login($username, $password);
             } else {
-                throw new Exception("Une erreur innatendue est survenue, merci de réessayer plus tard");
+                throw new Exception('Une erreur innatendue est survenue, merci de réessayer plus tard');
             }
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');

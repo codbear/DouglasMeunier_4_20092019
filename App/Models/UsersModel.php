@@ -7,7 +7,7 @@ use Codbear\Alaska\Services\Database;
 abstract class UsersModel
 {
 
-    const VIEW_MODEL = "Codbear\\Alaska\\Models\\ViewModels\\UserViewModel";
+    const VIEW_MODEL = 'Codbear\\Alaska\\Models\\ViewModels\\UserViewModel';
     const ROLE_ADMIN = 1;
     const ROLE_SUBSCRIBER = 2;
     const ROLE_ANONYMOUS = 3;
@@ -50,23 +50,27 @@ abstract class UsersModel
         return $response->email;
     }
 
-    public static function getRole(int $id) {
+    public static function getRole(int $id)
+    {
         $response = Database::prepare('SELECT role FROM users WHERE id = ?', [$id], Database::FETCH_SINGLE);
         return $response->role;
     }
 
-    public static function delete(int $id) {
+    public static function delete(int $id)
+    {
         return Database::prepare('DELETE FROM users WHERE id = ?', [$id]);
     }
 
-    public static function updateAccount(int $id, string $email) {
+    public static function updateAccount(int $id, string $email)
+    {
         $statement = 'UPDATE users
                         SET email = :email
                         WHERE id = :id';
         return Database::prepare($statement, compact('email', 'id'));
     }
 
-    public static function updatePassword(int $id, string $password) {
+    public static function updatePassword(int $id, string $password)
+    {
         $statement = 'UPDATE users
                         SET password = :password
                         WHERE id = :id';

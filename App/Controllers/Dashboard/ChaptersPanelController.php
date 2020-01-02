@@ -18,7 +18,6 @@ class ChaptersPanelController extends DashboardController implements ControllerI
     {
         if (isset($params['action'])) {
             switch ($params['action']) {
-
                 case 'moveChapterToTrash':
                     $this->changeChapterStatus($params['chapterId'], ChaptersModel::STATUS_TRASH);
                     break;
@@ -58,12 +57,13 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                         break;
                 }
             }
+
             return $this->renderer->render('dashboard/chaptersPanel', [
                 'title' => 'Chapitres | Dashboard',
-                'published' => $this->published, 
-                'trash' => $this->trash, 
+                'published' => $this->published,
+                'trash' => $this->trash,
                 'drafts' => $this->drafts
-                ]);
+            ]);
         }
     }
 
@@ -85,12 +85,13 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                         break;
 
                     default:
-                        throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
+                        throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.');
                         break;
                 }
+
                 header('Location: /?view=chaptersPanel');
             } else {
-                throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.", 1);
+                throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.');
             }
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');

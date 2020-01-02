@@ -31,14 +31,18 @@ class CommentsPanelController extends DashboardController implements ControllerI
                     break;
             }
         }
+
         $comments = CommentsModel::getAll();
         $signaled = [];
+
         foreach ($comments as $comment) {
             $comment->setReporting(CommentsModel::getReporting($comment->id));
+
             if ($comment->reporting > 0) {
                 $signaled[] = $comment;
             }
         }
+
         $this->renderer->addGlobal('title', 'Commentaires | Dashboard');
         return $this->renderer->render('dashboard/commentsPanel', compact('comments', 'signaled'));
     }
@@ -47,8 +51,9 @@ class CommentsPanelController extends DashboardController implements ControllerI
     {
         try {
             if (!CommentsModel::delete($commentId)) {
-                throw new Exception("Une erreur inatendue est survenue. Merci de réessayer ultérieurement.");
+                throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement.');
             }
+
             header('Location: /?view=commentsPanel');
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');
@@ -56,11 +61,13 @@ class CommentsPanelController extends DashboardController implements ControllerI
         }
     }
 
-    private function validateComment(int $comment_id) {
+    private function validateComment(int $comment_id)
+    {
         try {
             if (!CommentsModel::validate($comment_id)) {
                 throw new Exception('Une erreur inatendue est survenue. Merci de réessayer ultérieurement');
             }
+
             header('Location: /?view=commentsPanel');
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');

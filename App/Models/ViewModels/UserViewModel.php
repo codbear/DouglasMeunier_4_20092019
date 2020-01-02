@@ -3,7 +3,7 @@
 namespace Codbear\Alaska\Models\ViewModels;
 
 class UserViewModel
-{ 
+{
     public function __get($attribute)
     {
         $method = 'get' . ucfirst($attribute);
@@ -11,7 +11,8 @@ class UserViewModel
         return $this->$attribute;
     }
 
-    private function getDeleteUrl() {
-        return "/?view=usersPanel&action=deleteUser&userId=" . $this->id;
+    private function getDeleteUrl()
+    {
+        return '/?view=usersPanel&action=deleteUser&userId=' . $this->id;
     }
 }
