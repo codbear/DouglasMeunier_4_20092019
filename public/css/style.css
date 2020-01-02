@@ -200,13 +200,17 @@ body.has-fixed-sidenav {
   display: block;
 }
 
+.tabs .tab a {
+  background-color: #eceef1;
+}
+
 .tabs .tab a:focus,
 .tabs .tab a:focus.active {
-  background-color: #eceff1;
+  background-color: #fff;
 }
 
 .tabs .indicator {
-  background-color: #b0bec5;
+  background-color: #90a4ae;
 }
 
 .chapters-panel-table th:first-of-type {
