@@ -28,7 +28,7 @@ class CommentViewModel
     }
 
     private function getReportUrl() {
-        return "/?view=book&action=reportComment&commentId=" . $this->id;
+        return "/?view=book&chapterId=" . $this->chapter_id . "&action=reportComment&commentId=" . $this->id;
     }
 
     private function getValidateUrl() {

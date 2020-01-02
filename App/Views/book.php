@@ -54,10 +54,10 @@ use Codbear\Alaska\Models\UsersModel; ?>
                     <a href="#modal-register" class="btn-flat sidenav-elem modal-trigger blue-grey-text">S'inscrire</a></button>
                 </div>
             <?php else : ?>
-                <form method="POST" action="/?view=book&action=publishComment&chapterId=<?= $chapter->id ?>">
+                <form id="comment-editor" method="POST" action="/?view=book&action=publishComment&chapterId=<?= $chapter->id ?>">
                     <div class="card-content">
                         <div class="input-field">
-                            <textarea name="comment-content" id="comment-content" class="materialize-textarea"></textarea>
+                            <textarea name="comment-content" id="comment-content" class="materialize-textarea" required></textarea>
                             <label for="comment-content">Votre commentaire...</label>
                         </div>
                     </div>
