@@ -7,40 +7,31 @@ use Codbear\Alaska\Services\Session;
 use Codbear\Alaska\Models\UsersModel;
 use Codbear\Alaska\Interfaces\ControllerInterface;
 use Codbear\Alaska\Services\Security;
+use stdClass;
 
 class AuthController extends Controller implements ControllerInterface
 {
+    private $userForm = null;
+    private $user = null;
+
     public function execute($params, $datas)
     {
         try {
             if (isset($params['action'])) {
+                $this->userForm = new stdClass();
+
                 switch ($params['action']) {
                     case 'register':
-                        if (empty($datas['username'])) {
-                            throw new Exception('Veuillez saisir un nom d\'utilisateur');
-                        }
-
-                        if (empty($datas['password'])) {
-                            throw new Exception('Veuillez saisir un mot de passe');
-                        }
-
-                        if (empty($datas['email'])) {
-                            throw new Exception('Veuillez saisir un e-mail');
-                        }
-
-                        $this->register($datas['username'], $datas['password'], $datas['email']);
+                        $this->setUsername($datas['username']);
+                        $this->setEmail($datas['email']);
+                        $this->setPassword($datas['password']);
+                        $this->register();
                         break;
 
                     case 'login':
-                        if (empty($datas['username'])) {
-                            throw new Exception('Veuillez saisir un nom d\'utilisateur');
-                        }
-
-                        if (empty($datas['password'])) {
-                            throw new Exception('Veuillez saisir un mot de passe');
-                        }
-
-                        $this->login($datas['username'], $datas['password']);
+                        $this->setUsername($datas['username'], false);
+                        $this->setPassword($datas['password']);
+                        $this->login();
                         break;
 
                     case 'logout':
@@ -53,56 +44,41 @@ class AuthController extends Controller implements ControllerInterface
                 }
 
                 header('Location: /');
+                exit;
             } else {
                 return $this->notFound();
             }
         } catch (Exception $e) {
             Session::setFlashbag($e->getMessage(), 'error');
             header('Location: /');
+            exit;
         }
     }
 
-    private function login(string $username, string $password)
+    private function login()
     {
-        try {
-            $user = UsersModel::get($username);
+        $this->user = UsersModel::get($this->userForm->username);
 
-            if ($user === false) {
-                throw new Exception('Le nom d\'utilisateur ou le mot de passe que vous avez saisis est incorrect');
-            }
-
-            if (!password_verify($password, $user->password)) {
-                throw new Exception('Le nom d\'utilisateur ou le mot de passe que vous avez saisis est incorrect');
-            }
-
-            Session::set('user', [
-                'username' => $user->username,
-                'role' => (int) $user->role,
-                'id' => (int) $user->id
-            ]);
-        } catch (Exception $e) {
-            Session::setFlashbag($e->getMessage(), 'error');
+        if (!$this->user || !password_verify($this->userForm->password, $this->user->password)) {
+            throw new Exception('Le mot de passe que vous avez saisis est incorrect');
         }
+
+        Session::setFlashbag('Bienvenue ' . $this->user->username);
+        Session::set('user', [
+            'username' => $this->user->username,
+            'role' => (int) $this->user->role,
+            'id' => (int) $this->user->id
+        ]);
     }
 
-    private function register(string $username, string $password, string $email)
+    private function register()
     {
-        try {
-            if (UsersModel::checkUsernameInDatabase($username)) {
-                throw new Exception('Le pseudo que vous avez saisi n\'est pas valide');
-            }
+        $registered = UsersModel::register($this->userForm->username, $this->userForm->hashedPassword, $this->userForm->email);
 
-            if (UsersModel::checkEmailInDatabase($email)) {
-                throw new Exception('L\'adresse e-mail que vous avez saisie n\'est pas valide');
-            }
-
-            if (UsersModel::register(Security::protectString($username), password_hash($password, PASSWORD_DEFAULT), Security::protectString($email))) {
-                $this->login($username, $password);
-            } else {
-                throw new Exception('Une erreur innatendue est survenue, merci de réessayer plus tard');
-            }
-        } catch (Exception $e) {
-            Session::setFlashbag($e->getMessage(), 'error');
+        if ($registered) {
+            $this->login();
+        } else {
+            throw new Exception('Une erreur innatendue est survenue, merci de réessayer plus tard');
         }
     }
 
@@ -110,5 +86,43 @@ class AuthController extends Controller implements ControllerInterface
     {
         Session::unset('user');
         Session::set('user', ['role' => UsersModel::ROLE_ANONYMOUS]);
+    }
+
+    private function setUsername(string $username, bool $checkAvailability = true): void
+    {
+        if (empty($username)) {
+            throw new Exception('Veuillez saisir un pseudo');
+        }
+
+        if ($checkAvailability && UsersModel::checkUsernameInDatabase($username)) {
+            throw new Exception('Le pseudo que vous avez saisi n\'est pas valide');
+        }
+
+        $this->userForm->username = Security::protectString($username);
+    }
+
+    private function setEmail(string $email): void
+    {
+        if (empty($email)) {
+            throw new Exception('Veuillez saisir une adresse e-mail');
+        }
+
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+        if (UsersModel::checkEmailInDatabase($email) || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            throw new Exception('L\'adresse e-mail que vous avez saisie n\'est pas valide');
+        }
+
+        $this->userForm->email = Security::protectString($email);
+    }
+
+    private function setPassword(string $password): void
+    {
+        if (empty($password)) {
+            throw new Exception('Veuillez saisir un mot de passe');
+        }
+
+        $this->userForm->password = $password;
+        $this->userForm->hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     }
 }

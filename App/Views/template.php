@@ -25,7 +25,7 @@
     </main>
 
     <div id="modal-login" class="modal">
-        <form id="login-form" action="?view=login&action=login" method="post">
+        <form id="login-form" action="?view=auth&action=login" method="post">
             <div class="modal-content">
                 <h2 class="center-align">Se connecter</h2>
                 <div class="row">
@@ -49,7 +49,7 @@
     </div>
 
     <div id="modal-register" class="modal">
-        <form id="registration-form" action="?view=login&action=register" method="post">
+        <form id="registration-form" action="?view=auth&action=register" method="post">
             <div class="modal-content">
                 <h2 class="center-align">S'inscrire</h2>
                 <div class="row">

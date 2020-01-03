@@ -16,7 +16,7 @@ class Router
 						$controller = Controller::factory('book');
 						break;
 
-					case 'login':
+					case 'auth':
 						$controller = Controller::factory('auth');
 						break;
 

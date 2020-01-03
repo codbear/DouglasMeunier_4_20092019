@@ -37,7 +37,7 @@ use Codbear\Alaska\Models\UsersModel; ?>
                                 <div class="collapsible-body">
                                     <ul class="blue-grey lighten-4">
                                         <li class="waves-effect"><a href="?view=accountSettings"><i class="material-icons left">settings</i>Paramètres</a></li>
-                                        <li class="waves-effect"><a href="?view=login&action=logout"><i class="material-icons left">logout</i>Se déconnecter</a></li>
+                                        <li class="waves-effect"><a href="?view=auth&action=logout"><i class="material-icons left">logout</i>Se déconnecter</a></li>
                                     </ul>
                                 </div>
                             </li>
