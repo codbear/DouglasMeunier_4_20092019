@@ -3,6 +3,14 @@
 namespace Codbear\Alaska\Services;
 
 use Codbear\Alaska\Controllers\Controller;
+use Codbear\Alaska\Controllers\AuthController;
+use Codbear\Alaska\Controllers\BookController;
+use Codbear\Alaska\Controllers\HomeController;
+use Codbear\Alaska\Controllers\AccountSettingsController;
+use Codbear\Alaska\Controllers\Dashboard\UsersPanelController;
+use Codbear\Alaska\Controllers\Dashboard\ChapterEditorController;
+use Codbear\Alaska\Controllers\Dashboard\ChaptersPanelController;
+use Codbear\Alaska\Controllers\Dashboard\CommentsPanelController;
 
 class Router
 {
@@ -13,40 +21,40 @@ class Router
 			if (isset($_GET['view'])) {
 				switch ($_GET['view']) {
 					case 'book':
-						$controller = Controller::factory('book');
+						$controller = new BookController();
 						break;
 
 					case 'auth':
-						$controller = Controller::factory('auth');
+						$controller = new AuthController();
 						break;
 
 					case 'accountSettings':
-						$controller = Controller::factory('accountSettings');
+						$controller = new AccountSettingsController();
 						break;
 
 					case 'chaptersPanel':
-						$controller = Controller::factory('dashboard\\ChaptersPanel');
+						$controller = new ChaptersPanelController();
 						break;
 
 					case 'chapterEditor':
-						$controller = Controller::factory('dashboard\\ChapterEditor');
+						$controller = new ChapterEditorController();
 						break;
 
 					case 'commentsPanel':
-						$controller = Controller::factory('dashboard\\CommentsPanel');
+						$controller = new CommentsPanelController();
 						break;
 
 					case 'usersPanel':
-						$controller = Controller::factory('dashboard\\UsersPanel');
+						$controller = new UsersPanelController();
 						break;
 
 					default:
-						$controller = Controller::factory();
-						return $controller->notFound();
+						$controller = new Controller();
+						$controller->notFound();
 						break;
 				}
 			} else {
-				$controller = Controller::factory('home');
+				$controller = new HomeController();
 			}
 			$controller->execute($_GET, $_POST);
 		} catch (\Exception $e) {

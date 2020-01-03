@@ -9,12 +9,6 @@ class Controller
 {
     public $renderer;
 
-    public static function factory(string $name = ''): Controller
-    {
-        $className = '\\Codbear\\Alaska\\Controllers\\' . ucfirst($name) . 'Controller';
-        return new $className();
-    }
-
     public function __construct()
     {
         $this->renderer = Renderer::getInstance(dirname((__DIR__)) . '/Views');
@@ -25,18 +19,21 @@ class Controller
     public function notFound()
     {
         header('HTTP/1.0 404 Not Found');
-        return $this->renderer->render('errors/error404', ['title' => 'Erreur 404']);
+        $this->renderer->render('errors/error404', ['title' => 'Erreur 404']);
+        exit;
     }
 
     public function forbidden()
     {
         header('HTTP/1.0 403 Forbidden');
-        return $this->renderer->render('errors/error403', ['title' => 'Erreur 403']);
+        $this->renderer->render('errors/error403', ['title' => 'Erreur 403']);
+        exit;
     }
 
     public function unauthorized()
     {
         header('HTTP/1.0 401 Unauthorized');
-        return $this->renderer->render('errors/error401', ['title' => 'Erreur 401']);
+        $this->renderer->render('errors/error401', ['title' => 'Erreur 401']);
+        exit;
     }
 }
