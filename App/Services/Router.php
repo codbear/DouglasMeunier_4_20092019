@@ -58,8 +58,9 @@ class Router
 			}
 			$controller->execute($_GET, $_POST);
 		} catch (\Exception $e) {
-			$errorMessage = $e->getMessage();
-			echo $errorMessage;
+			Session::setFlashbag($e->getMessage(), 'error');
+            header('Location: /');
+            exit;
 		}
 	}
 }

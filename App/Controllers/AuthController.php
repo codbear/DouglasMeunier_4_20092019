@@ -16,42 +16,36 @@ class AuthController extends Controller implements ControllerInterface
 
     public function execute($params, $datas)
     {
-        try {
-            if (isset($params['action'])) {
-                $this->userForm = new stdClass();
+        if (isset($params['action'])) {
+            $this->userForm = new stdClass();
 
-                switch ($params['action']) {
-                    case 'register':
-                        $this->setUsername($datas['username']);
-                        $this->setEmail($datas['email']);
-                        $this->setPassword($datas['password']);
-                        $this->register();
-                        break;
+            switch ($params['action']) {
+                case 'register':
+                    $this->setUsername($datas['username']);
+                    $this->setEmail($datas['email']);
+                    $this->setPassword($datas['password']);
+                    $this->register();
+                    break;
 
-                    case 'login':
-                        $this->setUsername($datas['username'], false);
-                        $this->setPassword($datas['password']);
-                        $this->login();
-                        break;
+                case 'login':
+                    $this->setUsername($datas['username'], false);
+                    $this->setPassword($datas['password']);
+                    $this->login();
+                    break;
 
-                    case 'logout':
-                        $this->logout();
-                        break;
+                case 'logout':
+                    $this->logout();
+                    break;
 
-                    default:
-                        return $this->notFound();
-                        break;
-                }
-
-                header('Location: /');
-                exit;
-            } else {
-                return $this->notFound();
+                default:
+                    return $this->notFound();
+                    break;
             }
-        } catch (Exception $e) {
-            Session::setFlashbag($e->getMessage(), 'error');
+
             header('Location: /');
             exit;
+        } else {
+            return $this->notFound();
         }
     }
 
