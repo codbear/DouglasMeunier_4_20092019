@@ -81,5 +81,5 @@ use Codbear\Alaska\Models\ChaptersModel;
     </div>
 </div>
 
-<script src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/92voo0o596sf8t22270uv9ktk2a01r4yaau6n0eseb8a1omk/tinymce/5/tinymce.min.js"></script> 
 <script src="scripts/chapterEditor.js"></script>

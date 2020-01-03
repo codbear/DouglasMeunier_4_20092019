@@ -1,6 +1,7 @@
 tinymce.init({
   selector: "#chapterContent",
   language: "fr_FR",
+  language_url: "scripts/tinymce/langs/fr_FR.js",
   height: 800,
   plugins: [
     "advlist autolink link image lists charmap preview hr",
@@ -16,6 +17,7 @@ tinymce.init({
 tinymce.init({
   selector: "#chapterExcerpt",
   language: "fr_FR",
+  language_url: "scripts/tinymce/langs/fr_FR.js",
   height: 200,
   menubar: false,
   toolbar:
