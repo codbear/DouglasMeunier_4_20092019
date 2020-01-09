@@ -84,6 +84,14 @@ strong {
   width: 100%;
 }
 
+.btn:focus,
+.btn-small:focus,
+.btn-medium:focus,
+.btn-large:focus {
+  background-color: #eceef1 !important;
+  color: #000000 !important;
+}
+
 body.has-fixed-sidenav {
   padding-left: 300px;
 }

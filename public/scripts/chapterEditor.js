@@ -14,17 +14,6 @@ tinymce.init({
   statusbar: false
 });
 
-tinymce.init({
-  selector: "#chapterExcerpt",
-  language: "fr_FR",
-  language_url: "scripts/tinymce/langs/fr_FR.js",
-  height: 200,
-  menubar: false,
-  toolbar:
-    "undo redo | bold italic | alignleft aligncenter | forecolor backcolor",
-  statusbar: false
-});
-
 document.addEventListener("DOMContentLoaded", function() {
   let actionbtnElems = document.querySelectorAll(".fixed-action-btn");
   let actionbtnInstances = M.FloatingActionButton.init(actionbtnElems, {

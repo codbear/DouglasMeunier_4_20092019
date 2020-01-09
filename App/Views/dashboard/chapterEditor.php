@@ -15,16 +15,16 @@ use Codbear\Alaska\Models\ChaptersModel;
                     <div class="row">
                         <div class="col s3 m2 xl1">
                             <?php if (!isset($chapter->status) || $chapter->status != ChaptersModel::STATUS_PUBLISHED) : ?>
-                                <button type="submit" formaction="<?= $chapter->publishUrl ?>" title="Publier" class="btn blue">
+                                <button type="submit" formaction="<?= $chapter->publishUrl ?>" title="Publier" class="btn blue" tabindex="1">
                                     <i class="material-icons">publish</i>
                                 </button>
                             <?php endif ?>
                         </div>
                         <div class="col s3 m2 xl1">
-                            <button type="submit" title="Enregistrer" class="btn green"><i class="material-icons">save</i></button>
+                            <button type="submit" title="Enregistrer" class="btn green" tabindex="2"><i class="material-icons">save</i></button>
                         </div>
                         <div class="col s3 m2 xl1">
-                            <a href="#modal-delete-chapter" title="Supprimer" class="modal-trigger btn red"><i class="material-icons">delete</i></a>
+                            <a href="#modal-delete-chapter" title="Supprimer" class="modal-trigger btn red" tabindex="3"><i class="material-icons">delete</i></a>
                             <div id="modal-delete-chapter" class="modal">
                                 <div class="modal-content center">
                                     <h4>Demande de confirmation</h4>
@@ -44,25 +44,25 @@ use Codbear\Alaska\Models\ChaptersModel;
                     <div class="card-tabs">
                         <ul class="tabs tabs-fixed-width">
                             <li class="tab"><a class="blue-grey-text text-darken-4 active" href="#chapter-metadatas">Métadonnées</a></li>
-                            <li class="tab"><a class="blue-grey-text text-darken-4" href="#chapter-content">Contenu</a></li>
+                            <li class="tab"><a class="blue-grey-text text-darken-4" href="#chapter-content" tabindex="7">Contenu</a></li>
                         </ul>
                     </div>
                     <div id="chapter-metadatas">
                         <div class="row">
                             <div class="input-field col s12 xl8 offset-xl2">
-                                <input type="text" name="chapter-title" id="chapter-title" class="validate" <?= isset($chapter->title) ? 'value="' . $chapter->title . '"' : '' ?> required>
+                                <input type="text" name="chapter-title" id="chapter-title" class="validate" tabindex="4" <?= isset($chapter->title) ? 'value="' . $chapter->title . '"' : '' ?> required>
                                 <label for="chapter-title">Titre</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12 xl2 offset-xl2">
-                                <input type="number" name="chapter-number" id="chapter-number" class="validate" <?= isset($chapter->number) ? 'value="' . $chapter->number . '"' : '' ?> required>
+                                <input type="number" name="chapter-number" id="chapter-number" class="validate" tabindex="5" <?= isset($chapter->number) ? 'value="' . $chapter->number . '"' : '' ?> required>
                                 <label for="chapter-number">Chapitre n°</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12 xl8 offset-xl2">
-                                <textarea class="tiny-editor" name="chapter-excerpt" id="chapterExcerpt"><?= isset($chapter->excerpt) ? "$chapter->excerpt" : '' ?></textarea>
+                                <textarea class="materialize-textarea" name="chapter-excerpt" id="chapterExcerpt" tabindex="6"><?= isset($chapter->excerpt) ? "$chapter->excerpt" : '' ?></textarea>
                                 <label for="chapter-excerpt">Extrait</label>
                             </div>
                         </div>
@@ -71,7 +71,7 @@ use Codbear\Alaska\Models\ChaptersModel;
                 <div id="chapter-content">
                     <div class="row">
                         <div class="col s10 offset-s1">
-                            <textarea class="tiny-editor" name="chapter-content" id="chapterContent"><?= isset($chapter->content) ? "$chapter->content" : '' ?></textarea>
+                            <textarea class="tiny-editor" name="chapter-content" id="chapterContent" tabindex="8"><?= isset($chapter->content) ? "$chapter->content" : '' ?></textarea>
                             <br>
                         </div>
                     </div>

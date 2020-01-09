@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <h2>Chapitres</h2>
-        <a href="/?view=chaptersPanel&action=createNewChapter" class="btn waves-effect waves-light blue-grey darken-1"><i class="material-icons left">edit</i>Ecrire un nouveau chapitre</a>
+        <a href="/?view=chapterEditor" class="btn waves-effect waves-light blue-grey darken-1"><i class="material-icons left">edit</i>Ecrire un nouveau chapitre</a>
     </div>
     <div class="row">
         <div class="col s12">

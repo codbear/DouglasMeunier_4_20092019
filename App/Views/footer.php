@@ -15,7 +15,7 @@
         <h3>1. Présentation du site.</h3>
         <p>En vertu de l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, il est précisé aux utilisateurs du site <a href="http://alaska.codbear.com/">alaska.codbear.com</a> l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi :</p>
         <p><strong>Propriétaire</strong> : Jean Forteroche – – 10 rue des écrivains<br />
-            <strong>Créateur</strong> : <a href="http://codbear.com">Codbear</a><br />
+            <strong>Créateur</strong> : <a href="#">Codbear</a><br />
             <strong>Responsable publication</strong> : Jean Forteroche – contact@jeanforteroche.alaska<br />
             Le responsable publication est une personne physique ou une personne morale.<br />
             <strong>Webmaster</strong> : Douglas Meunier – contact@codbear.com<br />

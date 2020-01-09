@@ -8,10 +8,10 @@
     </div>
     <div class="row">
         <div class="col s12 m5 l3 offset-m1 offset-l3">
-            <a href="#book-excerpt" class="btn-large waves-effect waves-light center-align blue-grey">Découvrir</a>
+            <a href="#book-excerpt" class="btn-large waves-effect waves-light center-align blue-grey" tabindex="1">Découvrir</a>
         </div>
         <div class="col s12 m5 l3">
-            <a href="/?view=book&chapterId=1" class="btn-large waves-effect waves-light center-align blue-grey lighten-3 black-text">Lire</a>
+            <a href="/?view=book&chapterId=1" class="btn-large waves-effect waves-light center-align blue-grey lighten-3 black-text" tabindex="2">Lire</a>
         </div>
     </div>
 </div>
