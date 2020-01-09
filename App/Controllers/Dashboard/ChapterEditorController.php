@@ -56,7 +56,7 @@ class ChapterEditorController extends DashboardController implements ControllerI
         if (empty($datas['chapter-excerpt'])) {
             $this->chapter->excerpt = substr(strip_tags($this->chapter->content), 0, 252) . '...';
         } else {
-            $this->chapter->excerpt = $datas['chapter-excerpt'];
+            $this->chapter->excerpt = Security::protectString($datas['chapter-excerpt']);
         }
 
         if ($publish) {
@@ -96,15 +96,7 @@ class ChapterEditorController extends DashboardController implements ControllerI
 
     private function checkDatas()
     {
-        $this->checkNumber();
-
-        if (empty($this->chapter->number)) {
-            throw new Exception('Vous devez saisir un numéro de chapitre');
-        }
-
-        if ($this->chapter->number < 1) {
-            throw new Exception('Vous ne pouvez pas saisir un numéro de chapitre négatif');
-        }
+        $this->checkChapterNumber();
 
         if (empty($this->chapter->title)) {
             throw new Exception('Vous devez saisir un titre pour votre chapitre');
@@ -115,13 +107,21 @@ class ChapterEditorController extends DashboardController implements ControllerI
         }
     }
 
-    private function checkNumber()
+    private function checkChapterNumber()
     {
         $chapterInDB = ChaptersModel::getWithNumber($this->chapter->number);
         if ($chapterInDB) {
             if ((int) $chapterInDB->id !== (int) $this->chapter->id) {
                 throw new Exception('Le chapitre ' . $this->chapter->number . ' existe déjà');
             }
+        }
+
+        if (empty($this->chapter->number)) {
+            throw new Exception('Vous devez saisir un numéro de chapitre');
+        }
+
+        if ($this->chapter->number < 1) {
+            throw new Exception('Vous ne pouvez pas saisir un numéro de chapitre négatif');
         }
     }
 }

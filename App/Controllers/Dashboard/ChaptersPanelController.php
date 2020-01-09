@@ -30,10 +30,6 @@ class ChaptersPanelController extends DashboardController implements ControllerI
                     $this->changeChapterStatus($params['chapterId'], ChaptersModel::STATUS_DELETED);
                     break;
 
-                case 'createNewChapter':
-                    $this->createNewChapter();
-                    break;
-
                 default:
                     return $this->notFound();
                     break;
@@ -97,10 +93,5 @@ class ChaptersPanelController extends DashboardController implements ControllerI
             Session::setFlashbag($e->getMessage(), 'error');
             header('Location: /?view=chaptersPanel');
         }
-    }
-
-    private function createNewChapter()
-    {
-        header('Location: /?view=chapterEditor');
     }
 }
