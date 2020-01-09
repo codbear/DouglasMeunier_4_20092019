@@ -1,3 +1,17 @@
+@-webkit-keyframes flashbagVisibility {
+  0% {
+    opacity: 100%;
+  }
+
+  75% {
+    opacity: 100%;
+  }
+
+  100% {
+    opacity: 0%;
+  }
+}
+
 @keyframes flashbagVisibility {
   0% {
     opacity: 100%;
@@ -16,22 +30,23 @@
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   background: url("../img/hero.jpg") fixed no-repeat;
-}
-
-
-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 main {
-  flex: 1 0 auto;
-}
-
-main {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
   background: url("../img/hero.jpg") fixed no-repeat;
 }
 
@@ -122,7 +137,8 @@ body.has-fixed-sidenav {
 /** Book reader **/
 
 #table-of-content {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   position: fixed;
   top: 0;
   left: 0;
@@ -165,7 +181,8 @@ body.has-fixed-sidenav {
   padding-left: 20px;
   color: #fff;
   font-weight: bold;
-  animation: flashbagVisibility 4s forwards;
+  -webkit-animation: flashbagVisibility 4s forwards;
+          animation: flashbagVisibility 4s forwards;
 }
 
 @media only screen and (min-width: 992px) {
