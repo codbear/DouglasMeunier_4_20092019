@@ -33,10 +33,11 @@ body {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   background: url("../img/hero.jpg") fixed no-repeat;
+  background-size: cover;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  min-height: 100vh;
+  min-height: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -47,7 +48,6 @@ main {
   -webkit-box-flex: 1;
       -ms-flex: 1 0 auto;
           flex: 1 0 auto;
-  background: url("../img/hero.jpg") fixed no-repeat;
 }
 
 h1,
@@ -188,6 +188,12 @@ body.has-fixed-sidenav {
 @media only screen and (min-width: 992px) {
   .has-fixed-sidenav .alert {
     left: 300px;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .has-fixed-sidenav .alert {
+    left: 52px;
   }
 }
 
